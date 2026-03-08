@@ -72,7 +72,7 @@ export function MEPEstimatingContent() {
 
       <section className="px-6 py-16 md:px-12 lg:px-20">
         <h2 className="mb-8 text-xl font-bold md:text-2xl">Why MEP Estimates Matter:</h2>
-        <div className="flex flex-wrap justify-start gap-x-24 gap-y-6">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3 md:gap-10">
           {whyMatters.map((item) => (
             <p
               key={item}
