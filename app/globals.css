@@ -70,3 +70,36 @@
     scroll-behavior: smooth;
   }
 }
+
+
+@keyframes textAnimatedGradient {
+  0% {
+    background-image: radial-gradient(circle at center, #53c0ae 0%, #c48b3c 100%);
+  }
+  25% {
+    background-image: radial-gradient(circle at center, #d26834 0%, #9747ff 100%);
+  }
+  50% {
+    background-image: radial-gradient(circle at center, #cbb148 0%, #d26834 100%);
+  }
+  75% {
+    background-image: radial-gradient(circle at center, #9747ff 0%, #53c0ae 100%);
+  }
+  100% {
+    background-image: radial-gradient(circle at center, #53c0ae 0%, #c48b3c 100%);
+  }
+}
+
+.text-animated-gradient {
+  display: inline-block;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+
+  background-repeat: no-repeat;
+  animation: textAnimatedGradient 6s linear infinite;
+}

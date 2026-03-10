@@ -1,5 +1,5 @@
-import Image from "next/image"
-import Link from "next/link"
+import Image from 'next/image';
+import Link from 'next/link';
 
 export function HeroSection() {
   return (
@@ -8,9 +8,18 @@ export function HeroSection() {
         {/* Left Content */}
         <div className="relative z-10 flex max-w-xl flex-col gap-6 pb-16 lg:pb-32">
           <h1 className="text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl text-balance">
-            Bid <span className="text-gold">Power</span>.{" "}
-            Price <span className="text-green">smarter</span>.{" "}
-            Win more work.
+            <span>
+              Bid{' '}
+              <span className="text-animated-gradient text-animated-gradient--phase-0">
+                Power
+              </span>
+              . Price{' '}
+              <span className="text-animated-gradient text-animated-gradient--phase-2">
+                smarter
+              </span>
+              . Win
+            </span>
+            <span className="block">more work.</span>
           </h1>
           <p className="max-w-md text-base leading-relaxed text-muted-foreground">
             We provide professional construction estimating services and
@@ -45,5 +54,5 @@ export function HeroSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
