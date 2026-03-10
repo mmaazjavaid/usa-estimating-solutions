@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ChevronDown, Menu, X } from "lucide-react"
 import { USALogo } from "@/components/common/usa-logo"
+import { cn } from "@/lib/utils"
 
 const navLinks = [
   {
@@ -50,6 +51,8 @@ const servicesDropdownColumns = [
   [{ label: "Interior Design Services", href: "/interior-design-services" }],
 ]
 
+const servicesDropdownHrefs = servicesDropdownColumns.flat().map((item) => item.href)
+
 const tradesDropdownColumns = [
   [
     { label: "Interior Estimating", href: "/trades/interior" },
@@ -66,6 +69,17 @@ export function Header() {
   const [servicesOpen, setServicesOpen] = useState(false)
   const [tradesOpen, setTradesOpen] = useState(false)
   const pathname = usePathname()
+
+  const navLinkClassName =
+    "text-sm transition-colors text-muted-foreground hover:text-foreground aria-[current=page]:text-[#FF771E]"
+
+  const isActiveHref = (href: string) => {
+    if (href === "/") return pathname === "/"
+    return pathname === href || pathname.startsWith(`${href}/`)
+  }
+
+  const isServicesActive = pathname === "/services" || servicesDropdownHrefs.includes(pathname)
+  const isTradesActive = isActiveHref("/trades")
 
   useEffect(() => {
     setServicesOpen(false)
@@ -87,7 +101,8 @@ export function Header() {
               <div key={link.label} className="flex items-center gap-1">
                 <Link
                   href={link.href}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  aria-current={isServicesActive ? "page" : undefined}
+                  className={navLinkClassName}
                 >
                   {link.label}
                 </Link>
@@ -102,7 +117,10 @@ export function Header() {
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   <ChevronDown
-                    className={`h-3.5 w-3.5 transition-transform ${servicesOpen ? "rotate-180" : ""}`}
+                    className={cn(
+                      "h-3.5 w-3.5 transition-transform",
+                      servicesOpen && "rotate-180",
+                    )}
                   />
                 </button>
               </div>
@@ -110,7 +128,8 @@ export function Header() {
               <div key={link.label} className="flex items-center gap-1">
                 <Link
                   href={link.href}
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  aria-current={isTradesActive ? "page" : undefined}
+                  className={navLinkClassName}
                 >
                   {link.label}
                 </Link>
@@ -125,7 +144,10 @@ export function Header() {
                   className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   <ChevronDown
-                    className={`h-3.5 w-3.5 transition-transform ${tradesOpen ? "rotate-180" : ""}`}
+                    className={cn(
+                      "h-3.5 w-3.5 transition-transform",
+                      tradesOpen && "rotate-180",
+                    )}
                   />
                 </button>
               </div>
@@ -133,7 +155,8 @@ export function Header() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                aria-current={isActiveHref(link.href) ? "page" : undefined}
+                className={cn("flex items-center gap-1", navLinkClassName)}
               >
                 {link.label}
                 {link.hasDropdown && <ChevronDown className="h-3.5 w-3.5" />}
@@ -169,7 +192,8 @@ export function Header() {
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    aria-current={pathname === item.href ? "page" : undefined}
+                    className={navLinkClassName}
                   >
                     {item.label}
                   </Link>
@@ -189,7 +213,8 @@ export function Header() {
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    aria-current={isActiveHref(item.href) ? "page" : undefined}
+                    className={navLinkClassName}
                   >
                     {item.label}
                   </Link>
@@ -204,17 +229,27 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="border-t border-border bg-background px-6 py-6 lg:hidden">
           <nav className="flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.label}
-                {link.hasDropdown && <ChevronDown className="h-3.5 w-3.5" />}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive =
+                link.label === "Services"
+                  ? isServicesActive
+                  : link.label === "Trades"
+                    ? isTradesActive
+                    : isActiveHref(link.href)
+
+              return (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn("flex items-center gap-1", navLinkClassName)}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                  {link.hasDropdown && <ChevronDown className="h-3.5 w-3.5" />}
+                </Link>
+              )
+            })}
             <Link
               href="/contact"
               className="mt-2 inline-flex w-fit rounded-full border border-foreground/30 px-5 py-2 text-sm text-foreground transition-colors hover:bg-foreground hover:text-background"
