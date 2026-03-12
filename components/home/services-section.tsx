@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion, Variants } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { CarouselApi } from '@/components/ui/carousel';
 import {
@@ -99,49 +100,111 @@ type ServiceCardProps = {
   glowColor: string;
 };
 
-export default function ServiceCard({
+export function ServiceCard({
   slug,
   title,
   description,
   href,
   glowColor,
 }: ServiceCardProps) {
+  const ease = [0.16, 1, 0.3, 1] as const;
+
+  const cardVariants: Variants = {
+    initial: {
+      borderColor: 'rgba(255, 255, 255, 0.6)',
+    },
+    hover: {
+      borderColor: 'rgba(255, 255, 255, 0.15)',
+      transition: { duration: 0.8, ease },
+    },
+  };
+
+  const glowVariants: Variants = {
+    initial: { opacity: 0, scale: 0.6, x: 20, y: 10 },
+    hover: {
+      opacity: 1,
+      scale: 1,
+      x: -20,
+      y: -10,
+      transition: {
+        duration: 1.2,
+        ease,
+      },
+    },
+  };
+
+  const iconVariants: Variants = {
+    initial: { scale: 1, opacity: 1, y: 0 },
+    hover: {
+      scale: 0.65,
+      opacity: 0.5,
+      y: -5,
+      transition: { duration: 0.8, ease },
+    },
+  };
+
+  const descriptionVariants: Variants = {
+    initial: {
+      opacity: 0,
+      height: 0,
+      y: 20,
+      marginTop: 0,
+    },
+    hover: {
+      opacity: 1,
+      height: 'auto',
+      y: 0,
+      marginTop: 12,
+      transition: {
+        duration: 0.8,
+        ease,
+        delay: 0.05,
+      },
+    },
+  };
+
   return (
-    <Link
-      href={href}
-      className="group relative block h-[420px] w-full overflow-hidden rounded-[22px] border-[3px] border-white/60 bg-white/[0.03] transition-all duration-700 ease-out hover:border-white/10"
-    >
-      {/* Glow */}
-      <div
-        className={`pointer-events-none absolute left-[180px] top-[118px] h-[179px] w-[354px] blur-[62px]
-          opacity-0 scale-75 transition-all duration-700 ease-out delay-100
-          group-hover:opacity-100 group-hover:scale-100 group-hover:-translate-x-4
-          ${glowColor}`}
-      />
-
-      {/* Icon wrapper */}
-      <div className="absolute left-[30px] top-[33px] origin-top-left transition-all duration-700 ease-out delay-100 group-hover:scale-[0.68] group-hover:opacity-60">
-        <Image
-          src={`/images/services-section/${slug}.svg`}
-          alt=""
-          width={182}
-          height={188}
+    <Link href={href} className="block w-full">
+      <motion.div
+        initial="initial"
+        whileHover="hover"
+        variants={cardVariants}
+        className="relative h-[420px] w-full overflow-hidden rounded-[22px] border-[3px] bg-white/[0.03] backdrop-blur-[15px]"
+      >
+        {/* Animated Glow Background */}
+        <motion.div
+          variants={glowVariants}
+          className={`pointer-events-none absolute left-[160px] top-[100px] h-[220px] w-[380px] blur-[70px] ${glowColor}`}
         />
-      </div>
 
-      <div className="absolute inset-x-0 bottom-0 px-[30px] pb-[30px]">
-        <h3 className="whitespace-pre-line text-left text-[32px] font-extrabold leading-[40px] transition-transform duration-700 ease-out delay-100 group-hover:-translate-y-1">
-          {title}
-        </h3>
-        <p
-          className="mt-3 overflow-hidden text-[16px] leading-[22px] text-white/80
-          opacity-0 max-h-0 translate-y-3
-          transition-all duration-700 ease-out delay-100
-          group-hover:opacity-100 group-hover:max-h-28 group-hover:translate-y-0"
+        {/* Icon wrapper */}
+        <motion.div
+          variants={iconVariants}
+          className="absolute left-[30px] top-[33px] origin-top-left"
         >
-          {description}
-        </p>
-      </div>
+          <Image
+            src={`/images/services-section/${slug}.svg`}
+            alt=""
+            width={160}
+            height={165}
+            priority
+          />
+        </motion.div>
+
+        {/* Text Content */}
+        <div className="absolute inset-x-0 bottom-0 px-[30px] pb-[35px] z-10">
+          <h3 className="whitespace-pre-line text-left text-[28px] font-extrabold leading-[34px] text-white">
+            {title}
+          </h3>
+
+          <motion.p
+            variants={descriptionVariants}
+            className="overflow-hidden text-[14px] leading-[20px] text-white/70 font-medium"
+          >
+            {description}
+          </motion.p>
+        </div>
+      </motion.div>
     </Link>
   );
 }
@@ -177,32 +240,32 @@ export function ServicesSection() {
   }, [api]);
 
   return (
-    <section className="bg-black py-20 text-white">
-      <div className="mx-auto max-w-screen-2xl px-4 md:px-8 lg:px-10">
-        <h2 className="mb-6 text-center text-3xl font-semibold md:text-4xl">
-          Services
-        </h2>
-        <p className="mx-auto mb-12 max-w-3xl text-center text-sm leading-relaxed text-white/60 md:text-base">
-          We provide professional construction estimating and quantity takeoff
-          services designed to help you bid confidently, reduce overhead costs,
-          and plan projects more efficiently. Using advanced estimating
-          software, real-time pricing databases, and industry expertise, our
-          estimators deliver accurate, reliable takeoffs tailored to your
-          project{"'"}s scope, timeline, and budget.
-        </p>
+    <section className="bg-black py-24 text-white overflow-hidden">
+      <div className="mx-auto max-w-[1600px] px-6 md:px-12 lg:px-16">
+        <div className="flex flex-col items-center text-center mb-16">
+          <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
+            Services
+          </h2>
+          <p className="max-w-3xl text-base leading-relaxed text-white/50">
+            We provide professional construction estimating and quantity takeoff
+            services designed to help you bid confidently, reduce overhead
+            costs, and plan projects more efficiently.
+          </p>
+        </div>
 
-        <div className="relative mx-auto mb-10 w-full">
+        <div className="relative w-full">
           <Carousel
             setApi={setApi}
             opts={{ align: 'start', containScroll: 'trimSnaps' }}
-            className="relative"
+            className="w-full"
           >
-            <CarouselContent className="ml-0 pt-14 pb-16 md:pt-16 md:pb-16">
+            <CarouselContent className="-ml-6 py-20">
               {services.map((service, index) => (
                 <CarouselItem
-                  key={service.title}
-                  className={`basis-[353px] min-w-[353px] pl-0 mr-10 last:mr-0 ${
-                    index % 2 === 0 ? 'md:-translate-y-10' : 'md:translate-y-10'
+                  key={service.slug}
+                  /* Updated basis to fit 4 cards on desktop, 2 on tablet, 1 on mobile */
+                  className={`pl-6 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4 transition-transform duration-1000 ease-in-out ${
+                    index % 2 === 0 ? 'md:-translate-y-6' : 'md:translate-y-6'
                   }`}
                 >
                   <ServiceCard
@@ -217,49 +280,44 @@ export function ServicesSection() {
             </CarouselContent>
           </Carousel>
 
-          <button
-            type="button"
-            onClick={() => api?.scrollPrev()}
-            disabled={!canScrollPrev}
-            aria-label="Previous"
-            className="absolute left-0 top-1/2 hidden -translate-x-10 -translate-y-1/2 items-center justify-center text-white/70 transition-colors hover:text-white disabled:opacity-0 md:flex"
-          >
-            <ChevronLeft className="h-7 w-7" />
-          </button>
-          <button
-            type="button"
-            onClick={() => api?.scrollNext()}
-            disabled={!canScrollNext}
-            aria-label="Next"
-            className="absolute right-0 top-1/2 hidden translate-x-10 -translate-y-1/2 items-center justify-center text-white/70 transition-colors hover:text-white disabled:opacity-0 md:flex"
-          >
-            <ChevronRight className="h-7 w-7" />
-          </button>
+          {/* Navigation Controls */}
+          <div className="hidden xl:block">
+            <button
+              onClick={() => api?.scrollPrev()}
+              disabled={!canScrollPrev}
+              className="absolute -left-16 top-1/2 -translate-y-1/2 p-2 text-white/40 transition-all hover:text-white disabled:opacity-0"
+            >
+              <ChevronLeft className="h-10 w-10" />
+            </button>
+            <button
+              onClick={() => api?.scrollNext()}
+              disabled={!canScrollNext}
+              className="absolute -right-16 top-1/2 -translate-y-1/2 p-2 text-white/40 transition-all hover:text-white disabled:opacity-0"
+            >
+              <ChevronRight className="h-10 w-10" />
+            </button>
+          </div>
 
-          <div className="mt-8 flex items-center justify-center gap-2">
+          {/* Pagination Dots */}
+          <div className="mt-12 flex items-center justify-center gap-3">
             {scrollSnaps.map((_, index) => (
               <button
                 key={index}
-                type="button"
                 onClick={() => api?.scrollTo(index)}
-                aria-label={`Go to slide ${index + 1}`}
-                className={`h-2 w-2 rounded-full transition-colors ${
-                  index === selectedIndex
-                    ? 'bg-white'
-                    : 'border border-white/40 bg-transparent'
+                className={`h-1.5 transition-all duration-500 rounded-full ${
+                  index === selectedIndex ? 'w-10 bg-white' : 'w-2 bg-white/20'
                 }`}
               />
             ))}
           </div>
         </div>
 
-        {/* CTA Button */}
-        <div className="flex justify-center">
+        <div className="mt-20 flex justify-center">
           <Link
             href="/services"
-            className="rounded-full border border-white/30 px-8 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white hover:text-black"
+            className="rounded-full border border-white/20 bg-white/5 px-10 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/10"
           >
-            Explore Services
+            Explore All Services
           </Link>
         </div>
       </div>
