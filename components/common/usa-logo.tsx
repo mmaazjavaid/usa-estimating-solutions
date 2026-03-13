@@ -38,7 +38,7 @@ export function USALogo({
       <text x="74" y="36" fill="white" fontSize="36" fontWeight="800" fontFamily="Inter, sans-serif" letterSpacing="1">
         USA
       </text>
-      <text x="74" y="53" fill="white" fontSize="10" fontFamily="Inter, sans-serif" opacity="0.7" letterSpacing="0.4">
+      <text x="74" y="53" fill="white" fontSize="12" fontWeight="700" fontFamily="Inter, sans-serif" opacity="0.75" letterSpacing="0.5">
         Estimating Solutions
       </text>
     </svg>

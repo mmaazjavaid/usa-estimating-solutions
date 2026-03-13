@@ -23,7 +23,7 @@ export function Footer() {
           {/* Brand Column */}
           <div className="flex flex-col gap-4">
             <Link href="/" className="w-fit">
-              <USALogo />
+              <USALogo width={168} height={64} />
             </Link>
             <div className="flex flex-col gap-1 text-sm text-muted-foreground">
               <p>Brooklyn, NY 11222, USA</p>

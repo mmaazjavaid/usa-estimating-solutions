@@ -176,7 +176,7 @@ export function Header() {
       <div className="mx-auto grid h-20 max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-6">
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-2">
-            <USALogo />
+            <USALogo width={136} height={53} />
           </Link>
         </div>
 
