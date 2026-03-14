@@ -1,9 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { motion, Variants } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { CarouselApi } from '@/components/ui/carousel';
 import {
@@ -11,6 +9,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
+import { AnimatedServiceCard } from '@/components/common/animated-service-card';
 
 const services = [
   {
@@ -92,123 +91,6 @@ const glowColors = [
   'bg-[rgba(234,126,55,0.9)]',
 ];
 
-type ServiceCardProps = {
-  slug: string;
-  title: string;
-  description: string;
-  href: string;
-  glowColor: string;
-};
-
-export function ServiceCard({
-  slug,
-  title,
-  description,
-  href,
-  glowColor,
-}: ServiceCardProps) {
-  const ease = [0.16, 1, 0.3, 1] as const;
-
-  const cardVariants: Variants = {
-    initial: {
-      borderColor: 'rgba(255, 255, 255, 0.6)',
-    },
-    hover: {
-      borderColor: 'rgba(255, 255, 255, 0.15)',
-      transition: { duration: 0.8, ease },
-    },
-  };
-
-  const glowVariants: Variants = {
-    initial: { opacity: 0, scale: 0.6, x: 20, y: 10 },
-    hover: {
-      opacity: 1,
-      scale: 1,
-      x: -20,
-      y: -10,
-      transition: {
-        duration: 1.2,
-        ease,
-      },
-    },
-  };
-
-  const iconVariants: Variants = {
-    initial: { scale: 1, opacity: 1, y: 0 },
-    hover: {
-      scale: 0.65,
-      opacity: 0.5,
-      y: -5,
-      transition: { duration: 0.8, ease },
-    },
-  };
-
-  const descriptionVariants: Variants = {
-    initial: {
-      opacity: 0,
-      height: 0,
-      y: 20,
-      marginTop: 0,
-    },
-    hover: {
-      opacity: 1,
-      height: 'auto',
-      y: 0,
-      marginTop: 12,
-      transition: {
-        duration: 0.8,
-        ease,
-        delay: 0.05,
-      },
-    },
-  };
-
-  return (
-    <Link href={href} className="block w-full">
-      <motion.div
-        initial="initial"
-        whileHover="hover"
-        variants={cardVariants}
-        className="relative h-[420px] w-full overflow-hidden rounded-[22px] border-[3px] bg-white/[0.03] backdrop-blur-[15px]"
-      >
-        {/* Animated Glow Background */}
-        <motion.div
-          variants={glowVariants}
-          className={`pointer-events-none absolute left-[160px] top-[100px] h-[220px] w-[380px] blur-[70px] ${glowColor}`}
-        />
-
-        {/* Icon wrapper */}
-        <motion.div
-          variants={iconVariants}
-          className="absolute left-[30px] top-[33px] origin-top-left"
-        >
-          <Image
-            src={`/images/services-section/${slug}.svg`}
-            alt=""
-            width={160}
-            height={165}
-            priority
-          />
-        </motion.div>
-
-        {/* Text Content */}
-        <div className="absolute inset-x-0 bottom-0 px-[30px] pb-[35px] z-10">
-          <h3 className="whitespace-pre-line text-left text-[28px] font-extrabold leading-[34px] text-white">
-            {title}
-          </h3>
-
-          <motion.p
-            variants={descriptionVariants}
-            className="overflow-hidden text-[14px] leading-[20px] text-white/70 font-medium"
-          >
-            {description}
-          </motion.p>
-        </div>
-      </motion.div>
-    </Link>
-  );
-}
-
 export function ServicesSection() {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -264,16 +146,16 @@ export function ServicesSection() {
                 <CarouselItem
                   key={service.slug}
                   /* Updated basis to fit 4 cards on desktop, 2 on tablet, 1 on mobile */
-                  className={`pl-6 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4 transition-transform duration-1000 ease-in-out ${
-                    index % 2 === 0 ? 'md:-translate-y-6' : 'md:translate-y-6'
-                  }`}
+                  className="pl-6 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4 transition-transform duration-1000 ease-in-out"
                 >
-                  <ServiceCard
-                    slug={service.slug}
+                  <AnimatedServiceCard
                     title={service.title}
                     description={service.description}
                     href={service.href}
-                    glowColor={glowColors[index % 4]}
+                    iconSrc={`/images/services-section/${service.slug}.svg`}
+                    glowColorClassName={glowColors[index % 4]}
+                    verticalOffset={index % 2 === 0 ? 'up' : 'down'}
+                    imagePriority
                   />
                 </CarouselItem>
               ))}
