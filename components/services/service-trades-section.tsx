@@ -1,60 +1,78 @@
-import Link from "next/link"
+'use client';
+
+import Link from 'next/link';
+import { TradeCard } from '../common/trade-card';
 
 const trades = [
-  { label: "Structural Estimating", href: "/trades/structural" },
-  { label: "MEP Estimation", href: "/trades/mep" },
-  { label: "Interior Estimating", href: "/trades/interior" },
-  { label: "Exterior Estimating", href: "/trades/exterior" },
-]
-
-const tradeGlowColors = [
-  "rgba(45, 212, 191, 0.6)",
-  "rgba(139, 92, 246, 0.6)",
-  "rgba(239, 68, 68, 0.5)",
-  "rgba(249, 115, 22, 0.6)",
-]
+  {
+    label: 'Structural Estimating',
+    description:
+      'Accurate structural estimates covering concrete, masonry, rebar, and steel.',
+    href: '/trades/structural',
+    glow: '#48F9EA',
+  },
+  {
+    label: 'MEP Estimation',
+    description:
+      'Precise MEP estimating for mechanical, electrical, and plumbing systems.',
+    href: '/trades/mep',
+    glow: '#8B5CF6',
+  },
+  {
+    label: 'Interior Estimating',
+    description:
+      'Accurate interior estimates covering drywall, flooring, and finishes.',
+    href: '/trades/interior',
+    glow: '#9F1239',
+  },
+  {
+    label: 'Exterior Estimating',
+    description:
+      'Detailed exterior estimating to ensure accuracy and cost control.',
+    href: '/trades/exterior',
+    glow: '#EA580C',
+  },
+];
 
 export function ServiceTradesSection() {
   return (
-    <div className="py-20">
-      <h2 className="mb-6 text-center text-3xl font-bold md:text-4xl">Our Trades</h2>
+    <section className="py-24 bg-black">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 className="mb-6 text-center text-4xl font-bold text-white">
+          Our Trades
+        </h2>
 
-      <p className="mx-auto mb-16 max-w-4xl text-center leading-relaxed text-[#d9d9d9]/70">
-        Our estimators provide accurate quantity takeoffs and cost estimates across all CSI
-        Division trades, supporting commercial, residential, and industrial projects. All
-        estimates are prepared in strict compliance with U.S. construction codes, industry
-        standards, and current pricing databases, ensuring your bids remain competitive,
-        accurate, and aligned with market conditions.
-      </p>
+        <p className="mx-auto mb-20 max-w-6xl text-center leading-relaxed text-gray-400">
+          Our estimators provide accurate quantity takeoffs and cost estimates
+          across all CSI Division trades, supporting commercial, residential,
+          and industrial projects. All estimates are prepared in strict
+          compliance with U.S. construction codes, industry standards, and
+          current pricing databases, ensuring your bids remain competitive,
+          accurate, and aligned with market conditions.
+        </p>
 
-      <div className="mx-auto mb-12 grid max-w-6xl grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {trades.map((trade, index) => (
+        {/* GAP APPLIED HERE (gap-12) */}
+        <div className="grid grid-cols-1 justify-items-center gap-12 md:grid-cols-2 md:gap-16 lg:grid-cols-4 lg:gap-20 xl:gap-24">
+          {trades.map((trade) => (
+            <Link key={trade.label} href={trade.href} className="p-4">
+              <TradeCard
+                label={trade.label}
+                description={trade.description}
+                glowColor={trade.glow}
+              />
+            </Link>
+          ))}
+        </div>
+
+        <div className="flex justify-center mt-20">
           <Link
-            key={trade.label}
-            href={trade.href}
-            className="relative block h-80 overflow-hidden rounded-2xl border border-[#d9d9d9]/20 bg-[#0a0a0a] transition-colors hover:border-[#d9d9d9]/40"
+            href="/contact"
+            className="rounded-full border border-white/20 px-10 py-3 text-white transition-all hover:bg-white hover:text-black font-medium"
           >
-            <div
-              className="absolute inset-0"
-              style={{
-                background: `radial-gradient(ellipse at bottom left, ${tradeGlowColors[index]} 0%, transparent 70%)`,
-              }}
-            />
-            <div className="relative z-10 p-6">
-              <h3 className="text-xl font-bold text-white">{trade.label}</h3>
-            </div>
+            Submit a plan
           </Link>
-        ))}
+        </div>
       </div>
-
-      <div className="flex justify-center">
-        <Link
-          href="/contact"
-          className="rounded-full border border-[#d9d9d9]/40 px-8 py-3 text-white transition-colors hover:bg-white/5"
-        >
-          Submit a plan
-        </Link>
-      </div>
-    </div>
-  )
+    </section>
+  );
 }
