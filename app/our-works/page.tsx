@@ -5,17 +5,67 @@ import { ScrollToTop } from "@/components/layout/scroll-to-top"
 import { CTASection } from "@/components/home/cta-section"
 import { getSeoMetadataByPath } from "@/lib/cms"
 
-const workImages = [
-  "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80",
-  "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?w=1200&q=80",
-  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80",
-  "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=80",
-  "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80",
-  "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?w=1200&q=80",
-  "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1200&q=80",
-  "https://images.unsplash.com/photo-1488972685288-c3fd157d7c7a?w=1200&q=80",
-  "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1200&q=80",
-  "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=1200&q=80",
+const workItems = [
+  {
+    image: "/images/our-works/work-01.png",
+    title: "Division-9 Finishes",
+    previewFile: "/files/our-works/work-01.pdf",
+    downloadFile: "/files/our-works/work-01.xlsx",
+  },
+  {
+    image: "/images/our-works/work-02.png",
+    title: "Drywall Estimate",
+    previewFile: "/files/our-works/work-02.pdf",
+    downloadFile: "/files/our-works/work-02.xlsx",
+  },
+  {
+    image: "/images/our-works/work-03.png",
+    title: "Telecommunication Estimate",
+    previewFile: "/files/our-works/work-03.pdf",
+    downloadFile: "/files/our-works/work-03.xlsx",
+  },
+  {
+    image: "/images/our-works/work-04.png",
+    title: "MEP Estimate",
+    previewFile: "/files/our-works/work-04.pdf",
+    downloadFile: "/files/our-works/work-04.xlsx",
+  },
+  {
+    image: "/images/our-works/work-05.png",
+    title: "HVAC Estimate",
+    previewFile: "/files/our-works/work-05.pdf",
+    downloadFile: "/files/our-works/work-05.xlsx",
+  },
+  {
+    image: "/images/our-works/work-06.png",
+    title: "Glazing Estimate",
+    previewFile: "/files/our-works/work-06.pdf",
+    downloadFile: "/files/our-works/work-06.xlsx",
+  },
+  {
+    image: "/images/our-works/work-07.png",
+    title: "GC Sample Estimate",
+    previewFile: "/files/our-works/work-07.pdf",
+    downloadFile: "/files/our-works/work-07.xlsx",
+  },
+  {
+    image: "/images/our-works/work-08.png",
+    title: "Flooring Estimate",
+    previewFile: "/files/our-works/work-08.pdf",
+    downloadFile: "/files/our-works/work-08.xlsx",
+  },
+  {
+    image: "/images/our-works/work-09.png",
+    title: "Electrical Sample Estimate",
+    previewFile: "/files/our-works/work-09.pdf",
+    downloadFile: "/files/our-works/work-09.xlsx",
+  },
+  {
+    image: "/images/our-works/work-10.png",
+    title: "Lumber Estimate",
+    previewFile: "/files/our-works/work-10.pdf",
+    downloadFile: "/files/our-works/work-10.xlsx",
+  },
 ]
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -44,14 +94,38 @@ export default function OurWorksPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-            {workImages.map((src, index) => (
-              <div key={src} className="overflow-hidden rounded-2xl border border-white/15 bg-black">
+            {workItems.map((item, index) => (
+              <div
+                key={item.image}
+                className="group relative overflow-hidden rounded-2xl border border-white/15 bg-black"
+              >
                 <img
-                  src={src}
+                  src={item.image}
                   alt={`Our work sample ${index + 1}`}
-                  className="h-64 w-full object-cover grayscale transition duration-300 hover:grayscale-0 md:h-72"
+                  className="h-64 w-full object-cover transition duration-300 md:h-72"
                   loading="lazy"
                 />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <p className="text-center text-2xl font-semibold text-white">
+                    {item.title}
+                  </p>
+                  <a
+                    href={item.previewFile}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-w-44 justify-center rounded-full border border-white/60 bg-white/20 px-6 py-2 text-xl font-medium text-white backdrop-blur-sm transition hover:bg-white/30"
+                  >
+                    Preview
+                  </a>
+                  <a
+                    href={item.downloadFile}
+                    download
+                    className="inline-flex min-w-44 justify-center rounded-full border border-black/50 bg-black/75 px-6 py-2 text-xl font-semibold text-white transition hover:bg-black/90"
+                  >
+                    Download
+                  </a>
+                </div>
               </div>
             ))}
           </div>
