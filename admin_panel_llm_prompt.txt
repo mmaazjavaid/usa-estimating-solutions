@@ -1,0 +1,254 @@
+Admin Panel CMS Implementation Prompt
+
+I already have an existing Next.js frontend project. I want to extend
+this project by building an Admin Panel (CMS-like dashboard) to manage
+the website content and SEO.
+
+Your task is to design and implement the admin panel with backend logic,
+database schema, and API endpoints.
+
+------------------------------------------------------------------------
+
+Tech Stack Requirements
+
+-   Existing project: Next.js
+-   Database: MongoDB
+-   Backend options:
+    -   Prefer Next.js API routes or Server Actions
+    -   Express can be used if necessary but prefer keeping everything
+        inside the Next.js project
+-   Authentication: email + hardcoded password login
+-   Admin routes must be protected
+
+------------------------------------------------------------------------
+
+Main Goal
+
+The admin panel should allow dynamic management of website content and
+SEO so changes immediately reflect on the main website.
+
+------------------------------------------------------------------------
+
+Admin Panel Structure
+
+The admin dashboard should contain a sidebar with these tabs:
+
+1.  Manage Contact Data
+2.  Pages
+3.  Services
+4.  Sub-Services
+
+UI does not need to be perfect, but it should behave like a typical
+admin dashboard layout with sidebar navigation.
+
+------------------------------------------------------------------------
+
+Authentication
+
+Create login page:
+
+/login
+
+Login form:
+
+-   Email
+-   Password
+
+Rules:
+
+-   Email must match configured admin email
+-   Password will be hardcoded
+-   If valid → redirect to admin dashboard
+-   Protect all admin routes
+-   If user is not logged in → redirect to /login
+
+Implementation suggestions:
+
+-   JWT or session
+-   Next.js middleware for route protection
+
+------------------------------------------------------------------------
+
+Manage Contact Data
+
+Admin can update contact information displayed on the website.
+
+Fields:
+
+-   Contact Emails
+-   Contact Phone Numbers
+
+Requirements:
+
+-   Admin can edit and save
+-   Data stored in MongoDB
+-   Frontend website should fetch and display this dynamic data
+
+------------------------------------------------------------------------
+
+Pages Management
+
+This section manages SEO settings for existing pages.
+
+Admin cannot add new pages.
+
+Display a table:
+
+Columns:
+
+-   Page Name
+-   Index Status (Index / No Index)
+-   Status (Published / Unpublished)
+-   Actions
+
+Actions:
+
+-   View
+-   Edit
+-   Delete
+
+------------------------------------------------------------------------
+
+Edit Page
+
+Editable SEO fields:
+
+-   Meta Title
+-   Meta Description
+-   Header Meta Tags
+-   Footer Meta Tags
+
+SEO Options:
+
+-   Index Status (Index / No Index)
+
+Status:
+
+-   Published
+-   Unpublished
+
+Changes must:
+
+-   Save in database
+-   Apply dynamically to website SEO
+
+------------------------------------------------------------------------
+
+Services Management
+
+Admin should manage services dynamically.
+
+Services tab must include:
+
+-   Add Service button
+-   Services table
+
+Table columns:
+
+-   Service Name
+-   Index Status
+-   Status
+-   Actions
+
+Actions:
+
+-   View
+-   Edit
+-   Delete
+
+------------------------------------------------------------------------
+
+Add Service Form
+
+Basic Fields:
+
+-   Service Name
+-   Service Slug
+-   Short Description
+-   Image
+-   Image Alt
+
+SEO Fields:
+
+-   Meta Image
+-   Meta Title
+-   Meta Description
+-   Header Meta Tags
+-   Footer Meta Tags
+
+SEO Options:
+
+-   Index Status (Index / No Index)
+
+Status:
+
+-   Publish
+-   Unpublish
+
+Other:
+
+-   Display in Footer Menu (Yes / No)
+
+Saving should:
+
+-   Store in MongoDB
+-   Make service visible on the website
+
+------------------------------------------------------------------------
+
+Edit Service
+
+Editing must allow modifying all fields from Add Service.
+
+Updates must reflect on the website immediately.
+
+------------------------------------------------------------------------
+
+Delete Service
+
+Deleting a service must:
+
+-   Remove it from database
+-   Remove it from the website
+
+------------------------------------------------------------------------
+
+Database Design
+
+Use MongoDB collections such as:
+
+-   admins
+-   contactData
+-   pages
+-   services
+-   subServices
+
+Design proper schemas.
+
+------------------------------------------------------------------------
+
+Additional Requirements
+
+-   SEO metadata must integrate with Next.js metadata API
+-   Use clean API architecture
+-   Follow best practices
+-   Prefer TypeScript
+-   Implement full CRUD operations
+-   Frontend must fetch dynamic data
+-   System should be scalable for future CMS features
+
+------------------------------------------------------------------------
+
+Deliverables
+
+Provide:
+
+1.  Project architecture
+2.  MongoDB schema design
+3.  API routes
+4.  Admin dashboard pages
+5.  Authentication implementation
+6.  Example frontend integration for SEO metadata
+
+If needed, analyze the existing Next.js project structure and suggest
+the best integration approach.

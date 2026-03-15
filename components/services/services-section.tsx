@@ -2,79 +2,15 @@
 
 import { CTASection } from '@/components/home/cta-section';
 import { AnimatedServiceCard } from '@/components/common/animated-service-card';
+import { DEFAULT_SERVICES } from '@/lib/cms-defaults';
 
-const services = [
-  {
-    title: 'Cost\nEstimation',
-    description:
-      'Accurate cost estimates to help you budget confidently and submit competitive bids.',
-    slug: 'cost-estimation',
-    href: '/cost-estimation',
-  },
-  {
-    title: 'Construction\nEstimation',
-    description:
-      'Detailed construction estimates covering labor, materials, equipment, and overhead.',
-    slug: 'construction-estimation',
-    href: '/construction-estimation',
-  },
-  {
-    title: 'Construction\nTakeoff',
-    description:
-      'Precise quantity takeoffs that eliminate guesswork and improve bid accuracy.',
-    slug: 'construction-takeoff',
-    href: '/construction-takeoff',
-  },
-  {
-    title: 'Residential\nEstimating',
-    description:
-      'Reliable estimating solutions for residential projects of all sizes.',
-    slug: 'residential-estimating',
-    href: '/residential-estimation',
-  },
-  {
-    title: 'Commercial\nEstimating',
-    description:
-      'Comprehensive commercial estimates designed for complex, large-scale projects.',
-    slug: 'commercial-estimating',
-    href: '/commercial-estimating',
-  },
-  {
-    title: 'CPM\nScheduling',
-    description:
-      'Professional CPM schedules that optimize timelines and project coordination.',
-    slug: 'cpm-scheduling',
-    href: '/cpm-scheduling',
-  },
-  {
-    title: 'Industrial\nEstimating',
-    description:
-      'Accurate industrial estimates aligned with strict standards and project demands.',
-    slug: 'industrial-estimating',
-    href: '/industrial-estimating',
-  },
-  {
-    title: 'Preliminary\nEstimating',
-    description:
-      'Early-stage cost insights to support planning and feasibility decisions.',
-    slug: 'preliminary-estimating',
-    href: '/preliminary-estimating',
-  },
-  {
-    title: '3D\nVisualization',
-    description:
-      'Bring designs to life with detailed 3D models that clearly communicate form, layout, and intent.',
-    slug: '3d-visualization',
-    href: '/3d-visualization',
-  },
-  {
-    title: 'Interior\nDesign',
-    description:
-      'Create functional, well-planned interior spaces that support workflow, comfort, and efficiency.',
-    slug: 'interior-design-services',
-    href: '/interior-design-services',
-  },
-];
+type ServiceCardData = {
+  title: string;
+  slug: string;
+  href: string;
+  description?: string;
+  image?: string;
+};
 
 const glowColors = [
   'bg-[#53C0AE]',
@@ -83,7 +19,17 @@ const glowColors = [
   'bg-[rgba(234,126,55,0.9)]',
 ];
 
-export function ServicesSection() {
+export function ServicesSection({
+  services = DEFAULT_SERVICES.map((service) => ({
+    title: service.name,
+    slug: service.slug,
+    href: service.path,
+    description: service.shortDescription,
+    image: service.image,
+  })),
+}: {
+  services?: ServiceCardData[];
+}) {
   return (
     <section className="bg-black text-white">
       <div className="px-4 py-16 md:py-24">
@@ -111,8 +57,8 @@ export function ServicesSection() {
                 key={service.slug}
                 href={service.href}
                 title={service.title}
-                description={service.description}
-                iconSrc={`/images/services-section/${service.slug}.svg`}
+                description={service.description || ''}
+                iconSrc={service.image || `/images/services-section/${service.slug}.svg`}
                 glowColorClassName={glowColors[index % 4]}
                 imagePriority={index < 4}
                 size="sm"
@@ -126,8 +72,8 @@ export function ServicesSection() {
                 key={service.slug}
                 href={service.href}
                 title={service.title}
-                description={service.description}
-                iconSrc={`/images/services-section/${service.slug}.svg`}
+                description={service.description || ''}
+                iconSrc={service.image || `/images/services-section/${service.slug}.svg`}
                 glowColorClassName={glowColors[index % 4]}
                 size="sm"
               />
@@ -141,8 +87,8 @@ export function ServicesSection() {
                   key={service.slug}
                   href={service.href}
                   title={service.title}
-                  description={service.description}
-                  iconSrc={`/images/services-section/${service.slug}.svg`}
+                  description={service.description || ''}
+                  iconSrc={service.image || `/images/services-section/${service.slug}.svg`}
                   glowColorClassName={glowColors[index % 4]}
                   size="sm"
                 />

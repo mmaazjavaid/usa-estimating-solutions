@@ -1,9 +1,21 @@
 import { Mail, MapPin, Phone } from "lucide-react"
+import type { Metadata } from "next"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { ScrollToTop } from "@/components/layout/scroll-to-top"
+import { getContactData, getSeoMetadataByPath } from "@/lib/cms"
 
-export default function ContactPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  return (await getSeoMetadataByPath("/contact")) ?? {}
+}
+
+export default async function ContactPage() {
+  const contactData = await getContactData()
+  const primaryPhone = contactData.phones[0] ?? "+(716) 226-1302"
+  const primaryEmail =
+    contactData.emails[0] ?? "info@usaestimatingsolutions.com"
+  const address = contactData.address || "Brooklyn, NY 11222, USA"
+
   return (
     <>
       <Header />
@@ -60,18 +72,18 @@ export default function ContactPage() {
             <ContactCard
               icon={<MapPin className="h-12 w-12" strokeWidth={1.6} />}
               title="Visit Us"
-              line1="Brooklyn, NY 11222, USA"
+              line1={address}
             />
             <ContactCard
               icon={<Phone className="h-12 w-12" strokeWidth={1.6} />}
               title="Call Us"
-              line1="+(716) 226-1302"
+              line1={primaryPhone}
               withDivider
             />
             <ContactCard
               icon={<Mail className="h-12 w-12" strokeWidth={1.6} />}
               title="Email Us"
-              line1="info@usaestimatingsolutions.com"
+              line1={primaryEmail}
               withDivider
             />
           </div>

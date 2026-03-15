@@ -1,8 +1,10 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { ScrollToTop } from "@/components/layout/scroll-to-top"
 import { CTASection } from "@/components/home/cta-section"
+import { getSeoMetadataByPath } from "@/lib/cms"
 
 const plans = [
   {
@@ -22,6 +24,10 @@ const plans = [
     price: "$ 900+",
   },
 ]
+
+export async function generateMetadata(): Promise<Metadata> {
+  return (await getSeoMetadataByPath("/prices")) ?? {}
+}
 
 export default function PricesPage() {
   return (

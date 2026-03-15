@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { USALogo } from "@/components/common/usa-logo"
+import { getContactData, getFooterMenuServices } from "@/lib/cms"
 
 const mainLinks = [
   { number: "01", label: "Home", href: "/" },
@@ -15,7 +16,14 @@ const sideLinks = [
   { label: "Get a Quote", href: "/contact" },
 ]
 
-export function Footer() {
+export async function Footer() {
+  const contactData = await getContactData()
+  const footerServices = await getFooterMenuServices()
+  const primaryPhone = contactData.phones[0] ?? "(716) 226-1302"
+  const primaryEmail =
+    contactData.emails[0] ?? "info@usaestimatingsolutions.com"
+  const address = contactData.address || "Brooklyn, NY 11222, USA"
+
   return (
     <footer className="border-t border-border bg-background">
       <div className="mx-auto max-w-7xl px-6 py-16">
@@ -26,14 +34,14 @@ export function Footer() {
               <USALogo width={168} height={64} />
             </Link>
             <div className="flex flex-col gap-1 text-sm text-muted-foreground">
-              <p>Brooklyn, NY 11222, USA</p>
-              <p>(716) 226-1302</p>
+              <p>{address}</p>
+              <p>{primaryPhone}</p>
             </div>
             <a
-              href="mailto:info@usaestimatingsolutions.com"
+              href={`mailto:${primaryEmail}`}
               className="text-sm text-foreground underline-offset-4 hover:underline"
             >
-              info@usaestimatingsolutions.com
+              {primaryEmail}
             </a>
             <Link
               href="/contact"
@@ -82,6 +90,15 @@ export function Footer() {
                 className="text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
               >
                 {link.label}
+              </Link>
+            ))}
+            {footerServices.slice(0, 4).map((service) => (
+              <Link
+                key={service._id.toString()}
+                href={service.path || `/${service.slug}`}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {service.name}
               </Link>
             ))}
             <div className="mt-4 flex items-center gap-4">

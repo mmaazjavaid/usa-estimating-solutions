@@ -1,7 +1,9 @@
+import type { Metadata } from "next"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { ScrollToTop } from "@/components/layout/scroll-to-top"
 import { CTASection } from "@/components/home/cta-section"
+import { getSeoMetadataByPath } from "@/lib/cms"
 
 const workImages = [
   "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80",
@@ -15,6 +17,10 @@ const workImages = [
   "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1200&q=80",
   "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=1200&q=80",
 ]
+
+export async function generateMetadata(): Promise<Metadata> {
+  return (await getSeoMetadataByPath("/our-works")) ?? {}
+}
 
 export default function OurWorksPage() {
   return (

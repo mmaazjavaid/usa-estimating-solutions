@@ -1,8 +1,10 @@
+import type { Metadata } from "next"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { ScrollToTop } from "@/components/layout/scroll-to-top"
 import { CTASection } from "@/components/home/cta-section"
 import { EstimateCard } from "@/components/common/estimate-card"
+import { getSeoMetadataByPath } from "@/lib/cms"
 
 const trades = [
   {
@@ -50,6 +52,10 @@ const trades = [
     href: "/trades/exterior",
   },
 ]
+
+export async function generateMetadata(): Promise<Metadata> {
+  return (await getSeoMetadataByPath("/trades")) ?? {}
+}
 
 export default function TradesPage() {
   return (
