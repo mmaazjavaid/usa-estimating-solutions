@@ -9,6 +9,7 @@ const mainLinks = [
   { number: "04", label: "Our Works", href: "/our-works" },
   { number: "05", label: "Prices", href: "/prices" },
   { number: "06", label: "About", href: "/about" },
+  { number: "07", label: "Blogs", href: "/blogs" },
 ]
 
 const sideLinks = [

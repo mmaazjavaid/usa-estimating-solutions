@@ -76,6 +76,11 @@ export const DEFAULT_PAGE_DEFINITIONS = [
     slug: 'trade-structural',
     path: '/trades/structural',
   },
+  {
+    name: 'Blogs',
+    slug: 'blogs',
+    path: '/blogs',
+  },
 ] as const;
 
 export const DEFAULT_CONTACT = {

@@ -21,6 +21,11 @@ const cards = [
     href: '/admin/sub-services',
     description: 'Create and manage nested service offerings.',
   },
+  {
+    title: 'Blogs',
+    href: '/admin/blogs',
+    description: 'Create, optimize, and publish blog posts dynamically.',
+  },
 ];
 
 export default function AdminHomePage() {

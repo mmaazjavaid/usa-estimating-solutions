@@ -30,6 +30,10 @@ const navLinks = [
     label: 'About',
     href: '/about',
   },
+  {
+    label: 'Blogs',
+    href: '/blogs',
+  },
 ];
 
 type DropdownLink = { label: string; href: string };
