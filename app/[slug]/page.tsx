@@ -60,7 +60,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function ServiceDetailPage({ params }: PageProps) {
+export default async function DynamicServicePage({ params }: PageProps) {
   const { slug } = await params;
   const service = await getPublishedServiceBySlug(slug);
 

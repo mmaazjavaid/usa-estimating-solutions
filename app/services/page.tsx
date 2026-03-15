@@ -14,7 +14,9 @@ export default async function ServicesPage() {
   const mappedServices = services.map((service) => ({
     title: service.name,
     slug: service.slug,
-    href: service.path || `/services/${service.slug}`,
+    href: service.path || `/${service.slug}`,
+    description: service.shortDescription || "",
+    image: service.image || "",
   }))
 
   return (

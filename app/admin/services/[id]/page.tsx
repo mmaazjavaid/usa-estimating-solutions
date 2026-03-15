@@ -38,6 +38,15 @@ const initialForm: ServiceForm = {
 };
 
 export default function EditServicePage() {
+  function toSlug(value: string) {
+    return value
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
+
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const [formData, setFormData] = useState<ServiceForm>(initialForm);
@@ -102,12 +111,16 @@ export default function EditServicePage() {
         <Input
           label="Service Slug"
           value={formData.slug}
-          onChange={(value) => setFormData((prev) => ({ ...prev, slug: value }))}
+          onChange={(value) => {
+            const slug = toSlug(value);
+            setFormData((prev) => ({ ...prev, slug, path: slug ? `/${slug}` : '' }));
+          }}
         />
         <Input
           label="Service Path (URL)"
           value={formData.path}
-          onChange={(value) => setFormData((prev) => ({ ...prev, path: value }))}
+          onChange={() => undefined}
+          readOnly
         />
         <Input
           label="Short Description"
@@ -213,10 +226,12 @@ function Input({
   label,
   value,
   onChange,
+  readOnly = false,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  readOnly?: boolean;
 }) {
   return (
     <div className="space-y-1">
@@ -224,6 +239,7 @@ function Input({
       <input
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        readOnly={readOnly}
         className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-white"
       />
     </div>

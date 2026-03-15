@@ -12,12 +12,42 @@ type ServiceCardData = {
   image?: string;
 };
 
+const iconSlugAliases: Record<string, string> = {
+  'residential-estimation': 'residential-estimating',
+};
+
+const builtInIconSlugs = new Set([
+  'cost-estimation',
+  'construction-estimation',
+  'construction-takeoff',
+  'residential-estimating',
+  'commercial-estimating',
+  'industrial-estimating',
+  'preliminary-estimating',
+  'cpm-scheduling',
+  '3d-visualization',
+  'interior-design-services',
+]);
+
 const glowColors = [
   'bg-[#53C0AE]',
   'bg-[rgba(164,107,238,0.9)]',
   'bg-[rgba(237,44,76,0.85)]',
   'bg-[rgba(234,126,55,0.9)]',
 ];
+
+function getServiceIconSrc(service: ServiceCardData) {
+  if (service.image?.trim()) {
+    return service.image.trim();
+  }
+
+  const resolvedSlug = iconSlugAliases[service.slug] ?? service.slug;
+  if (builtInIconSlugs.has(resolvedSlug)) {
+    return `/images/services-section/${resolvedSlug}.svg`;
+  }
+
+  return '/placeholder.svg';
+}
 
 export function ServicesSection({
   services = DEFAULT_SERVICES.map((service) => ({
@@ -58,7 +88,7 @@ export function ServicesSection({
                 href={service.href}
                 title={service.title}
                 description={service.description || ''}
-                iconSrc={service.image || `/images/services-section/${service.slug}.svg`}
+                iconSrc={getServiceIconSrc(service)}
                 glowColorClassName={glowColors[index % 4]}
                 imagePriority={index < 4}
                 size="sm"
@@ -73,7 +103,7 @@ export function ServicesSection({
                 href={service.href}
                 title={service.title}
                 description={service.description || ''}
-                iconSrc={service.image || `/images/services-section/${service.slug}.svg`}
+                iconSrc={getServiceIconSrc(service)}
                 glowColorClassName={glowColors[index % 4]}
                 size="sm"
               />
@@ -88,7 +118,7 @@ export function ServicesSection({
                   href={service.href}
                   title={service.title}
                   description={service.description || ''}
-                  iconSrc={service.image || `/images/services-section/${service.slug}.svg`}
+                  iconSrc={getServiceIconSrc(service)}
                   glowColorClassName={glowColors[index % 4]}
                   size="sm"
                 />

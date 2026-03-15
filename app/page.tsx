@@ -23,7 +23,7 @@ export default async function HomePage() {
     slug: service.slug,
     title: service.name,
     description: service.shortDescription || '',
-    href: service.path || `/services/${service.slug}`,
+    href: service.path || `/${service.slug}`,
     image: service.image || '',
   }));
 

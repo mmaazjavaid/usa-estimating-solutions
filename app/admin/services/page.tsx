@@ -47,10 +47,21 @@ const emptyNewService: NewService = {
 };
 
 export default function AdminServicesPage() {
+  function toSlug(value: string) {
+    return value
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
+
   const [services, setServices] = useState<Service[]>([]);
   const [newService, setNewService] = useState<NewService>(emptyNewService);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isMigrating, setIsMigrating] = useState(false);
+  const [migrationMessage, setMigrationMessage] = useState('');
 
   async function loadServices() {
     setIsLoading(true);
@@ -87,6 +98,31 @@ export default function AdminServicesPage() {
     await loadServices();
   }
 
+  async function handleNormalizePaths() {
+    setMigrationMessage('');
+    setIsMigrating(true);
+
+    const response = await fetch('/api/admin/services/migrate-paths', {
+      method: 'POST',
+    });
+    const payload = (await response.json()) as {
+      updated?: number;
+      skipped?: number;
+      message?: string;
+    };
+
+    if (response.ok) {
+      setMigrationMessage(
+        `Path migration complete. Updated: ${payload.updated ?? 0}, Skipped: ${payload.skipped ?? 0}.`,
+      );
+      await loadServices();
+    } else {
+      setMigrationMessage(payload.message ?? 'Path migration failed.');
+    }
+
+    setIsMigrating(false);
+  }
+
   return (
     <section className="space-y-8">
       <div>
@@ -94,6 +130,19 @@ export default function AdminServicesPage() {
         <p className="mt-2 text-sm text-zinc-400">
           Add and manage services that appear on the website.
         </p>
+        <div className="mt-4 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleNormalizePaths}
+            disabled={isMigrating}
+            className="rounded-md border border-zinc-700 px-3 py-2 text-sm text-zinc-200 disabled:opacity-70"
+          >
+            {isMigrating ? 'Normalizing Paths...' : 'Normalize Existing Paths'}
+          </button>
+          {migrationMessage ? (
+            <p className="text-sm text-zinc-300">{migrationMessage}</p>
+          ) : null}
+        </div>
       </div>
 
       <form onSubmit={handleCreate} className="grid gap-4 rounded-lg border border-zinc-800 bg-zinc-900 p-6 md:grid-cols-2">
@@ -106,14 +155,18 @@ export default function AdminServicesPage() {
         <Input
           label="Service Slug"
           value={newService.slug}
-          onChange={(value) => setNewService((prev) => ({ ...prev, slug: value }))}
+          onChange={(value) => {
+            const slug = toSlug(value);
+            setNewService((prev) => ({ ...prev, slug, path: slug ? `/${slug}` : '' }));
+          }}
           required
         />
         <Input
           label="Service Path (URL)"
           value={newService.path}
-          onChange={(value) => setNewService((prev) => ({ ...prev, path: value }))}
-          placeholder="/services/new-service"
+          onChange={() => undefined}
+          placeholder="/new-service"
+          readOnly
         />
         <Input
           label="Short Description"
@@ -235,7 +288,7 @@ export default function AdminServicesPage() {
                   <td className="px-4 py-3">
                     <div className="flex gap-3">
                       <Link
-                        href={service.path || `/services/${service.slug}`}
+                        href={service.path || `/${service.slug}`}
                         target="_blank"
                         className="text-zinc-200 underline"
                       >
@@ -272,12 +325,14 @@ function Input({
   onChange,
   required = false,
   placeholder,
+  readOnly = false,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   required?: boolean;
   placeholder?: string;
+  readOnly?: boolean;
 }) {
   return (
     <div className="space-y-1">
@@ -287,6 +342,7 @@ function Input({
         required={required}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
+        readOnly={readOnly}
         className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-white"
       />
     </div>

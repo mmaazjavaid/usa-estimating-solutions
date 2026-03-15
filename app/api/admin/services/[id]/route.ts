@@ -13,17 +13,22 @@ function cleanString(value: unknown) {
   return value.trim().replace(/^['"]|['"]$/g, '');
 }
 
-function normalizePath(value: unknown) {
-  const cleaned = cleanString(value);
-  if (typeof cleaned !== 'string') {
-    return cleaned;
-  }
-
-  if (!cleaned) {
+function normalizeSlug(value: unknown) {
+  if (typeof value !== 'string') {
     return '';
   }
 
-  return cleaned.startsWith('/') ? cleaned : `/${cleaned}`;
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function buildPathFromSlug(slug: string) {
+  return `/${slug}`;
 }
 
 export async function GET(_: Request, { params }: Params) {
@@ -69,8 +74,16 @@ export async function PATCH(request: Request, { params }: Params) {
     }
   }
 
-  if ('path' in updatePayload) {
-    updatePayload.path = normalizePath(updatePayload.path);
+  if ('slug' in updatePayload) {
+    const normalizedSlug = normalizeSlug(updatePayload.slug);
+    if (!normalizedSlug) {
+      return NextResponse.json({ message: 'Invalid service slug.' }, { status: 400 });
+    }
+
+    updatePayload.slug = normalizedSlug;
+    updatePayload.path = buildPathFromSlug(normalizedSlug);
+  } else if ('path' in updatePayload) {
+    delete updatePayload.path;
   }
   const { id } = await params;
 

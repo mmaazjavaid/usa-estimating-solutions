@@ -7,13 +7,17 @@ function cleanString(value: string | undefined) {
   return value?.trim().replace(/^['"]|['"]$/g, '') ?? '';
 }
 
-function normalizePath(value: string | undefined, fallbackSlug: string) {
-  const cleaned = cleanString(value);
-  if (!cleaned) {
-    return `/services/${fallbackSlug}`;
-  }
+function normalizeSlug(value: string | undefined) {
+  return cleanString(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
 
-  return cleaned.startsWith('/') ? cleaned : `/${cleaned}`;
+function buildPathFromSlug(slug: string) {
+  return `/${slug}`;
 }
 
 export async function GET() {
@@ -58,11 +62,15 @@ export async function POST(request: Request) {
   }
 
   await connectToDatabase();
-  const slug = cleanString(body.slug);
+  const slug = normalizeSlug(body.slug);
+  if (!slug) {
+    return NextResponse.json({ message: 'Invalid service slug.' }, { status: 400 });
+  }
+
   const data = await ServiceModel.create({
     name: cleanString(body.name),
     slug,
-    path: normalizePath(body.path, slug),
+    path: buildPathFromSlug(slug),
     shortDescription: cleanString(body.shortDescription),
     image: cleanString(body.image),
     imageAlt: cleanString(body.imageAlt),

@@ -44,8 +44,7 @@ export default async function SubServiceDetailPage({ params }: PageProps) {
   const parentService = subService.serviceId as
     | { name?: string; slug?: string; path?: string }
     | undefined;
-  const parentPath =
-    parentService?.path || `/services/${parentService?.slug || ''}`;
+  const parentPath = parentService?.path || `/${parentService?.slug || ''}`;
 
   return (
     <>

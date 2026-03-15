@@ -27,6 +27,36 @@ const glowColors = [
   'bg-[rgba(234,126,55,0.9)]',
 ];
 
+const iconSlugAliases: Record<string, string> = {
+  'residential-estimation': 'residential-estimating',
+};
+
+const builtInIconSlugs = new Set([
+  'cost-estimation',
+  'construction-estimation',
+  'construction-takeoff',
+  'residential-estimating',
+  'commercial-estimating',
+  'industrial-estimating',
+  'preliminary-estimating',
+  'cpm-scheduling',
+  '3d-visualization',
+  'interior-design-services',
+]);
+
+function getServiceIconSrc(service: HomeServiceItem) {
+  if (service.image?.trim()) {
+    return service.image.trim();
+  }
+
+  const resolvedSlug = iconSlugAliases[service.slug] ?? service.slug;
+  if (builtInIconSlugs.has(resolvedSlug)) {
+    return `/images/services-section/${resolvedSlug}.svg`;
+  }
+
+  return '/placeholder.svg';
+}
+
 export function ServicesSection({
   services = DEFAULT_SERVICES.map((service) => ({
     slug: service.slug,
@@ -98,7 +128,7 @@ export function ServicesSection({
                     title={service.title}
                     description={service.description}
                     href={service.href}
-                    iconSrc={service.image || `/images/services-section/${service.slug}.svg`}
+                    iconSrc={getServiceIconSrc(service)}
                     glowColorClassName={glowColors[index % 4]}
                     verticalOffset={index % 2 === 0 ? 'up' : 'down'}
                     imagePriority
