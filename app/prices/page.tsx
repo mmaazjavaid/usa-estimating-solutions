@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { ScrollToTop } from "@/components/layout/scroll-to-top"
 import { CTASection } from "@/components/home/cta-section"
+import { PricingPlans } from "@/components/prices/pricing-plans"
 import { getSeoMetadataByPath } from "@/lib/cms"
 
 const plans = [
@@ -11,17 +11,50 @@ const plans = [
     name: "Basic",
     description: "Single trade and\nlimited scope",
     price: "$ 200+",
+    details: {
+      bestFor: "Small projects / single trade",
+      tradeCoverage: "Single trade or limited scope",
+      bullets: ["Quantity Takeoffs", "Color-Coded Takeoffs"],
+      revisions: "1",
+      turnaround: "2-3 Business Days",
+    },
   },
   {
     name: "Standard",
     description: "Covers multiple trades\nand services.",
     price: "$ 400+",
     popular: true,
+    details: {
+      bestFor: "Medium projects / GC Bids",
+      tradeCoverage: "Multiple trades",
+      bullets: [
+        "Quantity Takeoffs",
+        "Labor & Material Pricing",
+        "Overhead & Profit (O&P) Optional",
+        "GC Summary & Markups",
+        "Color-Coded Takeoffs",
+      ],
+      revisions: "2",
+      turnaround: "3-4 Business Days",
+    },
   },
   {
     name: "Premium",
     description: "Covers all trades\nand services.",
     price: "$ 900+",
+    details: {
+      bestFor: "Large projects / full GC",
+      tradeCoverage: "Full GC - all trades",
+      bullets: [
+        "Quantity Takeoffs",
+        "Labor & Material Pricing",
+        "Overhead & Profit (O&P)",
+        "GC Summary & Markups",
+        "Color-Coded Takeoffs",
+      ],
+      revisions: "3",
+      turnaround: "3-5 Business Days",
+    },
   },
 ]
 
@@ -42,37 +75,7 @@ export default function PricesPage() {
             first-time clients and long-term partnerships.
           </p>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {plans.map((plan) => (
-              <div
-                key={plan.name}
-                className="rounded-[22px] border border-white/10 bg-[#1e1f24] p-6"
-              >
-                <div className="mb-5 flex items-start justify-between gap-3">
-                  <div>
-                    <h2 className="text-3xl font-bold">{plan.name}</h2>
-                    <p className="mt-2 whitespace-pre-line text-lg leading-snug text-[#d9d9d9]/85">
-                      {plan.description}
-                    </p>
-                  </div>
-                  {plan.popular ? (
-                    <span className="rounded-full border border-[#9d6b48] px-3 py-1 text-xs text-[#d2a376]">
-                      Popular
-                    </span>
-                  ) : null}
-                </div>
-
-                <p className="mb-6 text-4xl font-bold">{plan.price}</p>
-
-                <Link
-                  href="/contact"
-                  className="inline-flex w-full items-center justify-center rounded-full border border-white/35 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white hover:text-black"
-                >
-                  Know More
-                </Link>
-              </div>
-            ))}
-          </div>
+          <PricingPlans plans={plans} />
         </section>
         <CTASection variant="dark" />
       </main>
