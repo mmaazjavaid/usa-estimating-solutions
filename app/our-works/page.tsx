@@ -8,60 +8,70 @@ import { getSeoMetadataByPath } from "@/lib/cms"
 const workItems = [
   {
     image: "/images/our-works/work-01.png",
+    hoverImage: "/images/our-works/work-01-color.png",
     title: "Division-9 Finishes",
     previewFile: "/files/our-works/work-01.pdf",
     downloadFile: "/files/our-works/work-01.xlsx",
   },
   {
     image: "/images/our-works/work-02.png",
+    hoverImage: "/images/our-works/work-02-color.png",
     title: "Drywall Estimate",
     previewFile: "/files/our-works/work-02.pdf",
     downloadFile: "/files/our-works/work-02.xlsx",
   },
   {
     image: "/images/our-works/work-03.png",
+    hoverImage: "/images/our-works/work-03-color.png",
     title: "Telecommunication Estimate",
     previewFile: "/files/our-works/work-03.pdf",
     downloadFile: "/files/our-works/work-03.xlsx",
   },
   {
     image: "/images/our-works/work-04.png",
+    hoverImage: "/images/our-works/work-04-color.png",
     title: "MEP Estimate",
     previewFile: "/files/our-works/work-04.pdf",
     downloadFile: "/files/our-works/work-04.xlsx",
   },
   {
     image: "/images/our-works/work-05.png",
+    hoverImage: "/images/our-works/work-05-color.png",
     title: "HVAC Estimate",
     previewFile: "/files/our-works/work-05.pdf",
     downloadFile: "/files/our-works/work-05.xlsx",
   },
   {
     image: "/images/our-works/work-06.png",
+    hoverImage: "/images/our-works/work-06-color.png",
     title: "Glazing Estimate",
     previewFile: "/files/our-works/work-06.pdf",
     downloadFile: "/files/our-works/work-06.xlsx",
   },
   {
     image: "/images/our-works/work-07.png",
+    hoverImage: "/images/our-works/work-07-color.png",
     title: "GC Sample Estimate",
     previewFile: "/files/our-works/work-07.pdf",
     downloadFile: "/files/our-works/work-07.xlsx",
   },
   {
     image: "/images/our-works/work-08.png",
+    hoverImage: "/images/our-works/work-08-color.png",
     title: "Flooring Estimate",
     previewFile: "/files/our-works/work-08.pdf",
     downloadFile: "/files/our-works/work-08.xlsx",
   },
   {
     image: "/images/our-works/work-09.png",
+    hoverImage: "/images/our-works/work-09-color.png",
     title: "Electrical Sample Estimate",
     previewFile: "/files/our-works/work-09.pdf",
     downloadFile: "/files/our-works/work-09.xlsx",
   },
   {
     image: "/images/our-works/work-10.png",
+    hoverImage: "/images/our-works/work-10-color.png",
     title: "Lumber Estimate",
     previewFile: "/files/our-works/work-10.pdf",
     downloadFile: "/files/our-works/work-10.xlsx",
@@ -102,7 +112,13 @@ export default function OurWorksPage() {
                 <img
                   src={item.image}
                   alt={`Our work sample ${index + 1}`}
-                  className="h-64 w-full object-cover transition duration-300 md:h-72"
+                  className="h-64 w-full object-cover transition duration-300 group-hover:opacity-0 md:h-72"
+                  loading="lazy"
+                />
+                <img
+                  src={item.hoverImage}
+                  alt={`Our work sample ${index + 1} in color`}
+                  className="absolute inset-0 h-64 w-full object-cover opacity-0 transition duration-300 group-hover:opacity-100 md:h-72"
                   loading="lazy"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
