@@ -109,6 +109,7 @@ type OpenDropdown = 'services' | 'trades' | null;
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<OpenDropdown>(null);
+  const [openMobileSubmenu, setOpenMobileSubmenu] = useState<OpenDropdown>(null);
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement | null>(null);
 
@@ -135,6 +136,17 @@ export function Header() {
         ...group.items.map((item) => item.href),
       ]);
   }, []);
+  const servicesMobileLinks = useMemo(
+    () =>
+      servicesDropdownColumns
+        .flat()
+        .flatMap((group) => [group.title, ...group.items]),
+    [],
+  );
+  const tradesMobileLinks = useMemo(
+    () => tradesDropdownColumns.flat().map((group) => group.title),
+    [],
+  );
 
   const isServicesActive =
     pathname === '/services' ||
@@ -144,6 +156,7 @@ export function Header() {
   useEffect(() => {
     setOpenDropdown(null);
     setMobileMenuOpen(false);
+    setOpenMobileSubmenu(null);
   }, [pathname]);
 
   useEffect(() => {
@@ -177,7 +190,7 @@ export function Header() {
       ref={headerRef}
       className="fixed top-0 left-0 right-0 z-50 min-h-20 bg-white/5 backdrop-blur-[30px]"
     >
-      <div className="mx-auto grid h-20 max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-6">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
         <div className="flex items-center">
           <Link href="/" className="flex items-center gap-2">
             <USALogo width={136} height={53} />
@@ -259,7 +272,7 @@ export function Header() {
           )}
         </nav>
 
-        <div className="flex items-center justify-end gap-4">
+        <div className="ml-auto flex items-center justify-end gap-4 lg:ml-0">
           <Link
             href="/contact"
             className="hidden h-9 items-center rounded-full bg-white/10 px-5 text-[14px] font-medium tracking-[0.01em] text-white transition-colors hover:bg-white hover:text-black lg:inline-flex"
@@ -347,6 +360,75 @@ export function Header() {
                   : link.label === 'Trades'
                     ? isTradesActive
                     : isActiveHref(link.href);
+
+              if (link.label === 'Services' || link.label === 'Trades') {
+                const submenuKey =
+                  link.label === 'Services' ? 'services' : 'trades';
+                const submenuLinks =
+                  submenuKey === 'services'
+                    ? servicesMobileLinks
+                    : tradesMobileLinks;
+                const isSubmenuOpen = openMobileSubmenu === submenuKey;
+
+                return (
+                  <div key={link.label} className="flex flex-col gap-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <Link
+                        href={link.href}
+                        aria-current={isActive ? 'page' : undefined}
+                        className={cn(
+                          'flex items-center gap-0.5',
+                          mobileNavLinkClassName,
+                        )}
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {link.label}
+                      </Link>
+                      <button
+                        type="button"
+                        aria-label={`Toggle ${link.label} submenu`}
+                        aria-expanded={isSubmenuOpen}
+                        onClick={() =>
+                          setOpenMobileSubmenu((prev) =>
+                            prev === submenuKey ? null : submenuKey,
+                          )
+                        }
+                        className={cn(
+                          'rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground',
+                          isSubmenuOpen && 'text-[#FF771E]',
+                        )}
+                      >
+                        <ChevronDown
+                          className={cn(
+                            'h-4 w-4 transition-transform',
+                            isSubmenuOpen && 'rotate-180',
+                          )}
+                        />
+                      </button>
+                    </div>
+
+                    {isSubmenuOpen && (
+                      <div className="ml-3 flex flex-col gap-2 border-l border-white/10 pl-3">
+                        {submenuLinks.map((submenuLink) => (
+                          <Link
+                            key={submenuLink.href}
+                            href={submenuLink.href}
+                            aria-current={
+                              isActiveHref(submenuLink.href) ? 'page' : undefined
+                            }
+                            className={cn(
+                              'text-sm text-muted-foreground transition-colors hover:text-foreground aria-[current=page]:text-[#FF771E]',
+                            )}
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            {submenuLink.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
 
               return (
                 <Link

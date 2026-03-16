@@ -50,7 +50,7 @@ export function TradeCard({ label, description, glowColor }: TradeCardProps) {
           height: '120%',
           left: '-50%',
           bottom: '-20%',
-          background: `radial-gradient(circle at 20% 80%, ${glowColor} 0%, ${glowColor} 35%, color-mix(in srgb, ${glowColor}, transparent 0%) 60%, transparent 85)`,
+          background: `radial-gradient(circle at 30% 82%, ${glowColor} 0%, ${glowColor} 35%, transparent 82%)`,
           filter: 'blur(25px)',
           mixBlendMode: 'screen',
         }}

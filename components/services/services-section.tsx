@@ -81,7 +81,7 @@ export function ServicesSection({
             </p>
           </div>
 
-          <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
             {services.slice(0, 4).map((service, index) => (
               <AnimatedServiceCard
                 key={service.slug}
@@ -96,7 +96,7 @@ export function ServicesSection({
             ))}
           </div>
 
-          <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
             {services.slice(4, 8).map((service, index) => (
               <AnimatedServiceCard
                 key={service.slug}
@@ -111,7 +111,7 @@ export function ServicesSection({
           </div>
 
           <div className="flex justify-center">
-            <div className="grid w-full grid-cols-2 gap-4 md:w-1/2 md:gap-6">
+            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:w-1/2 md:gap-6">
               {services.slice(8, 10).map((service, index) => (
                 <AnimatedServiceCard
                   key={service.slug}
