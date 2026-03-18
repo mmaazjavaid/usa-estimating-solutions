@@ -5,9 +5,9 @@ import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ContactQuoteForm } from "@/components/contact/contact-quote-form"
 
 const contactGlowColors = {
-  primary: "rgba(48, 18, 82, 0.52)",
-  secondary: "rgba(36, 13, 66, 0.42)",
-  tertiary: "rgba(28, 10, 50, 0.34)",
+  primary: "rgba(75, 40, 130, 0.48)",
+  secondary: "rgba(60, 32, 105, 0.40)",
+  tertiary: "rgba(48, 25, 85, 0.34)",
 }
 
 function ContactCard({

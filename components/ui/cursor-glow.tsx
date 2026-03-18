@@ -9,9 +9,9 @@ export type CursorGlowColors = {
 };
 
 const DEFAULT_COLORS: CursorGlowColors = {
-  primary: 'rgba(236, 129, 58, 0.18)',
-  secondary: 'rgba(255, 149, 76, 0.14)',
-  tertiary: 'rgba(230, 96, 28, 0.12)',
+  primary: 'rgba(236, 129, 58, 0.32)',
+  secondary: 'rgba(255, 149, 76, 0.26)',
+  tertiary: 'rgba(230, 96, 28, 0.22)',
 };
 
 function withAlpha(rgba: string, alpha: number): string {
@@ -45,10 +45,10 @@ export function CursorGlow({ children, colors = DEFAULT_COLORS, className }: Cur
       <div className="pointer-events-none absolute inset-0 overflow-visible">
         <div
           ref={primaryRef}
-          className="absolute h-[370px] w-[370px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
+          className="absolute h-[460px] w-[460px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
           style={{
-            background: `radial-gradient(circle, ${colors.primary} 0%, ${withAlpha(colors.primary, 0.05)} 42%, transparent 72%)`,
-            filter: 'blur(30px) saturate(1.14)',
+            background: `radial-gradient(circle, ${colors.primary} 0%, ${withAlpha(colors.primary, 0.12)} 42%, transparent 72%)`,
+            filter: 'blur(32px) saturate(1.35)',
             mixBlendMode: 'screen',
             willChange:
               'left, top, width, height, opacity, transform, border-radius',
@@ -58,10 +58,10 @@ export function CursorGlow({ children, colors = DEFAULT_COLORS, className }: Cur
         />
         <div
           ref={secondaryRef}
-          className="absolute h-[285px] w-[285px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
+          className="absolute h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
           style={{
-            background: `radial-gradient(circle, ${colors.secondary} 0%, ${withAlpha(colors.secondary, 0.04)} 46%, transparent 74%)`,
-            filter: 'blur(24px)',
+            background: `radial-gradient(circle, ${colors.secondary} 0%, ${withAlpha(colors.secondary, 0.10)} 46%, transparent 74%)`,
+            filter: 'blur(26px) saturate(1.2)',
             mixBlendMode: 'screen',
             willChange:
               'left, top, width, height, opacity, transform, border-radius',
@@ -71,10 +71,10 @@ export function CursorGlow({ children, colors = DEFAULT_COLORS, className }: Cur
         />
         <div
           ref={tertiaryRef}
-          className="absolute h-[250px] w-[250px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
+          className="absolute h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
           style={{
-            background: `radial-gradient(circle, ${colors.tertiary} 0%, ${withAlpha(colors.tertiary, 0.03)} 50%, transparent 76%)`,
-            filter: 'blur(22px)',
+            background: `radial-gradient(circle, ${colors.tertiary} 0%, ${withAlpha(colors.tertiary, 0.08)} 50%, transparent 76%)`,
+            filter: 'blur(24px) saturate(1.15)',
             mixBlendMode: 'screen',
             willChange:
               'left, top, width, height, opacity, transform, border-radius',

@@ -4,9 +4,9 @@ import Link from "next/link"
 import { CursorGlow } from "@/components/ui/cursor-glow"
 
 const mepGlowColors = {
-  primary: "rgba(25, 75, 80, 0.65)",
-  secondary: "rgba(20, 60, 65, 0.52)",
-  tertiary: "rgba(15, 45, 50, 0.42)",
+  primary: "rgba(45, 130, 135, 0.48)",
+  secondary: "rgba(38, 110, 115, 0.40)",
+  tertiary: "rgba(30, 90, 95, 0.34)",
 }
 
 const whyMatters = [

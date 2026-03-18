@@ -6,9 +6,9 @@ import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
 
 const interiorDesignGlowColors = {
-  primary: "rgba(139, 28, 36, 0.52)",
-  secondary: "rgba(115, 22, 30, 0.44)",
-  tertiary: "rgba(90, 18, 25, 0.36)",
+  primary: "rgba(180, 55, 65, 0.48)",
+  secondary: "rgba(150, 45, 55, 0.40)",
+  tertiary: "rgba(120, 38, 48, 0.34)",
 }
 
 export function InteriorDesignServicesContent() {

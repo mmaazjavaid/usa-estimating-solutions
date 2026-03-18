@@ -6,9 +6,9 @@ import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
 
 const threeDGlowColors = {
-  primary: "rgba(70, 70, 35, 0.5)",
-  secondary: "rgba(58, 58, 30, 0.42)",
-  tertiary: "rgba(45, 45, 25, 0.36)",
+  primary: "rgba(120, 120, 60, 0.46)",
+  secondary: "rgba(100, 100, 50, 0.38)",
+  tertiary: "rgba(80, 80, 42, 0.32)",
 }
 
 export function ThreeDVisualizationContent() {

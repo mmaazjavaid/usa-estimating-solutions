@@ -6,9 +6,9 @@ import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
 
 const residentialGlowColors = {
-  primary: 'rgba(48, 18, 82, 0.52)',
-  secondary: 'rgba(36, 13, 66, 0.42)',
-  tertiary: 'rgba(28, 10, 50, 0.34)',
+  primary: 'rgba(88, 50, 140, 0.48)',
+  secondary: 'rgba(70, 40, 115, 0.40)',
+  tertiary: 'rgba(55, 32, 95, 0.34)',
 };
 
 export function ResidentialEstimationContent() {

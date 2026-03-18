@@ -68,9 +68,9 @@ export function ServicesSection({
           <CursorGlow
             className="mb-12 w-full"
             colors={{
-              primary: 'rgba(120, 30, 30, 0.38)',
-              secondary: 'rgba(100, 22, 22, 0.32)',
-              tertiary: 'rgba(80, 15, 15, 0.26)',
+              primary: 'rgba(160, 55, 55, 0.42)',
+              secondary: 'rgba(140, 45, 45, 0.36)',
+              tertiary: 'rgba(115, 35, 35, 0.30)',
             }}
           >
             <div className="text-center">
