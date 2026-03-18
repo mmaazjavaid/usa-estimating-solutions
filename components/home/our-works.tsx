@@ -36,7 +36,11 @@ export function OurWorks() {
         </h2>
         <p className="mx-auto mb-14 max-w-3xl text-center text-sm leading-relaxed text-muted-foreground">
           Our estimators provide accurate quantity takeoffs and cost estimates
-          across all CSI Division trades.
+          across all CSI Division trades, supporting commercial, residential,
+          and industrial projects. All estimates are prepared in strict
+          compliance with U.S. construction codes, industry standards, and
+          current pricing databases, ensuring your bids remain competitive,
+          accurate, and aligned with market conditions.
         </p>
 
         <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2">

@@ -104,10 +104,13 @@ export function ServicesSection({
           <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
             Services
           </h2>
-          <p className="max-w-3xl text-base leading-relaxed text-white/50">
-            We provide professional construction estimating and quantity takeoff
-            services designed to help you bid confidently, reduce overhead
-            costs, and plan projects more efficiently.
+          <p className="max-w-3xl text-base leading-relaxed text-white">
+            We provide professional construction estimating and quantity
+            takeoff services designed to help you bid confidently, reduce
+            overhead costs, and plan projects more efficiently. Using advanced
+            estimating software, real-time pricing databases, and industry
+            expertise, our estimators deliver accurate, reliable takeoffs
+            tailored to your project&apos;s scope, timeline, and budget.
           </p>
         </div>
 
