@@ -1,6 +1,15 @@
+"use client"
+
 import Link from "next/link"
 import { EstimateCard } from "@/components/common/estimate-card"
+import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
+
+const constructionGlowColors = {
+  primary: "rgba(48, 18, 82, 0.52)",
+  secondary: "rgba(36, 13, 66, 0.42)",
+  tertiary: "rgba(28, 10, 50, 0.34)",
+}
 
 const services = [
   {
@@ -74,7 +83,7 @@ export function ConstructionEstimationContent() {
             </p>
           </div>
 
-          <div className="w-full flex-shrink-0 lg:w-[500px] xl:w-[600px]">
+          <CursorGlow colors={constructionGlowColors} className="w-full flex-shrink-0 lg:w-[500px] xl:w-[600px]">
             <svg
               viewBox="0 0 600 400"
               fill="none"
@@ -128,10 +137,10 @@ export function ConstructionEstimationContent() {
                 <path d="M505 145 Q530 165 540 205 Q545 235 530 265" />
               </g>
             </svg>
-          </div>
+          </CursorGlow>
         </div>
 
-        <div className="mt-20">
+        <CursorGlow colors={constructionGlowColors} className="mt-20 w-full">
           <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">
             What We Offer
           </h2>
@@ -144,7 +153,7 @@ export function ConstructionEstimationContent() {
               </div>
             ))}
           </div>
-        </div>
+        </CursorGlow>
       </section>
 
       <section className="px-6 py-16 lg:px-12">

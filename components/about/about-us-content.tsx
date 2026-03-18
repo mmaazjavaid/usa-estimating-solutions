@@ -2,6 +2,13 @@
 
 import { useState } from "react"
 import { ChevronRight, ChevronUp } from "lucide-react"
+import { CursorGlow } from "@/components/ui/cursor-glow"
+
+const aboutUsGlowColors = {
+  primary: "rgba(70, 70, 35, 0.5)",
+  secondary: "rgba(58, 58, 30, 0.42)",
+  tertiary: "rgba(45, 45, 25, 0.36)",
+}
 
 export function AboutUsContent() {
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
@@ -71,6 +78,7 @@ export function AboutUsContent() {
 
   return (
     <section className="min-h-screen bg-black text-white">
+      <CursorGlow colors={aboutUsGlowColors} className="h-full w-full">
       <section className="px-6 pb-16 pt-20 md:px-12 lg:px-20">
         <h1 className="mb-6 text-center text-4xl font-bold md:text-5xl">About Us</h1>
 
@@ -203,6 +211,7 @@ export function AboutUsContent() {
           </div>
         </div>
       </section>
+      </CursorGlow>
     </section>
   )
 }

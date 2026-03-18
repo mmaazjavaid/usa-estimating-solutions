@@ -1,6 +1,15 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
+
+const cpmGlowColors = {
+  primary: "rgba(120, 30, 30, 0.38)",
+  secondary: "rgba(100, 22, 22, 0.32)",
+  tertiary: "rgba(80, 15, 15, 0.26)",
+}
 
 export function CPMSchedulingContent() {
   const industries = [
@@ -63,7 +72,7 @@ export function CPMSchedulingContent() {
             </p>
           </div>
 
-          <div className="flex justify-center lg:justify-end">
+          <CursorGlow colors={cpmGlowColors} className="flex justify-center lg:justify-end">
             <Image
               src="/images/cpm-scheduling-hero.png"
               alt="CPM scheduling chart illustration"
@@ -72,30 +81,31 @@ export function CPMSchedulingContent() {
               className="h-auto w-full max-w-[700px]"
               priority
             />
+          </CursorGlow>
+        </div>
+      </section>
+
+      <CursorGlow colors={cpmGlowColors} className="w-full">
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">Industries We Serve</h2>
+
+          <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-16 gap-y-6">
+            {industries.map((industry) => (
+              <div key={`${industry.line1}-${industry.line2}`} className="text-center">
+                <span className="text-sm text-[#d9d9d9]/80 md:text-base">
+                  {industry.line1}
+                  <br />
+                  {industry.line2}
+                </span>
+              </div>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">Industries We Serve</h2>
-
-        <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-16 gap-y-6">
-          {industries.map((industry) => (
-            <div key={`${industry.line1}-${industry.line2}`} className="text-center">
-              <span className="text-sm text-[#d9d9d9]/80 md:text-base">
-                {industry.line1}
-                <br />
-                {industry.line2}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl">
-          Critical Path Method (CPM) Scheduling
-        </h2>
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl">
+            Critical Path Method (CPM) Scheduling
+          </h2>
 
         <p className="mx-auto mb-16 max-w-4xl text-center text-sm text-[#d9d9d9]/70 md:text-base">
           CPM scheduling identifies the most important tasks and milestones, helping
@@ -209,6 +219,7 @@ export function CPMSchedulingContent() {
           ))}
         </div>
       </section>
+      </CursorGlow>
 
       <section className="px-6 md:px-12 lg:px-20">
         <ServiceTradesSection />

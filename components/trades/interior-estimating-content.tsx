@@ -1,4 +1,13 @@
+"use client"
+
 import Link from "next/link"
+import { CursorGlow } from "@/components/ui/cursor-glow"
+
+const interiorRedGlowColors = {
+  primary: "rgba(120, 30, 30, 0.38)",
+  secondary: "rgba(100, 22, 22, 0.32)",
+  tertiary: "rgba(80, 15, 15, 0.26)",
+}
 
 const whyMatters = [
   "Supports coordination between major\nbuilding systems",
@@ -60,67 +69,69 @@ export function InteriorEstimatingContent() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <h2 className="mb-8 text-xl font-bold md:text-2xl">Why Interior Estimates Matter:</h2>
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3 md:gap-10">
-          {whyMatters.map((item) => (
-            <p
-              key={item}
-              className="whitespace-pre-line text-center text-sm text-[#d9d9d9]/80 md:text-base"
-            >
-              {item}
-            </p>
-          ))}
-        </div>
-      </section>
+      <CursorGlow colors={interiorRedGlowColors} className="w-full">
+        <section className="mx-auto max-w-7xl px-6 py-16">
+          <h2 className="mb-8 text-xl font-bold md:text-2xl">Why Interior Estimates Matter:</h2>
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3 md:gap-10">
+            {whyMatters.map((item) => (
+              <p
+                key={item}
+                className="whitespace-pre-line text-center text-sm text-[#d9d9d9]/80 md:text-base"
+              >
+                {item}
+              </p>
+            ))}
+          </div>
+        </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <h2 className="mb-6 text-center text-3xl font-bold md:text-4xl">
-          Types of Interior Estimates
-        </h2>
-        <p className="mx-auto mb-12 max-w-5xl text-center text-sm leading-relaxed text-[#d9d9d9]/75 md:text-base">
-          Interior estimating ensures that every finish, fit-out, and detail is
-          accounted for. The following categories help plan costs and streamline
-          interior execution.
-        </p>
+        <section className="mx-auto max-w-7xl px-6 py-16">
+          <h2 className="mb-6 text-center text-3xl font-bold md:text-4xl">
+            Types of Interior Estimates
+          </h2>
+          <p className="mx-auto mb-12 max-w-5xl text-center text-sm leading-relaxed text-[#d9d9d9]/75 md:text-base">
+            Interior estimating ensures that every finish, fit-out, and detail is
+            accounted for. The following categories help plan costs and streamline
+            interior execution.
+          </p>
 
-        <div className="mx-auto max-w-5xl space-y-8">
-          {interiorTypes.map((item, index) => (
-            <div
-              key={item.label}
-              className={`flex flex-col items-center gap-8 ${
-                index % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"
-              }`}
-            >
-              {index % 2 === 0 ? (
-                <>
-                  <div className="h-40 w-full flex-shrink-0 rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-6 py-14 text-center text-4xl font-semibold md:w-64">
-                    {item.label}
-                  </div>
-                  <div className="flex-1 md:text-left">
-                    <h3 className="mb-2 text-base font-bold">{item.title}</h3>
-                    <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
-                      {item.description}
-                    </p>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="flex-1 md:text-right">
-                    <h3 className="mb-2 text-base font-bold">{item.title}</h3>
-                    <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
-                      {item.description}
-                    </p>
-                  </div>
-                  <div className="h-40 w-full flex-shrink-0 rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-6 py-14 text-center text-4xl font-semibold md:w-64">
-                    {item.label}
-                  </div>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
+          <div className="mx-auto max-w-5xl space-y-8">
+            {interiorTypes.map((item, index) => (
+              <div
+                key={item.label}
+                className={`flex flex-col items-center gap-8 ${
+                  index % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"
+                }`}
+              >
+                {index % 2 === 0 ? (
+                  <>
+                    <div className="h-40 w-full flex-shrink-0 rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-6 py-14 text-center text-4xl font-semibold md:w-64">
+                      {item.label}
+                    </div>
+                    <div className="flex-1 md:text-left">
+                      <h3 className="mb-2 text-base font-bold">{item.title}</h3>
+                      <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
+                        {item.description}
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex-1 md:text-right">
+                      <h3 className="mb-2 text-base font-bold">{item.title}</h3>
+                      <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
+                        {item.description}
+                      </p>
+                    </div>
+                    <div className="h-40 w-full flex-shrink-0 rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-6 py-14 text-center text-4xl font-semibold md:w-64">
+                      {item.label}
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      </CursorGlow>
     </section>
   )
 }

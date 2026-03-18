@@ -1,6 +1,9 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { EstimateCard } from "@/components/common/estimate-card"
+import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
 
 export function CommercialEstimatingContent() {
@@ -88,7 +91,7 @@ export function CommercialEstimatingContent() {
             </p>
           </div>
 
-          <div className="flex justify-center lg:justify-end">
+          <CursorGlow className="flex justify-center lg:justify-end">
             <Image
               src="/images/commercial-estimating-hero.png"
               alt="Commercial estimating skyline illustration"
@@ -97,63 +100,65 @@ export function CommercialEstimatingContent() {
               className="w-full max-w-[700px] h-auto"
               priority
             />
+          </CursorGlow>
+        </div>
+      </section>
+
+      <CursorGlow className="w-full">
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">
+            Commercial Projects We Estimate
+          </h2>
+
+          <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-16 gap-y-6">
+            {projects.map((project) => (
+              <div key={`${project.line1}-${project.line2}`} className="text-center">
+                <span className="text-sm text-[#d9d9d9]/80 md:text-base">
+                  {project.line1}
+                  <br />
+                  {project.line2}
+                </span>
+              </div>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">
-          Commercial Projects We Estimate
-        </h2>
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl">
+            Core Commercial Estimating Services
+          </h2>
 
-        <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-16 gap-y-6">
-          {projects.map((project) => (
-            <div key={`${project.line1}-${project.line2}`} className="text-center">
-              <span className="text-sm text-[#d9d9d9]/80 md:text-base">
-                {project.line1}
-                <br />
-                {project.line2}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+          <p className="mx-auto mb-16 max-w-4xl text-center text-sm text-[#d9d9d9]/70 md:text-base">
+            Our commercial estimating services support developers, contractors,
+            and consultants with dependable scope-based quantities, labor and
+            material pricing, and strategic bid support tailored to each project.
+          </p>
 
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl">
-          Core Commercial Estimating Services
-        </h2>
-
-        <p className="mx-auto mb-16 max-w-4xl text-center text-sm text-[#d9d9d9]/70 md:text-base">
-          Our commercial estimating services support developers, contractors,
-          and consultants with dependable scope-based quantities, labor and
-          material pricing, and strategic bid support tailored to each project.
-        </p>
-
-        <div className="mx-auto max-w-5xl">
-          {coreServices.map((row, rowIndex) => (
-            <div
-              key={`row-${rowIndex}`}
-              className={`grid grid-cols-1 md:grid-cols-3 ${
-                rowIndex === 0 ? "border-b border-[#d9d9d9]/20" : ""
-              }`}
-            >
-              {row.map((service, colIndex) => (
-                <div
-                  key={service}
-                  className={`py-16 px-6 text-center ${
-                    colIndex < row.length - 1 ? "md:border-r border-[#d9d9d9]/20" : ""
-                  }`}
-                >
-                  <span className="whitespace-pre-line text-sm text-[#d9d9d9]/90 md:text-base">
-                    {service}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </section>
+          <div className="mx-auto max-w-5xl">
+            {coreServices.map((row, rowIndex) => (
+              <div
+                key={`row-${rowIndex}`}
+                className={`grid grid-cols-1 md:grid-cols-3 ${
+                  rowIndex === 0 ? "border-b border-[#d9d9d9]/20" : ""
+                }`}
+              >
+                {row.map((service, colIndex) => (
+                  <div
+                    key={service}
+                    className={`py-16 px-6 text-center ${
+                      colIndex < row.length - 1 ? "md:border-r border-[#d9d9d9]/20" : ""
+                    }`}
+                  >
+                    <span className="whitespace-pre-line text-sm text-[#d9d9d9]/90 md:text-base">
+                      {service}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
+      </CursorGlow>
 
       <section className="px-6 py-20 md:px-12 lg:px-20">
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-2">

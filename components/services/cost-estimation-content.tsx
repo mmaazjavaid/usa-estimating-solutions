@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { EstimateCard } from '@/components/common/estimate-card';
+import { CursorGlow } from '@/components/ui/cursor-glow';
 import { StepsRow } from '@/components/common/steps-row';
 import { ServiceTradesSection } from '@/components/services/service-trades-section';
 
@@ -102,7 +103,7 @@ export function CostEstimationContent() {
           </div>
 
           {/* Floating Cards Visualization Section (The "First Image" look) */}
-          <div className="relative min-h-[620px] w-full">
+          <CursorGlow className="relative min-h-[620px] w-full">
             {floatingCards.map((card, index) => (
               <motion.div
                 key={card.title}
@@ -126,7 +127,7 @@ export function CostEstimationContent() {
 
             {/* Background ambient glow to tie the cards together */}
             <div className="absolute right-0 top-1/2 -translate-y-1/2 -z-10 h-[400px] w-[400px] bg-[#C4956A]/10 blur-[120px] rounded-full" />
-          </div>
+          </CursorGlow>
         </div>
 
         {/* ... (Keep the rest of your Cost Estimation Services and Process sections) */}
@@ -150,13 +151,13 @@ export function CostEstimationContent() {
           </div>
         </div>
 
-        <div className="mb-20">
+        <CursorGlow className="mb-20 w-full">
           <StepsRow
             heading="How Our Estimating Process Works"
             steps={processSteps}
             variant="dark"
           />
-        </div>
+        </CursorGlow>
 
         <ServiceTradesSection />
       </div>

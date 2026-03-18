@@ -1,6 +1,15 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
+
+const interiorDesignGlowColors = {
+  primary: "rgba(139, 28, 36, 0.52)",
+  secondary: "rgba(115, 22, 30, 0.44)",
+  tertiary: "rgba(90, 18, 25, 0.36)",
+}
 
 export function InteriorDesignServicesContent() {
   const supporters = [
@@ -53,7 +62,7 @@ export function InteriorDesignServicesContent() {
             </p>
           </div>
 
-          <div className="flex justify-center lg:justify-end">
+          <CursorGlow className="flex justify-center lg:justify-end" colors={interiorDesignGlowColors}>
             <Image
               src="/images/interior-design-services-hero.png"
               alt="Interior design staircase illustration"
@@ -62,61 +71,63 @@ export function InteriorDesignServicesContent() {
               className="h-auto w-full max-w-[700px]"
               priority
             />
+          </CursorGlow>
+        </div>
+      </section>
+
+      <CursorGlow colors={interiorDesignGlowColors} className="w-full">
+        <section className="px-6 py-16 md:px-12 lg:px-20">
+          <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">Who We Support</h2>
+
+          <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-12 gap-y-4">
+            {supporters.map((supporter) => (
+              <span key={supporter} className="text-sm text-[#d9d9d9]/80 md:text-base">
+                {supporter}
+              </span>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-6 py-16 md:px-12 lg:px-20">
-        <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">Who We Support</h2>
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl">
+            Core Interior Design Services
+          </h2>
 
-        <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-12 gap-y-4">
-          {supporters.map((supporter) => (
-            <span key={supporter} className="text-sm text-[#d9d9d9]/80 md:text-base">
-              {supporter}
-            </span>
-          ))}
-        </div>
-      </section>
+          <p className="mx-auto mb-16 max-w-5xl text-center text-sm leading-relaxed text-[#d9d9d9]/70 md:text-base">
+            Our interior design and space planning services include developing
+            efficient floor plans, circulation strategies, and interior layouts
+            that make the best use of available space. We work closely with
+            project teams to ensure finishes, fixtures, and interior components
+            are aligned with construction requirements, helping reduce conflicts,
+            improve coordination, and support a smoother transition from design
+            to build.
+          </p>
 
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl">
-          Core Interior Design Services
-        </h2>
-
-        <p className="mx-auto mb-16 max-w-5xl text-center text-sm leading-relaxed text-[#d9d9d9]/70 md:text-base">
-          Our interior design and space planning services include developing
-          efficient floor plans, circulation strategies, and interior layouts
-          that make the best use of available space. We work closely with
-          project teams to ensure finishes, fixtures, and interior components
-          are aligned with construction requirements, helping reduce conflicts,
-          improve coordination, and support a smoother transition from design
-          to build.
-        </p>
-
-        <div className="mx-auto max-w-4xl">
-          {coreServices.map((row, rowIndex) => (
-            <div
-              key={`core-${rowIndex}`}
-              className={`grid grid-cols-1 md:grid-cols-3 ${
-                rowIndex === 0 ? "border-b border-[#d9d9d9]/20" : ""
-              }`}
-            >
-              {row.map((service, colIndex) => (
-                <div
-                  key={service}
-                  className={`py-16 px-6 text-center ${
-                    colIndex < row.length - 1 ? "md:border-r border-[#d9d9d9]/20" : ""
-                  }`}
-                >
-                  <span className="whitespace-pre-line text-sm text-[#d9d9d9]/90 md:text-base">
-                    {service}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </section>
+          <div className="mx-auto max-w-4xl">
+            {coreServices.map((row, rowIndex) => (
+              <div
+                key={`core-${rowIndex}`}
+                className={`grid grid-cols-1 md:grid-cols-3 ${
+                  rowIndex === 0 ? "border-b border-[#d9d9d9]/20" : ""
+                }`}
+              >
+                {row.map((service, colIndex) => (
+                  <div
+                    key={service}
+                    className={`py-16 px-6 text-center ${
+                      colIndex < row.length - 1 ? "md:border-r border-[#d9d9d9]/20" : ""
+                    }`}
+                  >
+                    <span className="whitespace-pre-line text-sm text-[#d9d9d9]/90 md:text-base">
+                      {service}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
+      </CursorGlow>
 
       <section className="px-6 md:px-12 lg:px-20">
         <ServiceTradesSection />

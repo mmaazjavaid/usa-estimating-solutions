@@ -1,6 +1,15 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
+
+const threeDGlowColors = {
+  primary: "rgba(70, 70, 35, 0.5)",
+  secondary: "rgba(58, 58, 30, 0.42)",
+  tertiary: "rgba(45, 45, 25, 0.36)",
+}
 
 export function ThreeDVisualizationContent() {
   const benefits = [
@@ -52,7 +61,7 @@ export function ThreeDVisualizationContent() {
             </p>
           </div>
 
-          <div className="flex justify-center lg:w-1/2">
+          <CursorGlow colors={threeDGlowColors} className="flex justify-center lg:w-1/2">
             <Image
               src="/images/3d-visualization-hero.png"
               alt="3D visualization cube illustration"
@@ -61,66 +70,68 @@ export function ThreeDVisualizationContent() {
               className="h-auto w-full max-w-[420px]"
               priority
             />
+          </CursorGlow>
+        </div>
+      </section>
+
+      <CursorGlow colors={threeDGlowColors} className="w-full">
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">
+            Why Choose Our 3D Services:
+          </h2>
+
+          <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-16 gap-y-8">
+            {benefits.map((benefit) => (
+              <div key={benefit.line1} className="text-center">
+                <span className="text-sm text-[#d9d9d9]/80 md:text-base">
+                  {benefit.line1}
+                  <br />
+                  {benefit.line2}
+                </span>
+              </div>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">
-          Why Choose Our 3D Services:
-        </h2>
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl">
+            Core 3D Visualization Services
+          </h2>
 
-        <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-16 gap-y-8">
-          {benefits.map((benefit) => (
-            <div key={benefit.line1} className="text-center">
-              <span className="text-sm text-[#d9d9d9]/80 md:text-base">
-                {benefit.line1}
-                <br />
-                {benefit.line2}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+          <p className="mx-auto mb-16 max-w-4xl text-center text-sm text-[#d9d9d9]/70 md:text-base">
+            Our 3D modeling and visualization services convert 2D plans, sketches,
+            and specifications into detailed three-dimensional models and
+            high-quality visual representations. By creating accurate digital
+            models, we help project teams explore design options, identify
+            potential issues, and communicate ideas clearly to clients,
+            stakeholders, and approval authorities.
+          </p>
 
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl">
-          Core 3D Visualization Services
-        </h2>
-
-        <p className="mx-auto mb-16 max-w-4xl text-center text-sm text-[#d9d9d9]/70 md:text-base">
-          Our 3D modeling and visualization services convert 2D plans, sketches,
-          and specifications into detailed three-dimensional models and
-          high-quality visual representations. By creating accurate digital
-          models, we help project teams explore design options, identify
-          potential issues, and communicate ideas clearly to clients,
-          stakeholders, and approval authorities.
-        </p>
-
-        <div className="mx-auto max-w-5xl">
-          {coreServices.map((row, rowIndex) => (
-            <div
-              key={`row-${rowIndex}`}
-              className={`grid grid-cols-1 md:grid-cols-3 ${
-                rowIndex === 0 ? "border-b border-[#d9d9d9]/20" : ""
-              }`}
-            >
-              {row.map((service, colIndex) => (
-                <div
-                  key={service}
-                  className={`py-16 px-6 text-center ${
-                    colIndex < row.length - 1 ? "md:border-r border-[#d9d9d9]/20" : ""
-                  }`}
-                >
-                  <span className="whitespace-pre-line text-sm text-[#d9d9d9]/90 md:text-base">
-                    {service}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </section>
+          <div className="mx-auto max-w-5xl">
+            {coreServices.map((row, rowIndex) => (
+              <div
+                key={`row-${rowIndex}`}
+                className={`grid grid-cols-1 md:grid-cols-3 ${
+                  rowIndex === 0 ? "border-b border-[#d9d9d9]/20" : ""
+                }`}
+              >
+                {row.map((service, colIndex) => (
+                  <div
+                    key={service}
+                    className={`py-16 px-6 text-center ${
+                      colIndex < row.length - 1 ? "md:border-r border-[#d9d9d9]/20" : ""
+                    }`}
+                  >
+                    <span className="whitespace-pre-line text-sm text-[#d9d9d9]/90 md:text-base">
+                      {service}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
+      </CursorGlow>
 
       <section className="px-6 md:px-12 lg:px-20">
         <ServiceTradesSection />

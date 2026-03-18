@@ -1,6 +1,15 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
+
+const preliminaryGlowColors = {
+  primary: "rgba(25, 75, 80, 0.65)",
+  secondary: "rgba(20, 60, 65, 0.52)",
+  tertiary: "rgba(15, 45, 50, 0.42)",
+}
 
 export function PreliminaryEstimatingContent() {
   const whyMatters = [
@@ -65,7 +74,10 @@ export function PreliminaryEstimatingContent() {
             </p>
           </div>
 
-          <div className="flex-shrink-0">
+          <CursorGlow
+            colors={preliminaryGlowColors}
+            className="flex-shrink-0"
+          >
             <Image
               src="/images/preliminary-estimating-hero.png"
               alt="Preliminary estimating illustration"
@@ -74,10 +86,11 @@ export function PreliminaryEstimatingContent() {
               className="h-auto w-full max-w-[500px]"
               priority
             />
-          </div>
+          </CursorGlow>
         </div>
       </section>
 
+      <CursorGlow colors={preliminaryGlowColors} className="w-full">
       <section className="px-6 py-20 md:px-12 lg:px-20">
         <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">
           Why Preliminary Estimates Matter:
@@ -138,6 +151,7 @@ export function PreliminaryEstimatingContent() {
           ))}
         </div>
       </section>
+      </CursorGlow>
 
       <section className="px-6 md:px-12 lg:px-20">
         <ServiceTradesSection />

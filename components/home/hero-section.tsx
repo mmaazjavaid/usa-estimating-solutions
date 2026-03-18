@@ -29,12 +29,14 @@ export function HeroSection() {
             detailed material takeoff solutions.
           </p>
           <div className="flex flex-wrap items-center gap-4">
-            <Link
-              href="/services"
-              className="rounded-full border border-foreground/30 px-6 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground hover:text-background"
-            >
-              Explore Services
-            </Link>
+            <CursorGlow className="inline-block">
+              <Link
+                href="/services"
+                className="rounded-full border border-foreground/30 px-6 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground hover:text-background"
+              >
+                Explore Services
+              </Link>
+            </CursorGlow>
             <Link
               href="/contact"
               className="rounded-full border border-foreground/30 px-6 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground hover:text-background"

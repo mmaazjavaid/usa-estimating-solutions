@@ -12,12 +12,12 @@ function getBlockMetrics(row: number, col: number, blockIndex: number) {
   const phaseC = Math.sin((blockIndex + 1) * 0.45);
 
   return {
-    primaryW: 328 + phaseA * 32,
-    primaryH: 312 + phaseB * 30,
-    secondaryW: 252 + phaseB * 26,
-    secondaryH: 236 + phaseC * 24,
-    tertiaryW: 206 + phaseC * 20,
-    tertiaryH: 192 + phaseA * 18,
+    primaryW: 380 + phaseA * 38,
+    primaryH: 365 + phaseB * 36,
+    secondaryW: 295 + phaseB * 30,
+    secondaryH: 278 + phaseC * 28,
+    tertiaryW: 245 + phaseC * 24,
+    tertiaryH: 228 + phaseA * 22,
     rotationPrimary: phaseA * 14,
     rotationSecondary: phaseB * -12,
     rotationTertiary: phaseC * 10,

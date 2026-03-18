@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Header } from "@/components/layout/header"
+import { OurWorksHero } from "@/components/home/our-works-hero"
 import { Footer } from "@/components/layout/footer"
 import { ScrollToTop } from "@/components/layout/scroll-to-top"
 import { CTASection } from "@/components/home/cta-section"
@@ -88,20 +89,7 @@ export default function OurWorksPage() {
       <Header />
       <main className="bg-black pt-20 text-white">
         <section className="mx-auto max-w-6xl px-6 py-14 md:py-20">
-          <div className="mx-auto mb-12 max-w-4xl text-center">
-            <h1 className="text-3xl font-bold md:text-4xl">Our Works</h1>
-            <h2 className="mt-4 text-lg font-semibold text-gray-200 md:text-2xl">
-              Delivering Reliable Estimates Across Every Project Type
-            </h2>
-            <p className="mt-5 text-sm leading-relaxed text-gray-400">
-              From residential homes to large commercial and industrial developments, we
-              provide comprehensive estimating services that cover every phase and trade.
-              Our work ensures clients have the information they need to plan budgets,
-              manage resources, and make confident decisions. By combining expert knowledge,
-              industry-standard tools, and clear reporting, we help projects stay on track,
-              on schedule, and aligned with financial goals.
-            </p>
-          </div>
+          <OurWorksHero />
 
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
             {workItems.map((item, index) => (

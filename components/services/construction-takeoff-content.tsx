@@ -1,6 +1,15 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
+import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
+
+const takeoffGlowColors = {
+  primary: "rgba(25, 75, 80, 0.65)",
+  secondary: "rgba(20, 60, 65, 0.52)",
+  tertiary: "rgba(15, 45, 50, 0.42)",
+}
 
 export function ConstructionTakeoffContent() {
   const clients = [
@@ -58,7 +67,7 @@ export function ConstructionTakeoffContent() {
             </p>
           </div>
 
-          <div className="flex flex-1 justify-center lg:justify-end">
+          <CursorGlow colors={takeoffGlowColors} className="flex flex-1 justify-center lg:justify-end">
             <Image
               src="/images/construction-takeoff-chart.png"
               alt="Construction takeoff chart illustration"
@@ -67,53 +76,55 @@ export function ConstructionTakeoffContent() {
               className="h-auto w-full max-w-2xl"
               priority
             />
+          </CursorGlow>
+        </div>
+      </section>
+
+      <CursorGlow colors={takeoffGlowColors} className="w-full">
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">Our Clients Are</h2>
+          <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-12 gap-y-6">
+            {clients.map((client) => (
+              <span key={client} className="text-base text-[#d9d9d9]/80 md:text-lg">
+                {client}
+              </span>
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">Our Clients Are</h2>
-        <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-12 gap-y-6">
-          {clients.map((client) => (
-            <span key={client} className="text-base text-[#d9d9d9]/80 md:text-lg">
-              {client}
-            </span>
-          ))}
-        </div>
-      </section>
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl">Quantity Take-off Services</h2>
 
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl">Quantity Take-off Services</h2>
+          <div className="mx-auto max-w-5xl">
+            <div className="grid grid-cols-1 divide-y divide-[#d9d9d9]/20 md:grid-cols-4 md:divide-x md:divide-y-0">
+              {[0, 1, 2, 3].map((colIndex) => (
+                <div key={colIndex} className="divide-y divide-[#d9d9d9]/20">
+                  {takeoffServices.map((row, rowIndex) => (
+                    <div key={`${rowIndex}-${colIndex}`} className="px-4 py-8 text-center">
+                      <span className="text-sm text-[#d9d9d9]/90 md:text-base">{row[colIndex]}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-        <div className="mx-auto max-w-5xl">
-          <div className="grid grid-cols-1 divide-y divide-[#d9d9d9]/20 md:grid-cols-4 md:divide-x md:divide-y-0">
-            {[0, 1, 2, 3].map((colIndex) => (
-              <div key={colIndex} className="divide-y divide-[#d9d9d9]/20">
-                {takeoffServices.map((row, rowIndex) => (
-                  <div key={`${rowIndex}-${colIndex}`} className="px-4 py-8 text-center">
-                    <span className="text-sm text-[#d9d9d9]/90 md:text-base">{row[colIndex]}</span>
-                  </div>
-                ))}
+        <section className="px-6 py-16 md:px-12 lg:px-20">
+          <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:gap-0">
+            {features.map((feature, index) => (
+              <div key={feature} className="flex items-center">
+                <span className="whitespace-nowrap text-sm text-[#d9d9d9]/80 md:text-base">
+                  {feature}
+                </span>
+                {index < features.length - 1 ? (
+                  <div className="mx-4 hidden h-px w-32 bg-[#d9d9d9]/30 lg:w-48 md:block" />
+                ) : null}
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="px-6 py-16 md:px-12 lg:px-20">
-        <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:gap-0">
-          {features.map((feature, index) => (
-            <div key={feature} className="flex items-center">
-              <span className="whitespace-nowrap text-sm text-[#d9d9d9]/80 md:text-base">
-                {feature}
-              </span>
-              {index < features.length - 1 ? (
-                <div className="mx-4 hidden h-px w-32 bg-[#d9d9d9]/30 lg:w-48 md:block" />
-              ) : null}
-            </div>
-          ))}
-        </div>
-      </section>
+        </section>
+      </CursorGlow>
 
       <section className="px-6 md:px-12 lg:px-20">
         <ServiceTradesSection />

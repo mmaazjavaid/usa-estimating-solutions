@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { ScrollToTop } from "@/components/layout/scroll-to-top"
 import { CTASection } from "@/components/home/cta-section"
-import { PricingPlans } from "@/components/prices/pricing-plans"
+import { PricesHero } from "@/components/prices/prices-hero"
 import { getSeoMetadataByPath } from "@/lib/cms"
 
 const plans = [
@@ -68,14 +68,7 @@ export default function PricesPage() {
       <Header />
       <main className="bg-black pt-20 text-white">
         <section className="mx-auto max-w-7xl px-6 py-16 md:py-20">
-          <h1 className="mb-5 text-center text-4xl font-bold md:text-5xl">Prices</h1>
-          <p className="mx-auto mb-14 max-w-5xl text-center text-xl leading-relaxed text-[#d9d9d9]/85">
-            Find yourself the best plan. Pay only for what you need, with flexible
-            estimating options for every project stage. Discounts available for
-            first-time clients and long-term partnerships.
-          </p>
-
-          <PricingPlans plans={plans} />
+          <PricesHero plans={plans} />
         </section>
         <CTASection variant="dark" />
       </main>

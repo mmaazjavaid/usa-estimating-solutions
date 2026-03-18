@@ -1,4 +1,7 @@
+"use client"
+
 import Link from "next/link"
+import { CursorGlow } from "@/components/ui/cursor-glow"
 
 const whyMatters = [
   "Forms the cost backbone of the\nproject",
@@ -62,67 +65,69 @@ export function StructuralEstimatingContent() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <h2 className="mb-8 text-xl font-bold md:text-2xl">Why Structural Estimates Matter:</h2>
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3 md:gap-10">
-          {whyMatters.map((item) => (
-            <p
-              key={item}
-              className="whitespace-pre-line text-center text-sm text-[#d9d9d9]/80 md:text-base"
-            >
-              {item}
-            </p>
-          ))}
-        </div>
-      </section>
+      <CursorGlow className="w-full">
+        <section className="mx-auto max-w-7xl px-6 py-16">
+          <h2 className="mb-8 text-xl font-bold md:text-2xl">Why Structural Estimates Matter:</h2>
+          <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3 md:gap-10">
+            {whyMatters.map((item) => (
+              <p
+                key={item}
+                className="whitespace-pre-line text-center text-sm text-[#d9d9d9]/80 md:text-base"
+              >
+                {item}
+              </p>
+            ))}
+          </div>
+        </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-16">
-        <h2 className="mb-6 text-center text-3xl font-bold md:text-4xl">
-          Types of Structural Estimates
-        </h2>
-        <p className="mx-auto mb-12 max-w-5xl text-center text-sm leading-relaxed text-[#d9d9d9]/75 md:text-base">
-          Structural estimating forms the backbone of any construction project.
-          Here are the primary elements we analyze to maintain stability,
-          efficiency, and accurate budgeting.
-        </p>
+        <section className="mx-auto max-w-7xl px-6 py-16">
+          <h2 className="mb-6 text-center text-3xl font-bold md:text-4xl">
+            Types of Structural Estimates
+          </h2>
+          <p className="mx-auto mb-12 max-w-5xl text-center text-sm leading-relaxed text-[#d9d9d9]/75 md:text-base">
+            Structural estimating forms the backbone of any construction project.
+            Here are the primary elements we analyze to maintain stability,
+            efficiency, and accurate budgeting.
+          </p>
 
-        <div className="mx-auto max-w-5xl space-y-8">
-          {structuralTypes.map((item, index) => (
-            <div
-              key={item.label}
-              className={`flex flex-col items-center gap-8 ${
-                index % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"
-              }`}
-            >
-              {index % 2 === 0 ? (
-                <>
-                  <div className="h-40 w-full flex-shrink-0 rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-6 py-14 text-center text-4xl font-semibold md:w-64">
-                    {item.label}
-                  </div>
-                  <div className="flex-1 md:text-left">
-                    <h3 className="mb-2 text-base font-bold">{item.title}</h3>
-                    <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
-                      {item.description}
-                    </p>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="flex-1 md:text-right">
-                    <h3 className="mb-2 text-base font-bold">{item.title}</h3>
-                    <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
-                      {item.description}
-                    </p>
-                  </div>
-                  <div className="h-40 w-full flex-shrink-0 rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-6 py-14 text-center text-4xl font-semibold md:w-64">
-                    {item.label}
-                  </div>
-                </>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
+          <div className="mx-auto max-w-5xl space-y-8">
+            {structuralTypes.map((item, index) => (
+              <div
+                key={item.label}
+                className={`flex flex-col items-center gap-8 ${
+                  index % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"
+                }`}
+              >
+                {index % 2 === 0 ? (
+                  <>
+                    <div className="h-40 w-full flex-shrink-0 rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-6 py-14 text-center text-4xl font-semibold md:w-64">
+                      {item.label}
+                    </div>
+                    <div className="flex-1 md:text-left">
+                      <h3 className="mb-2 text-base font-bold">{item.title}</h3>
+                      <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
+                        {item.description}
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex-1 md:text-right">
+                      <h3 className="mb-2 text-base font-bold">{item.title}</h3>
+                      <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
+                        {item.description}
+                      </p>
+                    </div>
+                    <div className="h-40 w-full flex-shrink-0 rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-6 py-14 text-center text-4xl font-semibold md:w-64">
+                      {item.label}
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      </CursorGlow>
     </section>
   )
 }

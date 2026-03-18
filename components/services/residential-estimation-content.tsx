@@ -1,6 +1,15 @@
+'use client';
+
 import Link from "next/link"
 import Image from "next/image"
+import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
+
+const residentialGlowColors = {
+  primary: 'rgba(48, 18, 82, 0.52)',
+  secondary: 'rgba(36, 13, 66, 0.42)',
+  tertiary: 'rgba(28, 10, 50, 0.34)',
+};
 
 export function ResidentialEstimationContent() {
   const projects = [
@@ -74,7 +83,10 @@ export function ResidentialEstimationContent() {
             </p>
           </div>
 
-          <div className="hidden items-center justify-end lg:flex">
+          <CursorGlow
+            colors={residentialGlowColors}
+            className="hidden w-full items-center justify-end lg:flex"
+          >
             <Image
               src="/images/residential-estimation-hero.png"
               alt="Residential estimation skyline illustration"
@@ -83,10 +95,11 @@ export function ResidentialEstimationContent() {
               className="h-auto w-full max-w-[700px]"
               priority
             />
-          </div>
+          </CursorGlow>
         </div>
       </section>
 
+      <CursorGlow colors={residentialGlowColors} className="w-full">
       <section className="px-6 py-16 md:px-12 lg:px-20">
         <h2 className="mb-12 text-center text-2xl font-bold md:text-3xl lg:text-4xl">
           Residential Projects We Estimate
@@ -162,6 +175,7 @@ export function ResidentialEstimationContent() {
           </div>
         </div>
       </section>
+      </CursorGlow>
 
       <section className="px-6 md:px-12 lg:px-20">
         <ServiceTradesSection />

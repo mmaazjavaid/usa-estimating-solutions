@@ -1,6 +1,15 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { CursorGlow } from "@/components/ui/cursor-glow"
 import { ServiceTradesSection } from "@/components/services/service-trades-section"
+
+const industrialGlowColors = {
+  primary: "rgba(70, 70, 35, 0.5)",
+  secondary: "rgba(58, 58, 30, 0.42)",
+  tertiary: "rgba(45, 45, 25, 0.36)",
+}
 
 export function IndustrialEstimatingContent() {
   const supporters = [
@@ -60,7 +69,7 @@ export function IndustrialEstimatingContent() {
             </p>
           </div>
 
-          <div className="flex w-full flex-1 justify-center lg:justify-end">
+          <CursorGlow colors={industrialGlowColors} className="flex w-full flex-1 justify-center lg:justify-end">
             <Image
               src="/images/industrial-estimating-hero.png"
               alt="Industrial estimating facility illustration"
@@ -69,78 +78,80 @@ export function IndustrialEstimatingContent() {
               className="h-auto w-full max-w-[700px]"
               priority
             />
-          </div>
+          </CursorGlow>
         </div>
       </section>
 
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">Who We Support</h2>
+      <CursorGlow colors={industrialGlowColors} className="w-full">
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-12 text-center text-3xl font-bold md:text-4xl">Who We Support</h2>
 
-        <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-12 gap-y-6">
-          {supporters.map((supporter) => (
-            <span key={supporter} className="text-sm text-[#d9d9d9]/80 md:text-base">
-              {supporter}
-            </span>
-          ))}
-        </div>
-      </section>
-
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl">
-          Core Industrial Estimating Services
-        </h2>
-
-        <p className="mx-auto mb-16 max-w-5xl text-center text-sm text-[#d9d9d9]/70 md:text-base">
-          Our services include quantity takeoffs and cost estimates, bid
-          evaluation and proposal support, feasibility and risk analysis, change
-          order preparation and review, value engineering and cost optimization,
-          project scheduling and cost management, as well as QA/QC reviews and
-          cold-eye audits. Trade coverage:
-        </p>
-
-        <div className="mx-auto max-w-5xl">
-          {coreServices.map((row, rowIndex) => (
-            <div
-              key={`row-${rowIndex}`}
-              className={`grid grid-cols-1 md:grid-cols-3 ${
-                rowIndex === 0 ? "border-b border-[#d9d9d9]/20" : ""
-              }`}
-            >
-              {row.map((service, colIndex) => (
-                <div
-                  key={service}
-                  className={`py-16 px-6 text-center ${
-                    colIndex < row.length - 1 ? "md:border-r border-[#d9d9d9]/20" : ""
-                  }`}
-                >
-                  <span className="whitespace-pre-line text-sm text-[#d9d9d9]/90 md:text-base">
-                    {service}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="px-6 py-20 md:px-12 lg:px-20">
-        <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl">
-          Specialized Estimating Capabilities
-        </h2>
-
-        <div className="mx-auto flex max-w-4xl flex-col items-center justify-center gap-4 md:flex-row md:gap-0">
-          {specializedCapabilities.map((capability, index) => (
-            <div key={capability} className="flex items-center">
-              <span className="whitespace-nowrap text-sm text-[#d9d9d9]/80 md:text-base">
-                {capability}
+          <div className="mx-auto flex max-w-5xl flex-wrap justify-center gap-x-12 gap-y-6">
+            {supporters.map((supporter) => (
+              <span key={supporter} className="text-sm text-[#d9d9d9]/80 md:text-base">
+                {supporter}
               </span>
-              {index < specializedCapabilities.length - 1 ? (
-                <div className="mx-6 hidden h-px w-24 bg-[#d9d9d9]/30 lg:w-32 md:block" />
-              ) : null}
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-8 text-center text-3xl font-bold md:text-4xl">
+            Core Industrial Estimating Services
+          </h2>
+
+          <p className="mx-auto mb-16 max-w-5xl text-center text-sm text-[#d9d9d9]/70 md:text-base">
+            Our services include quantity takeoffs and cost estimates, bid
+            evaluation and proposal support, feasibility and risk analysis, change
+            order preparation and review, value engineering and cost optimization,
+            project scheduling and cost management, as well as QA/QC reviews and
+            cold-eye audits. Trade coverage:
+          </p>
+
+          <div className="mx-auto max-w-5xl">
+            {coreServices.map((row, rowIndex) => (
+              <div
+                key={`row-${rowIndex}`}
+                className={`grid grid-cols-1 md:grid-cols-3 ${
+                  rowIndex === 0 ? "border-b border-[#d9d9d9]/20" : ""
+                }`}
+              >
+                {row.map((service, colIndex) => (
+                  <div
+                    key={service}
+                    className={`py-16 px-6 text-center ${
+                      colIndex < row.length - 1 ? "md:border-r border-[#d9d9d9]/20" : ""
+                    }`}
+                  >
+                    <span className="whitespace-pre-line text-sm text-[#d9d9d9]/90 md:text-base">
+                      {service}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="px-6 py-20 md:px-12 lg:px-20">
+          <h2 className="mb-16 text-center text-3xl font-bold md:text-4xl">
+            Specialized Estimating Capabilities
+          </h2>
+
+          <div className="mx-auto flex max-w-4xl flex-col items-center justify-center gap-4 md:flex-row md:gap-0">
+            {specializedCapabilities.map((capability, index) => (
+              <div key={capability} className="flex items-center">
+                <span className="whitespace-nowrap text-sm text-[#d9d9d9]/80 md:text-base">
+                  {capability}
+                </span>
+                {index < specializedCapabilities.length - 1 ? (
+                  <div className="mx-6 hidden h-px w-24 bg-[#d9d9d9]/30 lg:w-32 md:block" />
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </section>
+      </CursorGlow>
 
       <section className="px-6 md:px-12 lg:px-20">
         <ServiceTradesSection />
