@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import { requireAdminApi } from '@/lib/admin-guard';
+import { revalidateAfterBlogChange } from '@/lib/cms-revalidate';
 import { getAllBlogsAdmin, getPublishedBlogs, normalizeSlug } from '@/lib/blogs';
 import { connectToDatabase } from '@/lib/db';
 import { BlogModel } from '@/models/Blog';
+
+export const dynamic = 'force-dynamic';
 
 type BlogPayload = {
   title?: string;
@@ -37,7 +40,14 @@ export async function GET(request: Request) {
   }
 
   const data = await getPublishedBlogs();
-  return NextResponse.json({ data });
+  return NextResponse.json(
+    { data },
+    {
+      headers: {
+        'Cache-Control': 'private, no-store, must-revalidate',
+      },
+    },
+  );
 }
 
 export async function POST(request: Request) {
@@ -78,6 +88,8 @@ export async function POST(request: Request) {
     indexStatus: body.indexStatus ?? 'index',
     status: body.status ?? 'published',
   });
+
+  revalidateAfterBlogChange(String(data.slug));
 
   return NextResponse.json({ data }, { status: 201 });
 }

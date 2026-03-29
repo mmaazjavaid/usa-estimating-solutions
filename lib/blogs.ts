@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { cmsReadNoStore } from '@/lib/cms-read-no-store';
 import { connectToDatabase } from '@/lib/db';
 import { BlogModel } from '@/models/Blog';
 
@@ -13,6 +14,7 @@ export function normalizeSlug(value: string) {
 }
 
 export async function getPublishedBlogs() {
+  cmsReadNoStore();
   await connectToDatabase();
   return await BlogModel.find({ status: 'published' })
     .sort({ publishedDate: -1, createdAt: -1 })
@@ -25,6 +27,7 @@ export async function getAllBlogsAdmin() {
 }
 
 export async function getPublishedBlogBySlug(slug: string) {
+  cmsReadNoStore();
   await connectToDatabase();
   return await BlogModel.findOne({ slug, status: 'published' }).lean();
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAdminApi } from '@/lib/admin-guard';
+import { revalidateAfterCmsPageChange } from '@/lib/cms-revalidate';
 import { connectToDatabase } from '@/lib/db';
 import { PageModel } from '@/models/Page';
 import {
@@ -87,6 +88,8 @@ export async function PATCH(request: Request, { params }: Params) {
     return NextResponse.json({ message: 'Page not found.' }, { status: 404 });
   }
 
+  revalidateAfterCmsPageChange(String(data.path ?? ''));
+
   return NextResponse.json({ data });
 }
 
@@ -103,6 +106,8 @@ export async function DELETE(_: Request, { params }: Params) {
   if (!data) {
     return NextResponse.json({ message: 'Page not found.' }, { status: 404 });
   }
+
+  revalidateAfterCmsPageChange(String((data as { path?: string }).path ?? ''));
 
   return NextResponse.json({ ok: true });
 }

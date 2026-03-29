@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { cmsReadNoStore } from '@/lib/cms-read-no-store';
 import { connectToDatabase } from '@/lib/db';
 import { ensureBaseCmsRecords } from '@/lib/cms';
 import { PageModel } from '@/models/Page';
@@ -57,6 +58,7 @@ export async function getPublishedCmsNavLinks(): Promise<{
   services: CmsNavLink[];
   trades: CmsNavLink[];
 }> {
+  cmsReadNoStore();
   await ensureBaseCmsRecords();
   await connectToDatabase();
 
@@ -92,6 +94,7 @@ export async function getPublishedCmsNavLinks(): Promise<{
 }
 
 export async function getPublishedCmsPagesForListing(placement: 'services' | 'trades') {
+  cmsReadNoStore();
   await ensureBaseCmsRecords();
   return await PageModel.find({
     status: 'published',
@@ -107,6 +110,7 @@ export async function getPublishedCmsPagesForListing(placement: 'services' | 'tr
 export async function getUnpublishedDynamicPathsForPlacement(
   placement: 'services' | 'trades',
 ): Promise<string[]> {
+  cmsReadNoStore();
   await ensureBaseCmsRecords();
   await connectToDatabase();
   const rows = await PageModel.find({
@@ -131,6 +135,7 @@ export async function hasUnpublishedDynamicCmsPageAtSlug(slug: string): Promise<
 
 /** Same as {@link hasUnpublishedDynamicCmsPageAtSlug} but for any allowed path (e.g. `/trades/exterior`). */
 export async function hasUnpublishedDynamicCmsPageAtPath(path: string): Promise<boolean> {
+  cmsReadNoStore();
   await ensureBaseCmsRecords();
   await connectToDatabase();
   const normalized = normalizePath(path);
@@ -152,6 +157,7 @@ export type LoadPageOptions = {
 };
 
 export async function loadDynamicCmsPageByPath(path: string, options: LoadPageOptions = {}) {
+  cmsReadNoStore();
   await ensureBaseCmsRecords();
   await connectToDatabase();
 

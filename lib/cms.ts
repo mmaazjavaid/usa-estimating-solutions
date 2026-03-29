@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { cmsReadNoStore } from '@/lib/cms-read-no-store';
 import {
   DEFAULT_CONTACT,
   DEFAULT_PAGE_DEFINITIONS,
@@ -254,12 +255,14 @@ export async function ensureBaseCmsRecords() {
 }
 
 export async function getContactData() {
+  cmsReadNoStore();
   await ensureBaseCmsRecords();
   const doc = await ContactDataModel.findOne().lean();
   return doc ?? DEFAULT_CONTACT;
 }
 
 export async function getPublishedServices() {
+  cmsReadNoStore();
   await ensureBaseCmsRecords();
   return await ServiceModel.find({ status: 'published' })
     .sort({ createdAt: -1 })
@@ -267,6 +270,7 @@ export async function getPublishedServices() {
 }
 
 export async function getFooterMenuServices() {
+  cmsReadNoStore();
   await ensureBaseCmsRecords();
   return await ServiceModel.find({
     status: 'published',
@@ -277,6 +281,7 @@ export async function getFooterMenuServices() {
 }
 
 export async function getPublishedServiceBySlug(slug: string) {
+  cmsReadNoStore();
   await ensureBaseCmsRecords();
   return await ServiceModel.findOne({ slug, status: 'published' }).lean();
 }
@@ -302,6 +307,7 @@ export async function getPublishedSubServiceBySlug(slug: string) {
 }
 
 export async function getSeoMetadataByPath(path: string): Promise<Metadata | null> {
+  cmsReadNoStore();
   await ensureBaseCmsRecords();
   const page = await PageModel.findOne({ path }).lean();
 

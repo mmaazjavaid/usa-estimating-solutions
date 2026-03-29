@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireAdminApi } from '@/lib/admin-guard';
 import { ensureBaseCmsRecords } from '@/lib/cms';
+import { revalidateAfterCmsPageChange } from '@/lib/cms-revalidate';
 import { connectToDatabase } from '@/lib/db';
 import { PageModel } from '@/models/Page';
 import { validateNewDynamicPage } from '@/lib/admin-page-update';
@@ -33,6 +34,8 @@ export async function POST(request: Request) {
   await connectToDatabase();
   const created = await PageModel.create(validated.doc);
   const data = created.toObject();
+
+  revalidateAfterCmsPageChange(String(data.path ?? ''));
 
   return NextResponse.json({ data }, { status: 201 });
 }

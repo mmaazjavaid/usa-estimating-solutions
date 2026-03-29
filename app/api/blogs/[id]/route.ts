@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Types } from 'mongoose';
 import { requireAdminApi } from '@/lib/admin-guard';
+import { revalidateAfterBlogChange } from '@/lib/cms-revalidate';
 import { connectToDatabase } from '@/lib/db';
 import { BlogModel } from '@/models/Blog';
 import { normalizeSlug } from '@/lib/blogs';
@@ -113,6 +114,8 @@ export async function PUT(request: Request, { params }: Params) {
     return NextResponse.json({ message: 'Blog not found.' }, { status: 404 });
   }
 
+  revalidateAfterBlogChange(String(data.slug));
+
   return NextResponse.json({ data });
 }
 
@@ -133,6 +136,8 @@ export async function DELETE(_: Request, { params }: Params) {
   if (!data) {
     return NextResponse.json({ message: 'Blog not found.' }, { status: 404 });
   }
+
+  revalidateAfterBlogChange(String((data as { slug?: string }).slug ?? ''));
 
   return NextResponse.json({ ok: true });
 }

@@ -3,6 +3,14 @@ import { Inter, Manrope } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
+/**
+ * CMS-driven header, footer, and pages read from MongoDB — must not be statically cached
+ * (Vercel CDN / Full Route Cache) or new pages disappear from nav until redeploy.
+ * SEO: each request still runs `generateMetadata` on the relevant route; crawlers receive
+ * full HTML with canonical/meta from the database (same as typical SSR).
+ */
+export const dynamic = 'force-dynamic';
+
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-serif' });
 
