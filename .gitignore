@@ -8,3 +8,7 @@ node_modules/
 .next/
 .env*.local
 .DS_Store
+
+# User uploads from CMS admin (keep directory via .gitkeep)
+public/uploads/cms/*
+!public/uploads/cms/.gitkeep

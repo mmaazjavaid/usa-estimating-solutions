@@ -3,8 +3,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import type { CmsTextTypography } from '@/lib/cms-text-typography';
+import { cn } from '@/lib/utils';
 
-const works = [
+export type OurWorkItem = {
+  src: string;
+  alt: string;
+  title: string;
+};
+
+const DEFAULT_WORKS: OurWorkItem[] = [
   {
     src: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&h=400&fit=crop&q=80',
     alt: 'Construction blueprints',
@@ -27,35 +35,59 @@ const works = [
   },
 ];
 
-export function OurWorks() {
+const DEFAULT_INTRO =
+  'Our estimators provide accurate quantity takeoffs and cost estimates across all CSI Division trades, supporting commercial, residential, and industrial projects. All estimates are prepared in strict compliance with U.S. construction codes, industry standards, and current pricing databases, ensuring your bids remain competitive, accurate, and aligned with market conditions.';
+
+export type OurWorksProps = {
+  heading?: string;
+  intro?: string;
+  works?: OurWorkItem[];
+  exploreHref?: string;
+  exploreLabel?: string;
+  headingTypography?: CmsTextTypography;
+  introTypography?: CmsTextTypography;
+};
+
+export function OurWorks({
+  heading = 'Our Works',
+  intro = DEFAULT_INTRO,
+  works = DEFAULT_WORKS,
+  exploreHref = '/our-works',
+  exploreLabel = 'Explore More',
+  headingTypography,
+  introTypography,
+}: OurWorksProps = {}) {
   return (
     <section className="bg-background py-20">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="mb-6 text-center text-3xl font-bold text-foreground md:text-4xl">
-          Our Works
+        <h2
+          className={cn(
+            'mb-6 text-center text-3xl font-bold text-foreground md:text-4xl',
+            headingTypography?.className,
+          )}
+          style={headingTypography?.style}
+        >
+          {heading}
         </h2>
-        <p className="mx-auto mb-14 max-w-3xl text-center text-sm leading-relaxed text-muted-foreground">
-          Our estimators provide accurate quantity takeoffs and cost estimates
-          across all CSI Division trades, supporting commercial, residential,
-          and industrial projects. All estimates are prepared in strict
-          compliance with U.S. construction codes, industry standards, and
-          current pricing databases, ensuring your bids remain competitive,
-          accurate, and aligned with market conditions.
+        <p
+          className={cn(
+            'mx-auto mb-14 max-w-3xl text-center text-sm leading-relaxed text-muted-foreground',
+            introTypography?.className,
+          )}
+          style={introTypography?.style}
+        >
+          {intro}
         </p>
 
         <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {works.map((work, index) => (
             <motion.div
-              key={index}
+              key={`${work.src}-${index}`}
               initial="rest"
               whileHover="hover"
               animate="rest"
               className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-lg bg-black"
             >
-              {/* SHADOW OVERLAY: 
-                Starts light (10%) and deepens to dark (60%) on hover 
-                to make white text pop.
-              */}
               <div className="absolute inset-0 z-10 bg-black/10 transition-all duration-500 group-hover:bg-black/60" />
 
               <motion.div
@@ -75,7 +107,6 @@ export function OurWorks() {
                 />
               </motion.div>
 
-              {/* Centered Reveal Text */}
               <div className="absolute inset-0 z-20 flex items-center justify-center p-6 text-center">
                 <motion.span
                   variants={{
@@ -94,10 +125,10 @@ export function OurWorks() {
 
         <div className="flex justify-center">
           <Link
-            href="/our-works"
+            href={exploreHref}
             className="rounded-full border border-foreground/30 px-8 py-2.5 text-sm font-medium text-foreground transition-all hover:bg-foreground hover:text-background"
           >
-            Explore More
+            {exploreLabel}
           </Link>
         </div>
       </div>

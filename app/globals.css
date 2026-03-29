@@ -1,6 +1,9 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* Utilities used only in CMS HTML fields — see app/cms-tailwind-safelist.html */
+@source './cms-tailwind-safelist.html';
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -64,7 +67,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
   }
   html {
     scroll-behavior: smooth;

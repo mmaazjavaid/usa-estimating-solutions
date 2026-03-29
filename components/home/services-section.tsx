@@ -11,6 +11,8 @@ import {
 } from '@/components/ui/carousel';
 import { AnimatedServiceCard } from '@/components/common/animated-service-card';
 import { DEFAULT_SERVICES } from '@/lib/cms-defaults';
+import type { CmsTextTypography } from '@/lib/cms-text-typography';
+import { cn } from '@/lib/utils';
 
 export type HomeServiceItem = {
   slug: string;
@@ -57,6 +59,9 @@ function getServiceIconSrc(service: HomeServiceItem) {
   return '/placeholder.svg';
 }
 
+const DEFAULT_INTRO =
+  "We provide professional construction estimating and quantity takeoff services designed to help you bid confidently, reduce overhead costs, and plan projects more efficiently. Using advanced estimating software, real-time pricing databases, and industry expertise, our estimators deliver accurate, reliable takeoffs tailored to your project's scope, timeline, and budget.";
+
 export function ServicesSection({
   services = DEFAULT_SERVICES.map((service) => ({
     slug: service.slug,
@@ -65,8 +70,20 @@ export function ServicesSection({
     href: service.path,
     image: service.image,
   })),
+  sectionTitle = 'Services',
+  intro = DEFAULT_INTRO,
+  exploreHref = '/services',
+  exploreLabel = 'Explore All Services',
+  sectionTitleTypography,
+  introTypography,
 }: {
   services?: HomeServiceItem[];
+  sectionTitle?: string;
+  intro?: string;
+  exploreHref?: string;
+  exploreLabel?: string;
+  sectionTitleTypography?: CmsTextTypography;
+  introTypography?: CmsTextTypography;
 }) {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -100,17 +117,21 @@ export function ServicesSection({
   return (
     <section className="bg-black py-24 text-white overflow-hidden">
       <div className="mx-auto max-w-[1600px] px-6 md:px-12 lg:px-16">
-        <div className="flex flex-col items-center text-center mb-16">
-          <h2 className="mb-6 text-4xl font-bold tracking-tight md:text-5xl">
-            Services
+        <div className="mb-16 flex flex-col items-center text-center">
+          <h2
+            className={cn(
+              'mb-6 text-4xl font-bold tracking-tight md:text-5xl',
+              sectionTitleTypography?.className,
+            )}
+            style={sectionTitleTypography?.style}
+          >
+            {sectionTitle}
           </h2>
-          <p className="max-w-3xl text-base leading-relaxed text-white">
-            We provide professional construction estimating and quantity
-            takeoff services designed to help you bid confidently, reduce
-            overhead costs, and plan projects more efficiently. Using advanced
-            estimating software, real-time pricing databases, and industry
-            expertise, our estimators deliver accurate, reliable takeoffs
-            tailored to your project&apos;s scope, timeline, and budget.
+          <p
+            className={cn('max-w-3xl text-base leading-relaxed text-white', introTypography?.className)}
+            style={introTypography?.style}
+          >
+            {intro}
           </p>
         </div>
 
@@ -175,10 +196,10 @@ export function ServicesSection({
 
         <div className="mt-20 flex justify-center">
           <Link
-            href="/services"
+            href={exploreHref}
             className="rounded-full border border-white/20 bg-white/5 px-10 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/10"
           >
-            Explore All Services
+            {exploreLabel}
           </Link>
         </div>
       </div>

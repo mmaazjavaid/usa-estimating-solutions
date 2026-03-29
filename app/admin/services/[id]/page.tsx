@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { ImageUrlInput } from '@/components/admin/image-url-input';
 
 type ServiceForm = {
   name: string;
@@ -129,7 +130,7 @@ export default function EditServicePage() {
             setFormData((prev) => ({ ...prev, shortDescription: value }))
           }
         />
-        <Input
+        <ImageUrlInput
           label="Image URL"
           value={formData.image}
           onChange={(value) => setFormData((prev) => ({ ...prev, image: value }))}
@@ -139,7 +140,7 @@ export default function EditServicePage() {
           value={formData.imageAlt}
           onChange={(value) => setFormData((prev) => ({ ...prev, imageAlt: value }))}
         />
-        <Input
+        <ImageUrlInput
           label="Meta Image URL"
           value={formData.metaImage}
           onChange={(value) => setFormData((prev) => ({ ...prev, metaImage: value }))}

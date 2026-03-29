@@ -1,6 +1,7 @@
 'use client';
 
 import { FormEvent, useMemo, useState } from 'react';
+import { ImageUrlInput } from '@/components/admin/image-url-input';
 import { RichTextEditor } from '@/components/admin/rich-text-editor';
 
 export type BlogFormData = {
@@ -79,7 +80,7 @@ export function BlogForm({ initialValues, submitLabel, onSubmit }: BlogFormProps
         required
       />
 
-      <Field
+      <ImageUrlInput
         label="Featured Image URL"
         value={formData.featuredImage}
         onChange={(value) =>

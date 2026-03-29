@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
+import { ImageUrlInput } from '@/components/admin/image-url-input';
 
 type Service = {
   _id: string;
@@ -175,7 +176,7 @@ export default function AdminServicesPage() {
             setNewService((prev) => ({ ...prev, shortDescription: value }))
           }
         />
-        <Input
+        <ImageUrlInput
           label="Image URL"
           value={newService.image}
           onChange={(value) => setNewService((prev) => ({ ...prev, image: value }))}
@@ -185,7 +186,7 @@ export default function AdminServicesPage() {
           value={newService.imageAlt}
           onChange={(value) => setNewService((prev) => ({ ...prev, imageAlt: value }))}
         />
-        <Input
+        <ImageUrlInput
           label="Meta Image URL"
           value={newService.metaImage}
           onChange={(value) => setNewService((prev) => ({ ...prev, metaImage: value }))}

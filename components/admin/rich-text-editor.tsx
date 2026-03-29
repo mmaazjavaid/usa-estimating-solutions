@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { uploadAdminImage } from '@/lib/admin-upload-client';
 
 type RichTextEditorProps = {
   value: string;
@@ -9,6 +10,8 @@ type RichTextEditorProps = {
 
 export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
+  const imageFileRef = useRef<HTMLInputElement>(null);
+  const [imageUploading, setImageUploading] = useState(false);
 
   useEffect(() => {
     if (!editorRef.current) {
@@ -51,7 +54,36 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
           }}
         />
         <ToolbarButton
-          label="Image"
+          label={imageUploading ? 'Uploading…' : 'Upload image'}
+          onClick={() => imageFileRef.current?.click()}
+          disabled={imageUploading}
+        />
+        <input
+          ref={imageFileRef}
+          type="file"
+          accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (!file) {
+              return;
+            }
+            setImageUploading(true);
+            void uploadAdminImage(file)
+              .then((url) => {
+                applyCommand('insertImage', url);
+              })
+              .catch((err) => {
+                window.alert(err instanceof Error ? err.message : 'Upload failed');
+              })
+              .finally(() => {
+                setImageUploading(false);
+                e.target.value = '';
+              });
+          }}
+        />
+        <ToolbarButton
+          label="Image URL"
           onClick={() => {
             const url = window.prompt('Enter image URL');
             if (url) {
@@ -75,15 +107,18 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
 function ToolbarButton({
   label,
   onClick,
+  disabled,
 }: {
   label: string;
   onClick: () => void;
+  disabled?: boolean;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="rounded-md border border-zinc-700 px-3 py-1.5 text-xs text-zinc-200 hover:bg-zinc-800"
+      disabled={disabled}
+      className="rounded-md border border-zinc-700 px-3 py-1.5 text-xs text-zinc-200 hover:bg-zinc-800 disabled:opacity-50"
     >
       {label}
     </button>

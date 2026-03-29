@@ -4,6 +4,19 @@ import {
   DEFAULT_PAGE_DEFINITIONS,
   DEFAULT_SERVICES,
 } from '@/lib/cms-defaults';
+import {
+  HOME_PAGE_SECTIONS,
+  HOME_SECTIONS_SCHEMA_VERSION,
+} from '@/lib/cms-home-sections';
+import {
+  SERVICE_MARKETING_PAGES,
+  SERVICE_MARKETING_SECTIONS_SCHEMA_VERSION,
+  buildServiceMarketingSections,
+} from '@/lib/cms-service-marketing-seed';
+import {
+  TRADES_DYNAMIC_PAGE_SEEDS,
+  TRADES_SECTIONS_SCHEMA_VERSION,
+} from '@/lib/cms-trades-pages-seed';
 import { connectToDatabase } from '@/lib/db';
 import { ContactDataModel } from '@/models/ContactData';
 import { AdminModel } from '@/models/Admin';
@@ -32,6 +45,21 @@ const cmsBootstrapState: CmsBootstrapState = globalWithCms.cmsBootstrapState ?? 
 
 if (!globalWithCms.cmsBootstrapState) {
   globalWithCms.cmsBootstrapState = cmsBootstrapState;
+}
+
+/** Legacy home CMS used `{}` per section — admin looked empty while the site used component defaults. */
+function shouldApplyFullHomeSectionDefaults(sections: unknown): boolean {
+  if (!Array.isArray(sections)) {
+    return true;
+  }
+  const hero = sections.find(
+    (s: { type?: string }) => s && (s as { type?: string }).type === 'site_hero',
+  ) as { data?: Record<string, unknown> } | undefined;
+  const d = hero?.data;
+  if (!d || typeof d !== 'object') {
+    return true;
+  }
+  return Object.keys(d).length === 0 || !String(d.subtitle ?? '').trim();
 }
 
 async function runCmsBootstrap() {
@@ -65,6 +93,127 @@ async function runCmsBootstrap() {
       },
       { upsert: true },
     );
+  }
+
+  const homePage = await PageModel.findOne({ path: '/' })
+    .select('sections slug renderMode homeSectionsVersion')
+    .lean() as {
+    sections?: unknown;
+    slug?: string;
+    renderMode?: string;
+    homeSectionsVersion?: number;
+  } | null;
+
+  if (homePage && homePage.homeSectionsVersion !== HOME_SECTIONS_SCHEMA_VERSION) {
+    const sections = homePage.sections;
+    const needsFullDefaults =
+      !Array.isArray(sections) ||
+      sections.length === 0 ||
+      shouldApplyFullHomeSectionDefaults(sections);
+
+    if (needsFullDefaults) {
+      await PageModel.updateOne(
+        { path: '/' },
+        {
+          $set: {
+            renderMode: 'dynamic',
+            sections: HOME_PAGE_SECTIONS,
+            homeSectionsVersion: HOME_SECTIONS_SCHEMA_VERSION,
+          },
+        },
+      );
+    } else {
+      await PageModel.updateOne(
+        { path: '/' },
+        { $set: { homeSectionsVersion: HOME_SECTIONS_SCHEMA_VERSION } },
+      );
+    }
+  }
+
+  // Migrate root slug "/" → "homepage" (avoids clashing with a separate /home page using slug "home").
+  const rootSlugConflict = await PageModel.findOne({ slug: 'homepage' })
+    .select('path')
+    .lean();
+  const rootSlug =
+    !rootSlugConflict || rootSlugConflict.path === '/'
+      ? 'homepage'
+      : '__homepage';
+  await PageModel.updateOne(
+    { path: '/', slug: '/' },
+    { $set: { slug: rootSlug } },
+  );
+
+  for (const def of SERVICE_MARKETING_PAGES) {
+    const existing = (await PageModel.findOne({ path: def.path })
+      .select('sections serviceMarketingSectionsVersion')
+      .lean()) as {
+      sections?: unknown;
+      serviceMarketingSectionsVersion?: number;
+    } | null;
+
+    const sections = existing?.sections;
+    const hasLegacyTemplate =
+      Array.isArray(sections) &&
+      sections.some(
+        (s: { type?: string }) => s && (s as { type?: string }).type === 'site_service_page_template',
+      );
+    const empty = !Array.isArray(sections) || sections.length === 0;
+    const version = existing?.serviceMarketingSectionsVersion ?? 0;
+    const needsFullSeed = hasLegacyTemplate || empty;
+    const needsVersionBump = version !== SERVICE_MARKETING_SECTIONS_SCHEMA_VERSION && !needsFullSeed;
+
+    if (needsFullSeed) {
+      await PageModel.updateOne(
+        { path: def.path },
+        {
+          $set: {
+            renderMode: 'dynamic',
+            placement: 'services',
+            sections: buildServiceMarketingSections(def.slug),
+            serviceMarketingSectionsVersion: SERVICE_MARKETING_SECTIONS_SCHEMA_VERSION,
+          },
+        },
+      );
+    } else if (needsVersionBump) {
+      await PageModel.updateOne(
+        { path: def.path },
+        { $set: { serviceMarketingSectionsVersion: SERVICE_MARKETING_SECTIONS_SCHEMA_VERSION } },
+      );
+    }
+  }
+
+  for (const def of TRADES_DYNAMIC_PAGE_SEEDS) {
+    const existing = (await PageModel.findOne({ path: def.path })
+      .select('sections tradesSectionsVersion')
+      .lean()) as {
+      sections?: unknown;
+      tradesSectionsVersion?: number;
+    } | null;
+
+    const sections = existing?.sections;
+    const empty = !Array.isArray(sections) || sections.length === 0;
+    const version = existing?.tradesSectionsVersion ?? 0;
+    const needsFullSeed = empty || version !== TRADES_SECTIONS_SCHEMA_VERSION;
+
+    if (needsFullSeed) {
+      await PageModel.updateOne(
+        { path: def.path },
+        {
+          $set: {
+            name: def.name,
+            slug: def.slug,
+            renderMode: 'dynamic',
+            placement: 'trades',
+            status: 'published',
+            indexStatus: 'index',
+            sections: def.sections,
+            tradesSectionsVersion: TRADES_SECTIONS_SCHEMA_VERSION,
+            metaTitle: def.metaTitle,
+            metaDescription: def.metaDescription,
+          },
+        },
+      );
+    }
   }
 
   for (const service of DEFAULT_SERVICES) {
