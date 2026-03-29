@@ -16,7 +16,7 @@ export type ImageUrlInputProps = {
 };
 
 const DEFAULT_HINT =
-  'Paste a URL or upload a file — uploads are saved under /uploads/cms/';
+  'Paste a URL or upload an image. With BLOB_READ_WRITE_TOKEN (Vercel Blob), files are stored in the cloud; otherwise they save under /uploads/cms/ on the server.';
 
 export function ImageUrlInput({
   label,
