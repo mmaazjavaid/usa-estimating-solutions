@@ -3,6 +3,11 @@ export type CmsFaqItem = {
   answer: string;
 };
 
+import {
+  CMS_SECTION_HEADING_LINES,
+  CmsClamp,
+  cmsClampClassNames,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -31,15 +36,24 @@ export function CmsFaqGridSection({
             className={cn('mb-12 text-2xl font-bold md:text-3xl', headingTypography?.className)}
             style={headingTypography?.style}
           >
-            {heading}
+            <CmsClamp as="span" lines={CMS_SECTION_HEADING_LINES}>
+              {heading}
+            </CmsClamp>
           </h2>
         ) : null}
 
         <div className="grid grid-cols-1 gap-x-16 gap-y-10 md:grid-cols-2">
           {list.map((faq) => (
             <div key={faq.question}>
-              <h3 className="mb-3 text-sm font-semibold md:text-base">{faq.question}</h3>
-              <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
+              <h3 className={cn('mb-3 text-sm font-semibold md:text-base', cmsClampClassNames(3))}>
+                {faq.question}
+              </h3>
+              <p
+                className={cn(
+                  'text-justify text-sm leading-relaxed text-[#d9d9d9]/70',
+                  cmsClampClassNames(6),
+                )}
+              >
                 {faq.answer}
               </p>
             </div>

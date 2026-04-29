@@ -2,7 +2,29 @@
 
 import Link from 'next/link';
 import { motion, Variants } from 'framer-motion';
+
+import { cmsClampClassNames } from '@/components/ui/cms-clamp';
+import { cn } from '@/lib/utils';
+
 import { HexIcon } from './hex-icon';
+
+/** Hide “Learn More” when the target is the trades hub only, not a specific trade path. */
+function isTradesIndexOnlyHref(raw: string): boolean {
+  const trimmed = raw.trim();
+  if (!trimmed) return false;
+  const withoutQuery = trimmed.split('?')[0]?.split('#')[0] ?? trimmed;
+  let path = withoutQuery;
+  if (path.includes('://')) {
+    try {
+      path = new URL(path).pathname;
+    } catch {
+      return false;
+    }
+  }
+  if (!path.startsWith('/')) path = `/${path}`;
+  const normalized = path.replace(/\/+$/, '') || '/';
+  return normalized === '/trades';
+}
 
 type EstimateCardProps = {
   title: string;
@@ -65,6 +87,8 @@ export function EstimateCard({
     },
   };
 
+  const showLearnMore = !isTradesIndexOnlyHref(href);
+
   return (
     <motion.div
       initial="rest"
@@ -88,45 +112,54 @@ export function EstimateCard({
 
       <div className="relative z-10">
         <div className="flex items-end justify-between">
-          <h3 className="whitespace-pre-line font-serif text-3xl font-extrabold leading-[1.1] text-white lg:text-[40px]">
+          <h3
+            className={cn(
+              'min-w-0 whitespace-pre-line font-serif text-3xl font-extrabold leading-[1.1] text-white lg:text-[40px]',
+              cmsClampClassNames(3),
+            )}
+          >
             {title}
           </h3>
 
           <div className="relative flex flex-col items-end">
             {/* Description wrapper with fixed height to prevent layout jump */}
-            <div className="h-[60px] flex items-center">
+            <div className="flex h-[60px] max-w-[270px] items-center">
               <motion.p
                 variants={descriptionVariants}
-                className="max-w-[270px] text-[12px] leading-relaxed text-white/70"
+                className={cn(
+                  'max-w-[270px] text-[12px] leading-relaxed text-white/70',
+                  cmsClampClassNames(3),
+                )}
               >
                 {description}
               </motion.p>
             </div>
 
-            {/* Link container that slides left */}
-            <motion.div variants={linkVariants}>
-              <Link
-                href={href}
-                className="flex items-center gap-3 whitespace-nowrap text-sm text-white md:text-base"
-              >
-                <span className="font-serif">Learn More</span>
-                <svg
-                  width="34"
-                  height="12"
-                  viewBox="0 0 34 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+            {showLearnMore ? (
+              <motion.div variants={linkVariants}>
+                <Link
+                  href={href}
+                  className="flex items-center gap-3 whitespace-nowrap text-sm text-white md:text-base"
                 >
-                  <path
-                    d="M0 6H32M32 6L27 1M32 6L27 11"
-                    stroke={arrowColor}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Link>
-            </motion.div>
+                  <span className="font-serif">Learn More</span>
+                  <svg
+                    width="34"
+                    height="12"
+                    viewBox="0 0 34 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0 6H32M32 6L27 1M32 6L27 11"
+                      stroke={arrowColor}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </Link>
+              </motion.div>
+            ) : null}
           </div>
         </div>
       </div>

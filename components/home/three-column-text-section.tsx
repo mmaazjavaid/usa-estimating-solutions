@@ -1,3 +1,8 @@
+import {
+  CMS_SECTION_HEADING_LINES,
+  CmsClamp,
+  cmsClampClassNames,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -32,7 +37,9 @@ export function ThreeColumnTextSection({
           className={cn('mb-8 text-xl font-bold md:text-2xl', headingTypography?.className)}
           style={headingTypography?.style}
         >
-          {heading}
+          <CmsClamp as="span" lines={CMS_SECTION_HEADING_LINES}>
+            {heading}
+          </CmsClamp>
         </h2>
       ) : null}
       <div
@@ -44,7 +51,10 @@ export function ThreeColumnTextSection({
         {list.map((item, idx) => (
           <p
             key={idx}
-            className="whitespace-pre-line text-center text-sm text-[#d9d9d9]/80 md:text-base"
+            className={cn(
+              'whitespace-pre-line text-center text-sm text-[#d9d9d9]/80 md:text-base',
+              cmsClampClassNames(5),
+            )}
           >
             {item}
           </p>

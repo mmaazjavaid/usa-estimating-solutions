@@ -11,7 +11,7 @@ export const HOME_PAGE_SECTIONS: CmsPageSection[] = [
     order: 0,
     data: {
       headline:
-        'Bid <span style="color:#B4934E">Power</span>. Price <span style="color:#B4934E">smarter</span>. Win more work.',
+        'Bid <span class="text-animated-gradient text-animated-gradient--phase-0">Power</span>. Price <span class="text-animated-gradient text-animated-gradient--phase-2">smarter</span>. Win more work.',
       subtitle:
         'We provide professional construction estimating services and detailed material takeoff solutions.',
       primaryCta: {

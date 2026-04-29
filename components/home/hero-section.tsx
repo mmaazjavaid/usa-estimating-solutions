@@ -3,6 +3,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { CursorGlow } from '@/components/ui/cursor-glow';
+import {
+  CMS_HERO_HEADLINE_LINES,
+  CMS_HERO_SUBTITLE_LINES,
+  cmsClampClassNames,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -67,7 +72,8 @@ export function HeroSection({
   const headlineAsHtml = showDefaultHeadline ? false : headlineLooksLikeHtml(trimmedHeadline);
 
   const headlineClass = cn(
-    'text-balance text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl',
+    'min-w-0 max-w-full text-balance text-2xl font-bold leading-tight tracking-tight text-foreground md:text-3xl lg:text-4xl',
+    !showDefaultHeadline ? cmsClampClassNames(CMS_HERO_HEADLINE_LINES) : undefined,
     !showDefaultHeadline ? headlineTypography?.className : undefined,
   );
   const headlineStyle = !showDefaultHeadline ? headlineTypography?.style : undefined;
@@ -75,9 +81,9 @@ export function HeroSection({
   return (
     <section className="relative min-h-screen overflow-hidden bg-background pt-20">
       <div className="mx-auto flex max-w-7xl flex-col items-start px-6 py-14 lg:flex-row lg:items-end lg:py-20">
-        <div className="relative z-10 flex max-w-xl flex-col gap-6 pb-8 lg:pb-12">
+        <div className="relative z-10 flex min-w-0 w-full max-w-xl flex-col gap-6 pb-8 lg:max-w-[26rem] lg:pb-12">
           {showDefaultHeadline ? (
-            <h1 className="text-balance text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl">
+            <h1 className="min-w-0 text-balance text-2xl font-bold leading-tight tracking-tight text-foreground md:text-3xl lg:text-4xl">
               <span>
                 Bid{' '}
                 <span className="text-animated-gradient text-animated-gradient--phase-0">
@@ -92,22 +98,16 @@ export function HeroSection({
               <span className="block">more work.</span>
             </h1>
           ) : headlineAsHtml ? (
-            <h1
-              className={headlineClass}
-              style={headlineStyle}
-              dangerouslySetInnerHTML={{ __html: trimmedHeadline }}
-            />
+            <h1 className={headlineClass} style={headlineStyle} dangerouslySetInnerHTML={{ __html: trimmedHeadline }} />
           ) : (
-            <h1
-              className={cn(headlineClass, 'whitespace-pre-line')}
-              style={headlineStyle}
-            >
+            <h1 className={cn(headlineClass, 'whitespace-pre-line')} style={headlineStyle}>
               {trimmedHeadline}
             </h1>
           )}
           <p
             className={cn(
-              'max-w-md text-base leading-relaxed text-muted-foreground',
+              'max-w-sm text-base leading-relaxed text-muted-foreground',
+              cmsClampClassNames(CMS_HERO_SUBTITLE_LINES),
               subtitleTypography?.className,
             )}
             style={subtitleTypography?.style}

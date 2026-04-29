@@ -2,6 +2,12 @@
 
 import { useState } from 'react';
 import { ChevronRight } from 'lucide-react';
+import {
+  CMS_SECTION_BODY_LINES,
+  CMS_SECTION_HEADING_LINES,
+  CmsClamp,
+  cmsClampClassNames,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -45,7 +51,9 @@ export function CmsTestimonialsSection({
           )}
           style={headingTypography?.style}
         >
-          {heading}
+          <CmsClamp as="span" lines={CMS_SECTION_HEADING_LINES}>
+            {heading}
+          </CmsClamp>
         </h2>
       ) : null}
       {subtitle ? (
@@ -56,7 +64,9 @@ export function CmsTestimonialsSection({
           )}
           style={subtitleTypography?.style}
         >
-          {subtitle}
+          <CmsClamp as="span" lines={CMS_SECTION_BODY_LINES}>
+            {subtitle}
+          </CmsClamp>
         </p>
       ) : null}
 
@@ -67,8 +77,12 @@ export function CmsTestimonialsSection({
               list.length > 1 ? 'md:w-2/3' : 'md:w-full'
             }`}
           >
-            <h3 className="mb-4 text-lg font-semibold">{list[current].name}</h3>
-            <p className="text-sm leading-relaxed text-[#d9d9d9]/80">{list[current].text}</p>
+            <h3 className={cn('mb-4 text-lg font-semibold', cmsClampClassNames(2))}>
+              {list[current].name}
+            </h3>
+            <p className={cn('text-sm leading-relaxed text-[#d9d9d9]/80', cmsClampClassNames(6))}>
+              {list[current].text}
+            </p>
             {list[current].rating && list[current].rating! > 0 ? (
               <div className="mt-4 flex gap-1" aria-hidden>
                 {[...Array(5)].map((_, i) => (

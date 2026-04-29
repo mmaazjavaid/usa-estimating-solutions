@@ -1,6 +1,10 @@
 'use client';
 
 import { CursorGlow } from '@/components/ui/cursor-glow';
+import {
+  CMS_SECTION_HEADING_LINES,
+  cmsClampClassNames,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -38,16 +42,23 @@ export function WhyChooseUs({
             )}
             style={headingTypography?.style}
           >
-            {heading}
+            <span className={cmsClampClassNames(CMS_SECTION_HEADING_LINES)}>{heading}</span>
           </h2>
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {stats.map((stat) => (
-              <div key={stat.value} className="flex flex-col items-center text-center">
-                <p className="text-sm font-medium text-muted-foreground md:text-base">
+              <div key={stat.value} className="flex min-w-0 flex-col items-center text-center">
+                <p
+                  className={cn(
+                    'text-sm font-medium text-muted-foreground md:text-base',
+                    cmsClampClassNames(2),
+                  )}
+                >
                   {stat.value}
                 </p>
                 {stat.label ? (
-                  <p className="text-sm text-muted-foreground">{stat.label}</p>
+                  <p className={cn('text-sm text-muted-foreground', cmsClampClassNames(2))}>
+                    {stat.label}
+                  </p>
                 ) : null}
               </div>
             ))}

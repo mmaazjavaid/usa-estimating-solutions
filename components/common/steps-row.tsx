@@ -1,5 +1,9 @@
 import type { CSSProperties } from 'react';
 
+import {
+  CMS_SECTION_HEADING_LINES,
+  cmsClampClassNames,
+} from '@/components/ui/cms-clamp';
 import { cn } from '@/lib/utils';
 
 type StepsRowProps = {
@@ -34,14 +38,17 @@ export function StepsRow({
   return (
     <div className={className}>
       <h2 className={resolvedHeadingClassName} style={headingStyle}>
-        {heading}
+        <span className={cmsClampClassNames(CMS_SECTION_HEADING_LINES)}>{heading}</span>
       </h2>
 
       <div className="flex flex-col items-center justify-center gap-4 md:flex-row md:gap-0">
         {steps.map((step, index) => (
           <div key={step} className="flex items-center">
             <span
-              className="whitespace-nowrap text-sm font-medium md:text-base"
+              className={cn(
+                'max-w-[11rem] text-center text-sm font-medium sm:max-w-[14rem] md:max-w-[16rem] md:text-base',
+                cmsClampClassNames(2),
+              )}
               style={{ color: '#D9D9D9' }}
             >
               {step}

@@ -4,6 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, type Variants } from 'framer-motion';
 
+import { cmsClampClassNames } from '@/components/ui/cms-clamp';
+import { cn } from '@/lib/utils';
+
 export type AnimatedServiceCardProps = {
   href: string;
   title: string;
@@ -54,12 +57,24 @@ export function AnimatedServiceCard({
       : 'absolute inset-x-0 bottom-0 z-10 px-[30px] pb-[35px]';
   const titleClassName =
     size === 'sm'
-      ? 'whitespace-pre-line text-left text-[24px] font-extrabold leading-[30px] text-white'
-      : 'whitespace-pre-line text-left text-[28px] font-extrabold leading-[34px] text-white';
+      ? cn(
+          'whitespace-pre-line text-left text-[24px] font-extrabold leading-[30px] text-white',
+          cmsClampClassNames(2),
+        )
+      : cn(
+          'whitespace-pre-line text-left text-[28px] font-extrabold leading-[34px] text-white',
+          cmsClampClassNames(2),
+        );
   const descriptionClassName =
     size === 'sm'
-      ? 'overflow-hidden text-[13px] font-medium leading-[19px] text-white/70'
-      : 'overflow-hidden text-[14px] font-medium leading-[20px] text-white/70';
+      ? cn(
+          'overflow-hidden text-[13px] font-medium leading-[19px] text-white/70',
+          cmsClampClassNames(4),
+        )
+      : cn(
+          'overflow-hidden text-[14px] font-medium leading-[20px] text-white/70',
+          cmsClampClassNames(4),
+        );
 
   const cardVariants: Variants = {
     initial: {
@@ -98,13 +113,13 @@ export function AnimatedServiceCard({
   const descriptionVariants: Variants = {
     initial: {
       opacity: 0,
-      height: 0,
+      maxHeight: 0,
       y: 20,
       marginTop: 0,
     },
     hover: {
       opacity: 1,
-      height: 'auto',
+      maxHeight: 96,
       y: 0,
       marginTop: 12,
       transition: {

@@ -3,6 +3,11 @@
 import { motion } from 'framer-motion';
 
 import { UsAlbersMap } from '@/components/home/us-albers-map';
+import {
+  CMS_SECTION_BODY_LINES,
+  CMS_SECTION_HEADING_LINES,
+  CmsClamp,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -37,7 +42,9 @@ export function ServiceLocations({
           )}
           style={headingTypography?.style}
         >
-          {heading}
+          <CmsClamp as="span" lines={CMS_SECTION_HEADING_LINES}>
+            {heading}
+          </CmsClamp>
         </h2>
         <p
           className={cn(
@@ -46,7 +53,9 @@ export function ServiceLocations({
           )}
           style={subtitleTypography?.style}
         >
-          {subtitle}
+          <CmsClamp as="span" lines={CMS_SECTION_BODY_LINES}>
+            {subtitle}
+          </CmsClamp>
         </p>
 
         <motion.div

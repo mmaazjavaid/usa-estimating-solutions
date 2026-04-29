@@ -1,3 +1,9 @@
+import {
+  CMS_SECTION_BODY_LINES,
+  CMS_SECTION_HEADING_LINES,
+  CmsClamp,
+  cmsClampClassNames,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -65,7 +71,9 @@ export function SplitCellGridSection({
           )}
           style={headingTypography?.style}
         >
-          {heading}
+          <CmsClamp as="span" lines={CMS_SECTION_HEADING_LINES}>
+            {heading}
+          </CmsClamp>
         </h2>
       ) : null}
       {intro ? (
@@ -76,7 +84,9 @@ export function SplitCellGridSection({
           )}
           style={introTypography?.style}
         >
-          {intro}
+          <CmsClamp as="span" lines={CMS_SECTION_BODY_LINES}>
+            {intro}
+          </CmsClamp>
         </p>
       ) : null}
 
@@ -99,7 +109,12 @@ export function SplitCellGridSection({
                   colIndex < row.length - 1 ? 'border-b md:border-b-0' : '',
                 )}
               >
-                <span className="whitespace-pre-line text-sm text-[#d9d9d9]/90 md:text-base">
+                <span
+                  className={cn(
+                    'whitespace-pre-line text-sm text-[#d9d9d9]/90 md:text-base',
+                    cmsClampClassNames(5),
+                  )}
+                >
                   {service}
                 </span>
               </div>

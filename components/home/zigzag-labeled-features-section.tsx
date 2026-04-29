@@ -1,4 +1,10 @@
 import Link from 'next/link';
+import {
+  CMS_SECTION_BODY_LINES,
+  CMS_SECTION_HEADING_LINES,
+  CmsClamp,
+  cmsClampClassNames,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -25,7 +31,7 @@ function LabelPanel({
   href?: string;
 }) {
   const boxClass =
-    'flex h-40 w-full shrink-0 items-center justify-center rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-4 py-8 text-center text-3xl font-semibold text-white md:w-64 md:py-14 md:text-4xl transition-colors';
+    'flex h-40 w-full shrink-0 items-center justify-center rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-4 py-8 text-center text-3xl font-semibold text-white md:w-64 md:py-14 md:text-4xl transition-colors min-w-0';
 
   if (href) {
     const ext = href.startsWith('http://') || href.startsWith('https://');
@@ -37,18 +43,22 @@ function LabelPanel({
           rel="noopener noreferrer"
           className={cnBoxClickable(boxClass)}
         >
-          {label}
+          <span className={cmsClampClassNames(3)}>{label}</span>
         </a>
       );
     }
     return (
       <Link href={href} className={cnBoxClickable(boxClass)}>
-        {label}
+        <span className={cmsClampClassNames(3)}>{label}</span>
       </Link>
     );
   }
 
-  return <div className={boxClass}>{label}</div>;
+  return (
+    <div className={boxClass}>
+      <span className={cmsClampClassNames(3)}>{label}</span>
+    </div>
+  );
 }
 
 function cnBoxClickable(base: string) {
@@ -76,7 +86,9 @@ export function ZigzagLabeledFeaturesSection({
           )}
           style={headingTypography?.style}
         >
-          {heading}
+          <CmsClamp as="span" lines={CMS_SECTION_HEADING_LINES}>
+            {heading}
+          </CmsClamp>
         </h2>
       ) : null}
       {intro ? (
@@ -87,7 +99,9 @@ export function ZigzagLabeledFeaturesSection({
           )}
           style={introTypography?.style}
         >
-          {intro}
+          <CmsClamp as="span" lines={CMS_SECTION_BODY_LINES}>
+            {intro}
+          </CmsClamp>
         </p>
       ) : null}
 
@@ -102,18 +116,32 @@ export function ZigzagLabeledFeaturesSection({
             {index % 2 === 0 ? (
               <>
                 <LabelPanel label={item.label} href={item.labelHref} />
-                <div className="flex-1 md:text-left">
-                  <h3 className="mb-2 text-base font-bold">{item.title}</h3>
-                  <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
+                <div className="min-w-0 flex-1 md:text-left">
+                  <h3 className={cn('mb-2 text-base font-bold', cmsClampClassNames(2))}>
+                    {item.title}
+                  </h3>
+                  <p
+                    className={cn(
+                      'text-justify text-sm leading-relaxed text-[#d9d9d9]/70',
+                      cmsClampClassNames(4),
+                    )}
+                  >
                     {item.description}
                   </p>
                 </div>
               </>
             ) : (
               <>
-                <div className="flex-1 md:text-right">
-                  <h3 className="mb-2 text-base font-bold">{item.title}</h3>
-                  <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
+                <div className="min-w-0 flex-1 md:text-right">
+                  <h3 className={cn('mb-2 text-base font-bold', cmsClampClassNames(2))}>
+                    {item.title}
+                  </h3>
+                  <p
+                    className={cn(
+                      'text-justify text-sm leading-relaxed text-[#d9d9d9]/70',
+                      cmsClampClassNames(4),
+                    )}
+                  >
                     {item.description}
                   </p>
                 </div>

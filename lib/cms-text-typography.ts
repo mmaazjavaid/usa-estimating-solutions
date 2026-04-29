@@ -27,6 +27,10 @@ const PARAGRAPH_SCALE: Record<string, string> = {
   h3: 'text-base md:text-lg',
 };
 
+/** Prevents admin “custom px” values from blowing up layouts (SEO copy stays; UI stays minimal). */
+const MAX_HEADLINE_CUSTOM_PX = 64;
+const MAX_PARAGRAPH_CUSTOM_PX = 24;
+
 export function parseCmsFontSizePx(raw: unknown): number | undefined {
   const n = parseFloat(String(raw ?? '').trim().replace(/px$/i, ''));
   if (!Number.isFinite(n) || n <= 0 || n > 512) {
@@ -48,10 +52,11 @@ export function cmsResolveHeadlineSize(
     return undefined;
   }
   if (size === 'custom') {
-    const px = parseCmsFontSizePx(pxRaw);
-    if (px == null) {
+    const pxRawN = parseCmsFontSizePx(pxRaw);
+    if (pxRawN == null) {
       return undefined;
     }
+    const px = Math.min(MAX_HEADLINE_CUSTOM_PX, pxRawN);
     return {
       className: 'leading-tight',
       style: { fontSize: `${px}px`, lineHeight: 1.15 },
@@ -73,10 +78,11 @@ export function cmsResolveParagraphSize(
     return undefined;
   }
   if (size === 'custom') {
-    const px = parseCmsFontSizePx(pxRaw);
-    if (px == null) {
+    const pxRawN = parseCmsFontSizePx(pxRaw);
+    if (pxRawN == null) {
       return undefined;
     }
+    const px = Math.min(MAX_PARAGRAPH_CUSTOM_PX, pxRawN);
     return {
       style: { fontSize: `${px}px`, lineHeight: 1.6 },
     };

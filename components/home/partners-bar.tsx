@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { CursorGlow } from '@/components/ui/cursor-glow';
+import { CMS_SECTION_BODY_LINES, CmsClamp } from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -44,7 +45,9 @@ export function PartnersBar({
             )}
             style={introTypography?.style}
           >
-            {intro}
+            <CmsClamp as="span" lines={CMS_SECTION_BODY_LINES}>
+              {intro}
+            </CmsClamp>
           </p>
           <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
             {logos.map((logo) => (

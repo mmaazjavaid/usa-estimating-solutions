@@ -3,6 +3,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import {
+  CMS_SECTION_BODY_LINES,
+  CMS_SECTION_HEADING_LINES,
+  CmsClamp,
+  cmsClampClassNames,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -67,7 +73,9 @@ export function OurWorks({
           )}
           style={headingTypography?.style}
         >
-          {heading}
+          <CmsClamp as="span" lines={CMS_SECTION_HEADING_LINES}>
+            {heading}
+          </CmsClamp>
         </h2>
         <p
           className={cn(
@@ -76,7 +84,9 @@ export function OurWorks({
           )}
           style={introTypography?.style}
         >
-          {intro}
+          <CmsClamp as="span" lines={CMS_SECTION_BODY_LINES}>
+            {intro}
+          </CmsClamp>
         </p>
 
         <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -114,7 +124,10 @@ export function OurWorks({
                     hover: { opacity: 1, y: 0, filter: 'blur(0px)' },
                   }}
                   transition={{ duration: 0.5, ease: 'easeOut' }}
-                  className="font-serif text-lg font-medium text-white md:text-xl lg:text-2xl"
+                  className={cn(
+                    'font-serif text-lg font-medium text-white md:text-xl lg:text-2xl',
+                    cmsClampClassNames(3),
+                  )}
                 >
                   {work.title}
                 </motion.span>

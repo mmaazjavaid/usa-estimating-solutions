@@ -1,4 +1,9 @@
 import { EstimateCard } from '@/components/common/estimate-card';
+import {
+  CMS_SECTION_BODY_LINES,
+  CMS_SECTION_HEADING_LINES,
+  CmsClamp,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -84,7 +89,9 @@ export function OurTrades({
           )}
           style={headingTypography?.style}
         >
-          {heading}
+          <CmsClamp as="span" lines={CMS_SECTION_HEADING_LINES}>
+            {heading}
+          </CmsClamp>
         </h2>
         <p
           className={cn(
@@ -95,7 +102,9 @@ export function OurTrades({
           )}
           style={introTypography?.style}
         >
-          {intro}
+          <CmsClamp as="span" lines={CMS_SECTION_BODY_LINES}>
+            {intro}
+          </CmsClamp>
         </p>
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">

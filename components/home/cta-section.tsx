@@ -1,6 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import {
+  CMS_SECTION_BODY_LINES,
+  CMS_SECTION_HEADING_LINES,
+  CmsClamp,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -43,7 +48,9 @@ export function CTASection({
           )}
           style={titleTypography?.style}
         >
-          {title}
+          <CmsClamp as="span" lines={CMS_SECTION_HEADING_LINES}>
+            {title}
+          </CmsClamp>
         </h2>
 
         <p
@@ -54,7 +61,9 @@ export function CTASection({
           )}
           style={descriptionTypography?.style}
         >
-          {description}
+          <CmsClamp as="span" lines={CMS_SECTION_BODY_LINES}>
+            {description}
+          </CmsClamp>
         </p>
 
         <div className="flex justify-center">

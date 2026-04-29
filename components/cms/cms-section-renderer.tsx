@@ -1,3 +1,9 @@
+import {
+  CMS_SECTION_BODY_LINES,
+  CMS_SECTION_HEADING_LINES,
+  CmsClamp,
+  cmsClampClassNames,
+} from '@/components/ui/cms-clamp';
 import { HeroSection } from '@/components/home/hero-section';
 import { PartnersBar } from '@/components/home/partners-bar';
 import { ServicesSection } from '@/components/home/services-section';
@@ -360,7 +366,9 @@ function CmsSectionBlock({
                 )}
                 style={headingTy?.style}
               >
-                {heading}
+                <CmsClamp as="span" lines={CMS_SECTION_HEADING_LINES}>
+                  {heading}
+                </CmsClamp>
               </h2>
             ) : null}
             <div
@@ -371,7 +379,7 @@ function CmsSectionBlock({
               style={bodyTy?.style}
             >
               {paragraphs.map((p, i) => (
-                <p key={i} className="whitespace-pre-line">
+                <p key={i} className={cn('whitespace-pre-line', cmsClampClassNames(6))}>
                   {p}
                 </p>
               ))}

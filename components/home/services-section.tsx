@@ -10,6 +10,11 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import { AnimatedServiceCard } from '@/components/common/animated-service-card';
+import {
+  CMS_SECTION_BODY_LINES,
+  CMS_SECTION_HEADING_LINES,
+  CmsClamp,
+} from '@/components/ui/cms-clamp';
 import { DEFAULT_SERVICES } from '@/lib/cms-defaults';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
@@ -117,7 +122,7 @@ export function ServicesSection({
   return (
     <section className="bg-black py-24 text-white overflow-hidden">
       <div className="mx-auto max-w-[1600px] px-6 md:px-12 lg:px-16">
-        <div className="mb-16 flex flex-col items-center text-center">
+        <div className="mb-16 flex min-w-0 w-full max-w-full flex-col items-center text-center">
           <h2
             className={cn(
               'mb-6 text-4xl font-bold tracking-tight md:text-5xl',
@@ -125,13 +130,17 @@ export function ServicesSection({
             )}
             style={sectionTitleTypography?.style}
           >
-            {sectionTitle}
+            <CmsClamp as="span" lines={CMS_SECTION_HEADING_LINES}>
+              {sectionTitle}
+            </CmsClamp>
           </h2>
           <p
             className={cn('max-w-3xl text-base leading-relaxed text-white', introTypography?.className)}
             style={introTypography?.style}
           >
-            {intro}
+            <CmsClamp as="span" lines={CMS_SECTION_BODY_LINES}>
+              {intro}
+            </CmsClamp>
           </p>
         </div>
 
