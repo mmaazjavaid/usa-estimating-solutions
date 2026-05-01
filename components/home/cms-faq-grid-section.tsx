@@ -50,7 +50,7 @@ export function CmsFaqGridSection({
               </h3>
               <p
                 className={cn(
-                  'text-justify text-sm leading-relaxed text-[#d9d9d9]/70',
+                  'text-sm leading-relaxed text-[#d9d9d9]/70',
                   cmsClampClassNames(6),
                 )}
               >
