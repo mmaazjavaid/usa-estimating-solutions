@@ -48,6 +48,20 @@ const pageSchema = new Schema(
     serviceMarketingSectionsVersion: { type: Number, required: false },
     /** Trades sub-pages (`/trades/...`) section schema version. */
     tradesSectionsVersion: { type: Number, required: false },
+    /** 'independent' = shown in nav; 'under_trade' = nested under a parent trade's types section. */
+    tradeLocation: {
+      type: String,
+      enum: ['independent', 'under_trade'],
+      default: 'independent',
+    },
+    /** Which of the 4 core trade pages this page is nested under (only when tradeLocation = 'under_trade'). */
+    parentTrade: {
+      type: String,
+      enum: ['interior', 'exterior', 'mep', 'structural', null],
+      default: null,
+    },
+    /** Description shown in the parent trade's types section for this child trade. */
+    parentTradeDescription: { type: String, default: '' },
   },
   { timestamps: true },
 );

@@ -9,6 +9,15 @@ import type { CmsPageSection } from '@/lib/cms-sections/types';
 
 type LinkTarget = { label: string; path: string };
 
+type ParentTradeKey = 'interior' | 'exterior' | 'mep' | 'structural';
+
+const PARENT_TRADE_OPTIONS: { value: ParentTradeKey; label: string }[] = [
+  { value: 'interior', label: 'Interior Estimating' },
+  { value: 'exterior', label: 'Exterior Estimating' },
+  { value: 'mep', label: 'MEP Estimating' },
+  { value: 'structural', label: 'Structural Estimating' },
+];
+
 type PageRecord = {
   _id: string;
   name: string;
@@ -24,6 +33,9 @@ type PageRecord = {
   placement?: 'none' | 'services' | 'trades';
   renderMode?: 'seo_only' | 'dynamic';
   sections?: CmsPageSection[];
+  tradeLocation?: 'independent' | 'under_trade';
+  parentTrade?: ParentTradeKey | null;
+  parentTradeDescription?: string;
 };
 
 const emptyForm: Omit<PageRecord, '_id'> = {
@@ -40,6 +52,9 @@ const emptyForm: Omit<PageRecord, '_id'> = {
   placement: 'none',
   renderMode: 'seo_only',
   sections: [],
+  tradeLocation: 'independent',
+  parentTrade: null,
+  parentTradeDescription: '',
 };
 
 export default function EditPagePage() {
@@ -326,6 +341,82 @@ export default function EditPagePage() {
                 )
               }
             />
+          ) : null}
+
+          {isDynamic && formData.path.startsWith('/trades/') ? (
+            <div className="space-y-3">
+              <p className="text-sm text-zinc-300">Trade location</p>
+              <div className="space-y-2">
+                <label className="flex cursor-pointer items-center gap-2">
+                  <input
+                    type="radio"
+                    name="tradeLocation"
+                    value="independent"
+                    checked={(formData.tradeLocation ?? 'independent') === 'independent'}
+                    onChange={() =>
+                      setFormData((prev) =>
+                        prev
+                          ? { ...prev, tradeLocation: 'independent', parentTrade: null, parentTradeDescription: '' }
+                          : prev,
+                      )
+                    }
+                    className="accent-white"
+                  />
+                  <span className="text-sm text-zinc-200">Independent trade</span>
+                </label>
+                <label className="flex cursor-pointer items-center gap-2">
+                  <input
+                    type="radio"
+                    name="tradeLocation"
+                    value="under_trade"
+                    checked={formData.tradeLocation === 'under_trade'}
+                    onChange={() =>
+                      setFormData((prev) =>
+                        prev ? { ...prev, tradeLocation: 'under_trade' } : prev,
+                      )
+                    }
+                    className="accent-white"
+                  />
+                  <span className="text-sm text-zinc-200">Trade under another trade</span>
+                </label>
+              </div>
+
+              {formData.tradeLocation === 'under_trade' ? (
+                <div className="ml-5 space-y-3 border-l border-zinc-700 pl-4">
+                  <p className="text-xs text-zinc-400">Select parent trade</p>
+                  <div className="flex flex-wrap gap-2">
+                    {PARENT_TRADE_OPTIONS.map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() =>
+                          setFormData((prev) =>
+                            prev ? { ...prev, parentTrade: opt.value } : prev,
+                          )
+                        }
+                        className={`rounded-md border px-3 py-1.5 text-sm transition-colors ${
+                          formData.parentTrade === opt.value
+                            ? 'border-white bg-white text-black'
+                            : 'border-zinc-600 text-zinc-300 hover:border-zinc-400'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <TextArea
+                    label="Description (shown in parent trade's types section)"
+                    value={formData.parentTradeDescription ?? ''}
+                    onChange={(value) =>
+                      setFormData((prev) =>
+                        prev ? { ...prev, parentTradeDescription: value } : prev,
+                      )
+                    }
+                  />
+                </div>
+              ) : null}
+            </div>
           ) : null}
 
           {!isDynamic ? (

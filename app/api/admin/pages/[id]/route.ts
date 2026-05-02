@@ -8,6 +8,7 @@ import {
   validateAndFinalizePagePatch,
 } from '@/lib/admin-page-update';
 import { migrateLegacyCmsSection } from '@/lib/cms-sections/legacy-map';
+import { syncChildTradeInParents } from '@/lib/parent-trade-sync';
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -89,6 +90,22 @@ export async function PATCH(request: Request, { params }: Params) {
   }
 
   revalidateAfterCmsPageChange(String(data.path ?? ''));
+
+  // Sync child trade into parent's site_trade_lower types when relevant fields change
+  const isTradePage = String(existing.path ?? '').startsWith('/trades/');
+  if (isTradePage) {
+    const ex = existing as Record<string, unknown>;
+    const upd = data as Record<string, unknown>;
+    void syncChildTradeInParents({
+      childPath: String(upd.path ?? ''),
+      childName: String(upd.name ?? ''),
+      childDescription: String(upd.parentTradeDescription ?? ''),
+      oldTradeLocation: String(ex.tradeLocation ?? 'independent'),
+      oldParentTrade: (ex.parentTrade as string | null) ?? null,
+      newTradeLocation: String(upd.tradeLocation ?? 'independent'),
+      newParentTrade: (upd.parentTrade as string | null) ?? null,
+    });
+  }
 
   return NextResponse.json({ data });
 }

@@ -75,6 +75,7 @@ export async function getPublishedCmsNavLinks(): Promise<{
       status: 'published',
       renderMode: 'dynamic',
       placement: 'trades',
+      tradeLocation: { $ne: 'under_trade' },
     })
       .sort({ name: 1 })
       .select('name path')
@@ -96,11 +97,11 @@ export async function getPublishedCmsNavLinks(): Promise<{
 export async function getPublishedCmsPagesForListing(placement: 'services' | 'trades') {
   cmsReadNoStore();
   await ensureBaseCmsRecords();
-  return await PageModel.find({
-    status: 'published',
-    renderMode: 'dynamic',
-    placement,
-  })
+  const query: Record<string, unknown> = { status: 'published', renderMode: 'dynamic', placement };
+  if (placement === 'trades') {
+    query.tradeLocation = { $ne: 'under_trade' };
+  }
+  return await PageModel.find(query)
     .sort({ name: 1 })
     .select('name path metaDescription')
     .lean();

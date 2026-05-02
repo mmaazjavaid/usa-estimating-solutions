@@ -19,6 +19,9 @@ const PATCH_KEYS = [
   'placement',
   'renderMode',
   'sections',
+  'tradeLocation',
+  'parentTrade',
+  'parentTradeDescription',
 ] as const;
 
 type PatchKey = (typeof PATCH_KEYS)[number];
@@ -145,6 +148,28 @@ export async function validateAndFinalizePagePatch(params: {
       continue;
     }
 
+    if (key === 'tradeLocation') {
+      if (patch.tradeLocation !== 'independent' && patch.tradeLocation !== 'under_trade') {
+        return { ok: false, message: 'Invalid trade location.' };
+      }
+      update.tradeLocation = patch.tradeLocation;
+      continue;
+    }
+
+    if (key === 'parentTrade') {
+      const valid = ['interior', 'exterior', 'mep', 'structural', null, ''];
+      if (!valid.includes(patch.parentTrade as string | null)) {
+        return { ok: false, message: 'Invalid parent trade.' };
+      }
+      update.parentTrade = patch.parentTrade || null;
+      continue;
+    }
+
+    if (key === 'parentTradeDescription') {
+      update.parentTradeDescription = typeof patch.parentTradeDescription === 'string' ? patch.parentTradeDescription : '';
+      continue;
+    }
+
     update[key] = patch[key];
   }
 
@@ -198,6 +223,17 @@ export async function validateNewDynamicPage(body: Record<string, unknown>): Pro
 
   const sections = normalizeSectionsInput(body.sections);
 
+  const tradeLocation =
+    body.tradeLocation === 'under_trade' ? 'under_trade' : 'independent';
+  const parentTradeRaw = body.parentTrade;
+  const parentTrade =
+    parentTradeRaw === 'interior' ||
+    parentTradeRaw === 'exterior' ||
+    parentTradeRaw === 'mep' ||
+    parentTradeRaw === 'structural'
+      ? parentTradeRaw
+      : null;
+
   const doc = {
     name,
     slug,
@@ -218,6 +254,10 @@ export async function validateNewDynamicPage(body: Record<string, unknown>): Pro
     placement,
     renderMode: 'dynamic' as const,
     sections,
+    tradeLocation,
+    parentTrade,
+    parentTradeDescription:
+      typeof body.parentTradeDescription === 'string' ? body.parentTradeDescription : '',
   };
 
   return { ok: true, doc };

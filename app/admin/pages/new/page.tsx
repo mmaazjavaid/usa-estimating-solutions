@@ -8,6 +8,15 @@ import type { CmsPageSection } from '@/lib/cms-sections/types';
 
 type LinkTarget = { label: string; path: string };
 
+type ParentTradeKey = 'interior' | 'exterior' | 'mep' | 'structural';
+
+const PARENT_TRADE_OPTIONS: { value: ParentTradeKey; label: string }[] = [
+  { value: 'interior', label: 'Interior Estimating' },
+  { value: 'exterior', label: 'Exterior Estimating' },
+  { value: 'mep', label: 'MEP Estimating' },
+  { value: 'structural', label: 'Structural Estimating' },
+];
+
 export default function NewDynamicPage() {
   const router = useRouter();
   const [name, setName] = useState('');
@@ -20,6 +29,9 @@ export default function NewDynamicPage() {
   const [indexStatus, setIndexStatus] = useState<'index' | 'noindex'>('index');
   const [status, setStatus] = useState<'published' | 'unpublished'>('unpublished');
   const [placement, setPlacement] = useState<'none' | 'services' | 'trades'>('none');
+  const [tradeLocation, setTradeLocation] = useState<'independent' | 'under_trade'>('independent');
+  const [parentTrade, setParentTrade] = useState<ParentTradeKey | null>(null);
+  const [parentTradeDescription, setParentTradeDescription] = useState('');
   const [sections, setSections] = useState<CmsPageSection[]>([]);
   const [linkTargets, setLinkTargets] = useState<LinkTarget[]>([
     { label: 'Home', path: '/' },
@@ -69,6 +81,9 @@ export default function NewDynamicPage() {
         status,
         placement,
         sections,
+        tradeLocation: placement === 'trades' ? tradeLocation : 'independent',
+        parentTrade: placement === 'trades' && tradeLocation === 'under_trade' ? parentTrade : null,
+        parentTradeDescription: placement === 'trades' && tradeLocation === 'under_trade' ? parentTradeDescription : '',
       }),
     });
 
@@ -206,9 +221,15 @@ export default function NewDynamicPage() {
             <span className="text-sm text-zinc-300">Placement</span>
             <select
               value={placement}
-              onChange={(e) =>
-                setPlacement(e.target.value as 'none' | 'services' | 'trades')
-              }
+              onChange={(e) => {
+                const val = e.target.value as 'none' | 'services' | 'trades';
+                setPlacement(val);
+                if (val !== 'trades') {
+                  setTradeLocation('independent');
+                  setParentTrade(null);
+                  setParentTradeDescription('');
+                }
+              }}
               className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-white"
             >
               <option value="none">None (direct link only)</option>
@@ -216,6 +237,73 @@ export default function NewDynamicPage() {
               <option value="trades">Under Trades menu</option>
             </select>
           </label>
+
+          {placement === 'trades' ? (
+            <div className="space-y-3">
+              <p className="text-sm text-zinc-300">Trade location</p>
+              <div className="space-y-2">
+                <label className="flex cursor-pointer items-center gap-2">
+                  <input
+                    type="radio"
+                    name="tradeLocation"
+                    value="independent"
+                    checked={tradeLocation === 'independent'}
+                    onChange={() => {
+                      setTradeLocation('independent');
+                      setParentTrade(null);
+                      setParentTradeDescription('');
+                    }}
+                    className="accent-white"
+                  />
+                  <span className="text-sm text-zinc-200">Independent trade</span>
+                </label>
+                <label className="flex cursor-pointer items-center gap-2">
+                  <input
+                    type="radio"
+                    name="tradeLocation"
+                    value="under_trade"
+                    checked={tradeLocation === 'under_trade'}
+                    onChange={() => setTradeLocation('under_trade')}
+                    className="accent-white"
+                  />
+                  <span className="text-sm text-zinc-200">Trade under another trade</span>
+                </label>
+              </div>
+
+              {tradeLocation === 'under_trade' ? (
+                <div className="ml-5 space-y-3 border-l border-zinc-700 pl-4">
+                  <p className="text-xs text-zinc-400">Select parent trade</p>
+                  <div className="flex flex-wrap gap-2">
+                    {PARENT_TRADE_OPTIONS.map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => setParentTrade(opt.value)}
+                        className={`rounded-md border px-3 py-1.5 text-sm transition-colors ${
+                          parentTrade === opt.value
+                            ? 'border-white bg-white text-black'
+                            : 'border-zinc-600 text-zinc-300 hover:border-zinc-400'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-sm text-zinc-300">
+                      Description (shown in parent trade&apos;s types section)
+                    </label>
+                    <textarea
+                      value={parentTradeDescription}
+                      onChange={(e) => setParentTradeDescription(e.target.value)}
+                      rows={3}
+                      className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-2 text-white"
+                    />
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </div>
 
         <div className="space-y-4 rounded-lg border border-zinc-800 bg-zinc-900 p-6">
