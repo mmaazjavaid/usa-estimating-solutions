@@ -10,6 +10,8 @@ export type PageGlowTheme = {
   cursorGlow: CursorGlowColors;
   /** Accent color used by hover-bubble effects. */
   bubbleColor: string;
+  /** Base hex accent used for fills/icons on the page. */
+  accentHex: string;
 };
 
 const FALLBACK_THEME: PageGlowTheme = {
@@ -19,6 +21,7 @@ const FALLBACK_THEME: PageGlowTheme = {
     tertiary: 'rgba(230, 96, 28, 0.22)',
   },
   bubbleColor: 'rgba(236, 129, 58, 0.55)',
+  accentHex: '#EC813A',
 };
 
 const PageGlowContext = createContext<PageGlowTheme | null>(null);
@@ -75,6 +78,7 @@ function themeFromPath(pathname: string): PageGlowTheme {
       tertiary: rgbaFromHex(chosen.hex, 0.22),
     },
     bubbleColor: rgbaFromHex(chosen.hex, 0.55),
+    accentHex: chosen.hex,
   };
 }
 

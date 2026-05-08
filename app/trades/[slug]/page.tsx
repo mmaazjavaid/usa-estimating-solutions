@@ -71,9 +71,11 @@ export default async function TradesDynamicPage({ params, searchParams }: PagePr
   const cmsPage = await loadDynamicCmsPageByPath(path, { allowDraft: preview });
 
   if (cmsPage && (cmsPage.renderMode ?? 'seo_only') === 'dynamic') {
-    const sectionList = normalizeSectionsInput(
+    const sectionListRaw = normalizeSectionsInput(
       (cmsPage.sections ?? []) as CmsPageSection[],
     );
+    const breadcrumbCurrent = String((cmsPage as { name?: string }).name ?? '').trim() || slug;
+    const sectionList = coerceTradeHeroSections(sectionListRaw, breadcrumbCurrent);
 
     return (
       <>
@@ -97,4 +99,33 @@ export default async function TradesDynamicPage({ params, searchParams }: PagePr
   }
 
   notFound();
+}
+
+function coerceTradeHeroSections(sections: CmsPageSection[], breadcrumbCurrent: string): CmsPageSection[] {
+  return sections.map((section) => {
+    if (section.type !== 'site_hero') {
+      return section;
+    }
+
+    const d =
+      section.data && typeof section.data === 'object' && !Array.isArray(section.data)
+        ? (section.data as Record<string, unknown>)
+        : {};
+
+    const headlineHtml = String(d.headline ?? '').trim();
+    const intro = String(d.subtitle ?? '').trim();
+
+    return {
+      ...section,
+      // Trade pages should always render the trade hero (with hex visual).
+      type: 'site_trade_hero',
+      data: {
+        breadcrumbCurrent,
+        headlineHtml,
+        intro,
+        // Let the Trade hero hex visual derive colors from the page accent by default.
+        iconId: String(d.iconId ?? '').trim() || 'trade-hero-icon',
+      },
+    } as CmsPageSection;
+  });
 }

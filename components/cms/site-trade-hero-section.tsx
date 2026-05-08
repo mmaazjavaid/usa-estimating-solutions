@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { TradeHexIcon } from '@/components/cms/trade-hex-icon';
+import { TradeHeroHexVisual } from '@/components/cms/trade-hero-hex-visual';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -16,8 +16,8 @@ export function SiteTradeHeroSection({
   breadcrumbCurrent: string;
   headlineHtml: string;
   intro: string;
-  hexTopColor: string;
-  hexLayerColor: string;
+  hexTopColor?: string;
+  hexLayerColor?: string;
   iconId: string;
   headlineTypography?: CmsTextTypography;
   introTypography?: CmsTextTypography;
@@ -69,8 +69,8 @@ export function SiteTradeHeroSection({
           </p>
         </div>
 
-        <div className="flex justify-center lg:justify-end">
-          <TradeHexIcon id={iconId} topColor={hexTopColor} layerColor={hexLayerColor} />
+        <div className="flex w-full justify-center lg:justify-end">
+          <TradeHeroHexVisual id={iconId} topColor={hexTopColor} layerColor={hexLayerColor} />
         </div>
       </div>
       </section>

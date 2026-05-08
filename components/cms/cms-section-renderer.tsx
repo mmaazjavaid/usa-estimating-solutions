@@ -550,9 +550,9 @@ function CmsSectionBlock({
           breadcrumbCurrent={String(d.breadcrumbCurrent || '').trim()}
           headlineHtml={String(d.headlineHtml || '').trim()}
           intro={String(d.intro || '').trim()}
-          hexTopColor={String(d.hexTopColor || '#8A6AB8').trim()}
-          hexLayerColor={String(d.hexLayerColor || '#5A4080').trim()}
-          iconId={String(d.iconId || 'trade-hero-icon').trim()}
+          hexTopColor={String(d.hexTopColor || '').trim() || undefined}
+          hexLayerColor={String(d.hexLayerColor || '').trim() || undefined}
+          iconId={String(d.iconId || '').trim() || 'trade-hero-icon'}
           headlineTypography={cmsHeadlineTy(d, 'headlineHtml')}
           introTypography={cmsParagraphTy(d, 'intro')}
         />
