@@ -52,17 +52,29 @@ function TypeTitle({ title, href }: { title: string; href?: string }) {
   );
 }
 
+function capitalizeFirst(value: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) return value;
+  return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
+}
+
 const labelBoxBaseClass =
-  'flex h-40 w-full flex-shrink-0 items-center justify-center rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-6 py-14 text-center text-4xl font-semibold text-white md:w-64 transition-colors';
+  'flex h-40 w-full flex-shrink-0 items-center justify-center rounded-lg border border-[#d9d9d9]/10 bg-[#1a1a1a] px-6 py-14 text-center text-lg font-semibold text-white md:w-64 md:text-xl transition-colors';
 
 const labelBoxInteractiveClass =
   'cursor-pointer hover:border-[#d9d9d9]/30 hover:bg-[#222] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/40';
 
 function LabelBox({ label, href }: { label: string; href?: string }) {
   const trimmed = href?.trim();
+  const displayLabel = capitalizeFirst(label);
+  const labelInner = (
+    <span className="block w-full max-w-full truncate overflow-hidden text-ellipsis whitespace-nowrap">
+      {displayLabel}
+    </span>
+  );
 
   if (!trimmed) {
-    return <div className={labelBoxBaseClass}>{label}</div>;
+    return <div className={labelBoxBaseClass}>{labelInner}</div>;
   }
 
   const external = trimmed.startsWith('http://') || trimmed.startsWith('https://');
@@ -76,14 +88,14 @@ function LabelBox({ label, href }: { label: string; href?: string }) {
         rel="noopener noreferrer"
         className={`${labelBoxBaseClass} ${labelBoxInteractiveClass}`}
       >
-        {label}
+        {labelInner}
       </a>
     );
   }
 
   return (
     <Link href={path} className={`${labelBoxBaseClass} ${labelBoxInteractiveClass}`}>
-      {label}
+      {labelInner}
     </Link>
   );
 }
