@@ -71,19 +71,36 @@ export function HeroSection({
   const showDefaultHeadline = !trimmedHeadline;
   const headlineAsHtml = showDefaultHeadline ? false : headlineLooksLikeHtml(trimmedHeadline);
 
+  // Strip all text-size tokens (incl. responsive variants like md:text-5xl) so CMS
+  // typography can't override the hardcoded size at any breakpoint.
+  const headlineTypographyClass = headlineTypography?.className
+    ?.split(' ')
+    .filter((c) => !/^(?:(?:sm|md|lg|xl|2xl):)?text-(?:xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl)$/.test(c))
+    .join(' ');
+
   const headlineClass = cn(
-    'min-w-0 max-w-full text-balance text-2xl font-bold leading-tight tracking-tight text-foreground md:text-3xl lg:text-4xl',
+    'min-w-0 max-w-full text-balance font-bold leading-tight tracking-tight text-foreground',
     !showDefaultHeadline ? cmsClampClassNames(CMS_HERO_HEADLINE_LINES) : undefined,
-    !showDefaultHeadline ? headlineTypography?.className : undefined,
+    !showDefaultHeadline ? headlineTypographyClass : undefined,
+    'text-4xl',
   );
-  const headlineStyle = !showDefaultHeadline ? headlineTypography?.style : undefined;
+  // Strip fontSize from CMS style — size is enforced by headlineClass so inline px can't override
+  const headlineStyle = (() => {
+    if (!showDefaultHeadline && headlineTypography?.style) {
+      const { fontSize: omitted, ...rest } = headlineTypography.style;
+      void omitted;
+      return Object.keys(rest).length ? rest : undefined;
+    }
+    return undefined;
+  })();
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-background pt-20">
-      <div className="mx-auto flex max-w-7xl flex-col items-start px-6 py-14 lg:flex-row lg:items-end lg:py-20">
-        <div className="relative z-10 flex min-w-0 w-full max-w-xl flex-col gap-6 pb-8 lg:max-w-[26rem] lg:pb-12">
+    <section className="relative min-h-screen overflow-hidden bg-background pt-6 md:pt-8">
+      <div className="mx-auto flex max-w-7xl flex-col px-6 lg:min-h-[calc(100vh-5rem)] lg:flex-row lg:items-end lg:gap-12">
+        {/* Left: text content */}
+        <div className="relative z-10 flex min-w-0 flex-col gap-6 pb-10 pt-4 lg:w-[44%] lg:flex-none lg:pb-20 lg:pt-0">
           {showDefaultHeadline ? (
-            <h1 className="min-w-0 text-balance text-2xl font-bold leading-tight tracking-tight text-foreground md:text-3xl lg:text-4xl">
+            <h1 className="min-w-0 text-balance text-2xl font-bold leading-tight tracking-tight text-foreground">
               <span>
                 Bid{' '}
                 <span className="text-animated-gradient text-animated-gradient--phase-0">
@@ -106,7 +123,7 @@ export function HeroSection({
           )}
           <p
             className={cn(
-              'max-w-sm text-base leading-relaxed text-muted-foreground',
+              'max-w-sm text-sm leading-relaxed text-muted-foreground',
               cmsClampClassNames(CMS_HERO_SUBTITLE_LINES),
               subtitleTypography?.className,
             )}
@@ -132,14 +149,15 @@ export function HeroSection({
           </div>
         </div>
 
-        <div className="relative mt-6 flex w-full flex-1 justify-center lg:mt-0 lg:justify-end">
-          <CursorGlow className="w-full max-w-3xl overflow-visible lg:max-w-[48rem]">
+        {/* Right: cityscape image */}
+        <div className="flex items-end justify-center lg:w-[52%] lg:flex-none lg:justify-end">
+          <CursorGlow className="w-full overflow-visible">
             <Image
               src={imageSrc}
               alt={imageAlt}
-              width={1100}
-              height={620}
-              className="w-full object-contain opacity-95"
+              width={945}
+              height={821}
+              className="w-full max-h-[45vh] object-contain object-bottom opacity-95 lg:max-h-[72vh]"
               priority
             />
           </CursorGlow>

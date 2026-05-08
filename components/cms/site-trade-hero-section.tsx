@@ -22,6 +22,23 @@ export function SiteTradeHeroSection({
   headlineTypography?: CmsTextTypography;
   introTypography?: CmsTextTypography;
 }) {
+  // Strip all text-size tokens (incl. responsive variants like md:text-5xl) so CMS
+  // typography can't override the hardcoded size at any breakpoint.
+  const headlineTypographyClass = headlineTypography?.className
+    ?.split(' ')
+    .filter((c) => !/^(?:(?:sm|md|lg|xl|2xl):)?text-(?:xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl)$/.test(c))
+    .join(' ');
+
+  // Strip fontSize from CMS style — size is enforced by headline class so inline px can't override
+  const headlineStyle = (() => {
+    if (headlineTypography?.style) {
+      const { fontSize: omitted, ...rest } = headlineTypography.style;
+      void omitted;
+      return Object.keys(rest).length ? rest : undefined;
+    }
+    return undefined;
+  })();
+
   return (
     <section className="bg-black text-white">
       <section className="mx-auto max-w-7xl px-6 pb-16 pt-8">
@@ -35,10 +52,10 @@ export function SiteTradeHeroSection({
         <div className="max-w-xl">
           <h1
             className={cn(
-              'mb-8 text-4xl font-bold leading-tight md:text-5xl',
-              headlineTypography?.className,
+              'mb-8 text-4xl font-bold leading-tight',
+              headlineTypographyClass,
             )}
-            style={headlineTypography?.style}
+            style={headlineStyle}
             dangerouslySetInnerHTML={{ __html: headlineHtml }}
           />
           <p

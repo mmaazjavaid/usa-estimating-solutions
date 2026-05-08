@@ -63,6 +63,28 @@ export function SiteServiceMarketingHero({
   headlineTypography,
   introTypography,
 }: ServiceMarketingHeroProps) {
+  // Strip all text-size tokens (incl. responsive variants like md:text-5xl) so CMS
+  // typography can't override the hardcoded size at any breakpoint.
+  const headlineTypographyClass = headlineTypography?.className
+    ?.split(' ')
+    .filter(
+      (c) =>
+        !/^(?:(?:sm|md|lg|xl|2xl):)?text-(?:xs|sm|base|lg|xl|2xl|3xl|4xl|5xl|6xl|7xl|8xl|9xl)$/.test(
+          c,
+        ),
+    )
+    .join(' ');
+
+  // Strip fontSize from CMS style — size is enforced by headline class so inline px can't override
+  const headlineStyle = (() => {
+    if (headlineTypography?.style) {
+      const { fontSize: omitted, ...rest } = headlineTypography.style;
+      void omitted;
+      return Object.keys(rest).length ? rest : undefined;
+    }
+    return undefined;
+  })();
+
   const glow = {
     primary: glowPrimary || defaultGlow.primary,
     secondary: glowSecondary || defaultGlow.secondary,
@@ -145,11 +167,11 @@ export function SiteServiceMarketingHero({
     <h1
       className={cn(
         layout === 'cost'
-          ? 'mb-8 text-balance text-5xl font-bold leading-[1.1] tracking-tight text-white md:text-6xl'
-          : 'mb-8 text-4xl font-bold leading-tight md:text-5xl lg:text-5xl',
-        headlineTypography?.className,
+          ? 'mb-8 text-balance text-4xl font-bold leading-[1.1] tracking-tight text-white'
+          : 'mb-8 text-4xl font-bold leading-tight',
+        headlineTypographyClass,
       )}
-      style={headlineTypography?.style}
+      style={headlineStyle}
       dangerouslySetInnerHTML={{ __html: headlineHtml }}
     />
   );
