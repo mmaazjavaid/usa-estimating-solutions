@@ -211,6 +211,7 @@ export function HeaderClient({
   return (
     <header
       ref={headerRef}
+      data-no-glow
       className="fixed top-0 left-0 right-0 z-50 min-h-20 w-full min-w-0 overflow-x-hidden bg-white/5 backdrop-blur-[30px]"
     >
       <div className="mx-auto flex h-20 w-full min-w-0 max-w-7xl items-center justify-between gap-2 px-3 sm:px-4 md:px-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">

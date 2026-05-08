@@ -61,8 +61,25 @@ export function useCursorGlow() {
   const tertiaryRef = useRef<HTMLDivElement | null>(null);
   const activeBlockRef = useRef<string | null>(null);
 
+  const hideGlow = useCallback(() => {
+    if (!primaryRef.current || !secondaryRef.current || !tertiaryRef.current) return;
+    primaryRef.current.style.opacity = '0';
+    secondaryRef.current.style.opacity = '0';
+    tertiaryRef.current.style.opacity = '0';
+    activeBlockRef.current = null;
+  }, []);
+
   const moveGlow = useCallback((event: MouseEvent<HTMLDivElement>) => {
     if (!primaryRef.current || !secondaryRef.current || !tertiaryRef.current) return;
+
+    // Allow areas like the navbar/header to opt out of the global glow.
+    if (
+      event.target instanceof Element &&
+      event.target.closest('[data-no-glow]')
+    ) {
+      hideGlow();
+      return;
+    }
 
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -109,15 +126,7 @@ export function useCursorGlow() {
     primaryRef.current.style.opacity = '1';
     secondaryRef.current.style.opacity = '1';
     tertiaryRef.current.style.opacity = '1';
-  }, []);
-
-  const hideGlow = useCallback(() => {
-    if (!primaryRef.current || !secondaryRef.current || !tertiaryRef.current) return;
-    primaryRef.current.style.opacity = '0';
-    secondaryRef.current.style.opacity = '0';
-    tertiaryRef.current.style.opacity = '0';
-    activeBlockRef.current = null;
-  }, []);
+  }, [hideGlow]);
 
   return {
     primaryRef,

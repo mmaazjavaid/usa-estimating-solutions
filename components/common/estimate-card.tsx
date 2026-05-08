@@ -95,6 +95,7 @@ export function EstimateCard({
       whileHover="hover"
       animate="rest"
       variants={cardVariants}
+      data-no-glow
       className="group relative flex flex-col justify-between overflow-hidden rounded-[21px] border bg-white/[0.03] p-6 backdrop-blur-[15px] md:p-8"
       style={{ minHeight }}
     >

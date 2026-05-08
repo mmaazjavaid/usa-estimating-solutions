@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, Manrope } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
+import { PageGlowShell } from '@/components/ui/page-glow';
 
 /**
  * CMS-driven header, footer, and pages read from MongoDB — must not be statically cached
@@ -42,7 +43,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${manrope.variable} font-sans antialiased`}
       >
-        {children}
+        <PageGlowShell>{children}</PageGlowShell>
         <Analytics />
       </body>
     </html>

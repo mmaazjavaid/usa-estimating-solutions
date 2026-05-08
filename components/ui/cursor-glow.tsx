@@ -1,6 +1,7 @@
 'use client';
 
 import { useCursorGlow } from '@/hooks/use-cursor-glow';
+import { usePageGlowTheme } from '@/components/ui/page-glow';
 
 export type CursorGlowColors = {
   primary: string;
@@ -24,7 +25,9 @@ type CursorGlowProps = {
   className?: string;
 };
 
-export function CursorGlow({ children, colors = DEFAULT_COLORS, className }: CursorGlowProps) {
+export function CursorGlow({ children, colors, className }: CursorGlowProps) {
+  const pageTheme = usePageGlowTheme();
+  const resolvedColors = colors ?? pageTheme.cursorGlow ?? DEFAULT_COLORS;
   const {
     primaryRef,
     secondaryRef,
@@ -47,7 +50,7 @@ export function CursorGlow({ children, colors = DEFAULT_COLORS, className }: Cur
           ref={primaryRef}
           className="absolute h-[460px] w-[460px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
           style={{
-            background: `radial-gradient(circle, ${colors.primary} 0%, ${withAlpha(colors.primary, 0.12)} 42%, transparent 72%)`,
+            background: `radial-gradient(circle, ${resolvedColors.primary} 0%, ${withAlpha(resolvedColors.primary, 0.12)} 42%, transparent 72%)`,
             filter: 'blur(32px) saturate(1.35)',
             mixBlendMode: 'screen',
             willChange:
@@ -60,7 +63,7 @@ export function CursorGlow({ children, colors = DEFAULT_COLORS, className }: Cur
           ref={secondaryRef}
           className="absolute h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
           style={{
-            background: `radial-gradient(circle, ${colors.secondary} 0%, ${withAlpha(colors.secondary, 0.10)} 46%, transparent 74%)`,
+            background: `radial-gradient(circle, ${resolvedColors.secondary} 0%, ${withAlpha(resolvedColors.secondary, 0.10)} 46%, transparent 74%)`,
             filter: 'blur(26px) saturate(1.2)',
             mixBlendMode: 'screen',
             willChange:
@@ -73,7 +76,7 @@ export function CursorGlow({ children, colors = DEFAULT_COLORS, className }: Cur
           ref={tertiaryRef}
           className="absolute h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
           style={{
-            background: `radial-gradient(circle, ${colors.tertiary} 0%, ${withAlpha(colors.tertiary, 0.08)} 50%, transparent 76%)`,
+            background: `radial-gradient(circle, ${resolvedColors.tertiary} 0%, ${withAlpha(resolvedColors.tertiary, 0.08)} 50%, transparent 76%)`,
             filter: 'blur(24px) saturate(1.15)',
             mixBlendMode: 'screen',
             willChange:

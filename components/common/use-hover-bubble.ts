@@ -13,6 +13,7 @@ import {
   useSpring,
   type MotionValue,
 } from 'framer-motion';
+import { usePageGlowTheme } from '@/components/ui/page-glow';
 
 type UseHoverBubbleOptions = {
   stiffness?: number;
@@ -49,7 +50,11 @@ export function useHoverBubble<T extends HTMLElement = HTMLDivElement>(
 }
 
 type HoverBubbleLayerOptions = {
-  color: string;
+  /**
+   * Optional: when omitted, the page accent color is used so the whole page
+   * stays consistent across sections.
+   */
+  color?: string;
   size?: number;
   blur?: number;
   hoverOpacity?: number;
@@ -69,9 +74,10 @@ export function useHoverBubbleLayer<T extends HTMLElement = HTMLDivElement>(
   options: UseHoverBubbleOptions = {},
 ): UseHoverBubbleLayerResult<T> {
   const { ref, onMouseMove, x, y } = useHoverBubble<T>(options);
+  const pageTheme = usePageGlowTheme();
 
   const {
-    color,
+    color = pageTheme.bubbleColor,
     size = 100,
     blur = 20,
     hoverOpacity = 0.45,
