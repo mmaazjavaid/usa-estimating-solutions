@@ -30,11 +30,65 @@ type EstimateCardProps = {
   title: string;
   description: string;
   href: string;
-  arrowColor: string;
-  topColor: string;
-  layerColor: string;
+  /** Optional. When omitted, a deterministic palette color is chosen. */
+  arrowColor?: string;
+  /** Optional. When omitted, a deterministic palette color is chosen. */
+  topColor?: string;
+  /** Optional. When omitted, derived from the chosen topColor. */
+  layerColor?: string;
   minHeight?: string;
 };
+
+function hashStringToIndex(input: string, mod: number): number {
+  let hash = 0;
+  for (let i = 0; i < input.length; i += 1) {
+    hash = (hash * 31 + input.charCodeAt(i)) | 0;
+  }
+  const n = Math.abs(hash);
+  return mod > 0 ? n % mod : 0;
+}
+
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const raw = hex.trim().replace(/^#/, '');
+  const normalized =
+    raw.length === 3
+      ? raw
+          .split('')
+          .map((c) => c + c)
+          .join('')
+      : raw;
+  if (!/^[\da-fA-F]{6}$/.test(normalized)) return null;
+  return {
+    r: parseInt(normalized.slice(0, 2), 16),
+    g: parseInt(normalized.slice(2, 4), 16),
+    b: parseInt(normalized.slice(4, 6), 16),
+  };
+}
+
+function clamp8(n: number) {
+  return Math.max(0, Math.min(255, Math.round(n)));
+}
+
+function rgbToHex({ r, g, b }: { r: number; g: number; b: number }): string {
+  const to2 = (v: number) => clamp8(v).toString(16).padStart(2, '0');
+  return `#${to2(r)}${to2(g)}${to2(b)}`.toUpperCase();
+}
+
+function darkenHex(hex: string, amount: number): string {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return hex;
+  return rgbToHex({
+    r: rgb.r * (1 - amount),
+    g: rgb.g * (1 - amount),
+    b: rgb.b * (1 - amount),
+  });
+}
+
+function resolveEstimateCardTopColor(seed: string): string {
+  // Requested base palette: orange, purple, reddish, greenish.
+  const palette = ['#EA580C', '#8B5CF6', '#E11D48', '#22C55E'] as const;
+  return palette[hashStringToIndex(seed || 'estimate', palette.length)] ?? palette[0];
+}
 
 export function EstimateCard({
   title,
@@ -45,6 +99,12 @@ export function EstimateCard({
   layerColor,
   minHeight = '320px',
 }: EstimateCardProps) {
+  const seed = `${href}::${title}`;
+  const resolvedTop = (topColor && topColor.trim()) ? topColor : resolveEstimateCardTopColor(seed);
+  const resolvedLayer =
+    (layerColor && layerColor.trim()) ? layerColor : darkenHex(resolvedTop, 0.34);
+  const resolvedArrow = (arrowColor && arrowColor.trim()) ? arrowColor : resolvedTop;
+
   const cardVariants: Variants = {
     rest: { borderColor: 'rgba(255, 255, 255, 0.1)' },
     hover: {
@@ -103,12 +163,12 @@ export function EstimateCard({
         variants={glowVariants}
         className="pointer-events-none absolute -bottom-24 -left-24 h-[400px] w-[400px] rounded-full blur-[80px]"
         style={{
-          background: `radial-gradient(circle, ${topColor} 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${resolvedTop} 0%, transparent 70%)`,
         }}
       />
 
       <div className="relative z-10">
-        <HexIcon id={href} topColor={topColor} layerColor={layerColor} />
+        <HexIcon id={href} topColor={resolvedTop} layerColor={resolvedLayer} />
       </div>
 
       <div className="relative z-10">
@@ -152,7 +212,7 @@ export function EstimateCard({
                   >
                     <path
                       d="M0 6H32M32 6L27 1M32 6L27 11"
-                      stroke={arrowColor}
+                      stroke={resolvedArrow}
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"

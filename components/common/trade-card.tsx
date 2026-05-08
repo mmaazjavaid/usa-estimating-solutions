@@ -6,12 +6,30 @@ import { useHoverBubbleLayer } from '@/components/common/use-hover-bubble';
 interface TradeCardProps {
   label: string;
   description: string;
-  glowColor: string;
+  /** Optional. When omitted, a deterministic palette color is chosen from the base brand set. */
+  glowColor?: string;
+}
+
+function hashStringToIndex(input: string, mod: number): number {
+  let hash = 0;
+  for (let i = 0; i < input.length; i += 1) {
+    hash = (hash * 31 + input.charCodeAt(i)) | 0;
+  }
+  const n = Math.abs(hash);
+  return mod > 0 ? n % mod : 0;
+}
+
+function resolveTradeCardColor(label: string): string {
+  // Requested base palette: orange, purple, reddish, greenish.
+  // These are bright enough to read as a glow on black.
+  const palette = ['#EA580C', '#8B5CF6', '#E11D48', '#22C55E'] as const;
+  return palette[hashStringToIndex(label || 'trade', palette.length)] ?? palette[0];
 }
 
 export function TradeCard({ label, description, glowColor }: TradeCardProps) {
+  const resolvedGlow = (glowColor && glowColor.trim()) ? glowColor : resolveTradeCardColor(label);
   const { ref, onMouseMove, bubble } = useHoverBubbleLayer<HTMLDivElement>({
-    color: glowColor,
+    color: resolvedGlow,
   });
 
   return (
@@ -50,7 +68,7 @@ export function TradeCard({ label, description, glowColor }: TradeCardProps) {
           height: '120%',
           left: '-50%',
           bottom: '-20%',
-          background: `radial-gradient(circle at 30% 82%, ${glowColor} 0%, ${glowColor} 35%, transparent 82%)`,
+          background: `radial-gradient(circle at 30% 82%, ${resolvedGlow} 0%, ${resolvedGlow} 35%, transparent 82%)`,
           filter: 'blur(25px)',
           mixBlendMode: 'screen',
         }}

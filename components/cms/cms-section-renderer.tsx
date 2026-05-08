@@ -252,9 +252,9 @@ function CmsSectionBlock({
           title: String(t.title || '').replace(/\\n/g, '\n'),
           description: String(t.description || ''),
           href: t.href?.startsWith('/') ? t.href : `/${t.href || 'trades'}`,
-          arrowColor: String(t.arrowColor || '#EA7E37'),
-          topColor: String(t.topColor || '#E27B36'),
-          layerColor: String(t.layerColor || '#8D5530'),
+          arrowColor: String(t.arrowColor || '').trim(),
+          topColor: String(t.topColor || '').trim(),
+          layerColor: String(t.layerColor || '').trim(),
         };
       }).filter((t) => t.title);
       return (
