@@ -109,9 +109,15 @@ export default async function DynamicServicePage({ params, searchParams }: PageP
   const cmsPage = await loadDynamicCmsPageBySlug(slug, { allowDraft: preview });
 
   if (cmsPage && (cmsPage.renderMode ?? 'seo_only') === 'dynamic') {
-    const sectionList = normalizeSectionsInput(
+    const sectionListRaw = normalizeSectionsInput(
       (cmsPage.sections ?? []) as CmsPageSection[],
     );
+    const placement = String((cmsPage as { placement?: string }).placement ?? '').trim();
+    const breadcrumbCurrent = String((cmsPage as { name?: string }).name ?? '').trim() || slug;
+    const sectionList =
+      placement === 'services'
+        ? coerceServiceMarketingHeroSections(sectionListRaw, breadcrumbCurrent)
+        : sectionListRaw;
 
     return (
       <>
@@ -215,6 +221,42 @@ export default async function DynamicServicePage({ params, searchParams }: PageP
   }
 
   notFound();
+}
+
+function coerceServiceMarketingHeroSections(sections: CmsPageSection[], breadcrumbCurrent: string): CmsPageSection[] {
+  return sections.map((section) => {
+    if (section.type !== 'site_hero') {
+      return section;
+    }
+
+    const d =
+      section.data && typeof section.data === 'object' && !Array.isArray(section.data)
+        ? (section.data as Record<string, unknown>)
+        : {};
+
+    const headlineHtml = String(d.headline ?? '').trim() || breadcrumbCurrent;
+    const intro = String(d.subtitle ?? '').trim();
+    const imageSrc = String(d.imageSrc ?? '').trim() || '/images/cityscape.png';
+    const imageAlt =
+      String(d.imageAlt ?? '').trim() ||
+      'City skyline illustration representing construction and urban development';
+
+    return {
+      ...section,
+      type: 'site_service_marketing_hero',
+      data: {
+        breadcrumbParentHref: '/services',
+        breadcrumbParentLabel: 'Services',
+        breadcrumbCurrent,
+        headlineHtml,
+        intro: intro || undefined,
+        layout: 'marketing_split',
+        rightVisual: 'image',
+        imageSrc,
+        imageAlt,
+      },
+    } as CmsPageSection;
+  });
 }
 
 function extractKeywords(tags: string): string[] {
