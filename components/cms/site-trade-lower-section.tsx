@@ -15,6 +15,14 @@ export type SiteTradeTypeRow = {
   titleLinkHref?: string;
 };
 
+/** Large box uses label link when set; otherwise same destination as the title link. */
+function effectiveLabelBoxHref(row: SiteTradeTypeRow): string | undefined {
+  const labelHref = row.labelLinkHref?.trim();
+  if (labelHref) return labelHref;
+  const titleHref = row.titleLinkHref?.trim();
+  return titleHref || undefined;
+}
+
 type CursorGlowColors = {
   primary: string;
   secondary: string;
@@ -173,7 +181,7 @@ export function SiteTradeLowerSection({
             >
               {index % 2 === 0 ? (
                 <>
-                  <LabelBox label={item.label} href={item.labelLinkHref} />
+                  <LabelBox label={item.label} href={effectiveLabelBoxHref(item)} />
                   <div className="flex-1 md:text-left">
                     <TypeTitle title={item.title} href={item.titleLinkHref} />
                     <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
@@ -189,7 +197,7 @@ export function SiteTradeLowerSection({
                       {item.description}
                     </p>
                   </div>
-                  <LabelBox label={item.label} href={item.labelLinkHref} />
+                  <LabelBox label={item.label} href={effectiveLabelBoxHref(item)} />
                 </>
               )}
             </div>
