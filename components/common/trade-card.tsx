@@ -8,6 +8,8 @@ interface TradeCardProps {
   description: string;
   /** Optional. When omitted, a deterministic palette color is chosen from the base brand set. */
   glowColor?: string;
+  /** When true, hides the circular mouse-follow bubble (e.g. Service trades strip). */
+  hideMouseBubble?: boolean;
 }
 
 function hashStringToIndex(input: string, mod: number): number {
@@ -26,9 +28,10 @@ function resolveTradeCardColor(label: string): string {
   return palette[hashStringToIndex(label || 'trade', palette.length)] ?? palette[0];
 }
 
-export function TradeCard({ label, description, glowColor }: TradeCardProps) {
+export function TradeCard({ label, description, glowColor, hideMouseBubble }: TradeCardProps) {
   const resolvedGlow = (glowColor && glowColor.trim()) ? glowColor : resolveTradeCardColor(label);
   const { ref, onMouseMove, bubble } = useHoverBubbleLayer<HTMLDivElement>({
+    enabled: !hideMouseBubble,
     color: resolvedGlow,
   });
 

@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { TradeCard } from '../common/trade-card';
-import { CursorGlow } from '@/components/ui/cursor-glow';
 
 const trades = [
   {
@@ -37,9 +36,9 @@ const trades = [
 
 export function ServiceTradesSection() {
   return (
-    <section className="py-24 bg-black">
-      <div className="max-w-7xl mx-auto px-6">
-        <CursorGlow className="mb-20 w-full">
+    <section className="bg-black py-24" data-no-glow>
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="mb-20 w-full">
           <h2 className="mb-6 text-center text-4xl font-bold text-white">
             Our Trades
           </h2>
@@ -52,7 +51,7 @@ export function ServiceTradesSection() {
             current pricing databases, ensuring your bids remain competitive,
             accurate, and aligned with market conditions.
           </p>
-        </CursorGlow>
+        </div>
 
         {/* GAP APPLIED HERE (gap-12) */}
         <div className="grid grid-cols-1 justify-items-center gap-12 md:grid-cols-2 md:gap-16 lg:grid-cols-4 lg:gap-20 xl:gap-24">
@@ -62,6 +61,7 @@ export function ServiceTradesSection() {
                 label={trade.label}
                 description={trade.description}
                 glowColor={trade.glow}
+                hideMouseBubble
               />
             </Link>
           ))}

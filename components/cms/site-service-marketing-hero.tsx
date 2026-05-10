@@ -5,6 +5,10 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { CursorGlow } from '@/components/ui/cursor-glow';
 import { ConstructionEstimationHeroSvg } from '@/components/cms/construction-estimation-hero-svg';
+import {
+  CMS_HERO_SUBTITLE_LINES,
+  cmsClampClassNames,
+} from '@/components/ui/cms-clamp';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -42,6 +46,10 @@ const defaultGlow = {
   secondary: 'rgba(91, 191, 186, 0.28)',
   tertiary: 'rgba(120, 120, 120, 0.22)',
 };
+
+/** Nudge right visual up (homepage hero keeps imagery visually higher); left column unchanged. */
+const RIGHT_VISUAL_NUDGE_UP_CLASS =
+  '-translate-y-2 md:-translate-y-4 lg:-translate-y-8 xl:-translate-y-10';
 
 export function SiteServiceMarketingHero({
   breadcrumbParentHref = '/services',
@@ -182,6 +190,7 @@ export function SiteServiceMarketingHero({
         layout === 'cost'
           ? 'max-w-xl text-base leading-relaxed text-gray-400 md:text-lg'
           : 'max-w-xl text-justify text-sm leading-relaxed text-[#d9d9d9]/70 md:text-base',
+        cmsClampClassNames(CMS_HERO_SUBTITLE_LINES),
         introTypography?.className,
       )}
       style={introTypography?.style}
@@ -200,7 +209,7 @@ export function SiteServiceMarketingHero({
               {headline}
               {introBlock}
             </div>
-            {rightColumn()}
+            <div className={RIGHT_VISUAL_NUDGE_UP_CLASS}>{rightColumn()}</div>
           </div>
         </div>
       </section>
@@ -235,11 +244,14 @@ export function SiteServiceMarketingHero({
           </div>
           {rightVisual !== 'none' ? (
             <div
-              className={
+              className={cn(
+                RIGHT_VISUAL_NUDGE_UP_CLASS,
                 layout === 'marketing_split_centered'
                   ? 'flex flex-1 justify-center lg:justify-end'
-                  : undefined
-              }
+                  : layout === 'marketing_split'
+                    ? 'flex justify-center lg:justify-end'
+                    : undefined,
+              )}
             >
               {rightColumn()}
             </div>

@@ -50,6 +50,8 @@ export function useHoverBubble<T extends HTMLElement = HTMLDivElement>(
 }
 
 type HoverBubbleLayerOptions = {
+  /** When false, no bubble is rendered and mouse move is a no-op. */
+  enabled?: boolean;
   /**
    * Optional: when omitted, the page accent color is used so the whole page
    * stays consistent across sections.
@@ -77,6 +79,7 @@ export function useHoverBubbleLayer<T extends HTMLElement = HTMLDivElement>(
   const pageTheme = usePageGlowTheme();
 
   const {
+    enabled = true,
     color = pageTheme.bubbleColor,
     size = 100,
     blur = 20,
@@ -86,6 +89,10 @@ export function useHoverBubbleLayer<T extends HTMLElement = HTMLDivElement>(
     gradientInnerStop = 30,
     gradientOuterStop = 80,
   } = layer;
+
+  if (!enabled) {
+    return { ref, onMouseMove: () => {}, x, y, bubble: null };
+  }
 
   const bubble = createElement(motion.div, {
     className: `absolute ${zIndexClassName} pointer-events-none ${className ?? ''}`,
