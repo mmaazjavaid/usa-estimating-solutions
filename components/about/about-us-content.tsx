@@ -37,6 +37,16 @@ export function AboutUsContent() {
       text: "\"In my opinion, USA Estimating Solutions is the only precise and accurate estimates for your construction and software to ensure the accuracy of their estimates.\"",
       rating: 5,
     },
+    {
+      name: "Maria Gonzalez",
+      text: "\"Their takeoffs were detailed, on schedule, and easy to hand off to our field team. We have used them on several commercial bids and the numbers held up through buyout. Highly recommend for anyone under tight bid deadlines.\"",
+      rating: 5,
+    },
+    {
+      name: "James Patel",
+      text: "\"Responsive communication and clear deliverables. USA Estimating Solutions helped us tighten our scope and present a stronger package to the owner. We will be using them again on our next multi-trade project.\"",
+      rating: 5,
+    },
   ]
 
   const faqs = [
@@ -173,8 +183,6 @@ export function AboutUsContent() {
                 aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
-            <div className="h-2 w-2 rounded-full bg-[#d9d9d9]/30" />
-            <div className="h-2 w-2 rounded-full bg-[#d9d9d9]/30" />
           </div>
 
           <button
