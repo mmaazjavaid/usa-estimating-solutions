@@ -1,7 +1,10 @@
 'use client';
 
+import { createContext, useContext } from 'react';
+
 import { useCursorGlow } from '@/hooks/use-cursor-glow';
 import { usePageGlowTheme } from '@/components/ui/page-glow';
+import { cn } from '@/lib/utils';
 
 export type CursorGlowColors = {
   primary: string;
@@ -15,19 +18,29 @@ const DEFAULT_COLORS: CursorGlowColors = {
   tertiary: 'rgba(230, 96, 28, 0.22)',
 };
 
+/** Depth 0 = only the root shell renders glow layers; nested `<CursorGlow>` stays layout-only. */
+const CursorGlowDepthContext = createContext(0);
+
 function withAlpha(rgba: string, alpha: number): string {
   return rgba.replace(/,\s*[\d.]+\)$/, `, ${alpha})`);
 }
 
 type CursorGlowProps = {
   children: React.ReactNode;
+  /** @deprecated Per-section colors are ignored so the whole page uses one accent from {@link usePageGlowTheme}. */
   colors?: CursorGlowColors;
   className?: string;
 };
 
-export function CursorGlow({ children, colors, className }: CursorGlowProps) {
+export function CursorGlow({ children, colors: _colorsIgnored, className }: CursorGlowProps) {
+  const depth = useContext(CursorGlowDepthContext);
   const pageTheme = usePageGlowTheme();
-  const resolvedColors = colors ?? pageTheme.cursorGlow ?? DEFAULT_COLORS;
+  const resolvedColors = pageTheme.cursorGlow ?? DEFAULT_COLORS;
+
+  if (depth > 0) {
+    return <div className={cn('relative', className)}>{children}</div>;
+  }
+
   const {
     primaryRef,
     secondaryRef,
@@ -38,54 +51,56 @@ export function CursorGlow({ children, colors, className }: CursorGlowProps) {
   } = useCursorGlow();
 
   return (
-    <div
-      className={`relative ${className ?? ''}`}
-      onMouseEnter={onMouseEnter}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-    >
-      {children}
-      <div className="pointer-events-none absolute inset-0 overflow-visible">
-        <div
-          ref={primaryRef}
-          className="absolute h-[460px] w-[460px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
-          style={{
-            background: `radial-gradient(circle, ${resolvedColors.primary} 0%, ${withAlpha(resolvedColors.primary, 0.12)} 42%, transparent 72%)`,
-            filter: 'blur(32px) saturate(1.35)',
-            mixBlendMode: 'screen',
-            willChange:
-              'left, top, width, height, opacity, transform, border-radius',
-            transition:
-              'left 420ms cubic-bezier(0.22, 1, 0.36, 1), top 420ms cubic-bezier(0.22, 1, 0.36, 1), width 320ms ease-out, height 320ms ease-out, transform 320ms ease-out, border-radius 360ms ease-out, opacity 220ms ease-out',
-          }}
-        />
-        <div
-          ref={secondaryRef}
-          className="absolute h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
-          style={{
-            background: `radial-gradient(circle, ${resolvedColors.secondary} 0%, ${withAlpha(resolvedColors.secondary, 0.10)} 46%, transparent 74%)`,
-            filter: 'blur(26px) saturate(1.2)',
-            mixBlendMode: 'screen',
-            willChange:
-              'left, top, width, height, opacity, transform, border-radius',
-            transition:
-              'left 460ms cubic-bezier(0.22, 1, 0.36, 1), top 460ms cubic-bezier(0.22, 1, 0.36, 1), width 340ms ease-out, height 340ms ease-out, transform 340ms ease-out, border-radius 360ms ease-out, opacity 220ms ease-out',
-          }}
-        />
-        <div
-          ref={tertiaryRef}
-          className="absolute h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
-          style={{
-            background: `radial-gradient(circle, ${resolvedColors.tertiary} 0%, ${withAlpha(resolvedColors.tertiary, 0.08)} 50%, transparent 76%)`,
-            filter: 'blur(24px) saturate(1.15)',
-            mixBlendMode: 'screen',
-            willChange:
-              'left, top, width, height, opacity, transform, border-radius',
-            transition:
-              'left 500ms cubic-bezier(0.22, 1, 0.36, 1), top 500ms cubic-bezier(0.22, 1, 0.36, 1), width 360ms ease-out, height 360ms ease-out, transform 360ms ease-out, border-radius 380ms ease-out, opacity 220ms ease-out',
-          }}
-        />
+    <CursorGlowDepthContext.Provider value={1}>
+      <div
+        className={cn('relative', className)}
+        onMouseEnter={onMouseEnter}
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
+      >
+        {children}
+        <div className="pointer-events-none absolute inset-0 overflow-visible">
+          <div
+            ref={primaryRef}
+            className="absolute h-[460px] w-[460px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
+            style={{
+              background: `radial-gradient(circle, ${resolvedColors.primary} 0%, ${withAlpha(resolvedColors.primary, 0.12)} 42%, transparent 72%)`,
+              filter: 'blur(32px) saturate(1.35)',
+              mixBlendMode: 'screen',
+              willChange:
+                'left, top, width, height, opacity, transform, border-radius',
+              transition:
+                'left 420ms cubic-bezier(0.22, 1, 0.36, 1), top 420ms cubic-bezier(0.22, 1, 0.36, 1), width 320ms ease-out, height 320ms ease-out, transform 320ms ease-out, border-radius 360ms ease-out, opacity 220ms ease-out',
+            }}
+          />
+          <div
+            ref={secondaryRef}
+            className="absolute h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
+            style={{
+              background: `radial-gradient(circle, ${resolvedColors.secondary} 0%, ${withAlpha(resolvedColors.secondary, 0.1)} 46%, transparent 74%)`,
+              filter: 'blur(26px) saturate(1.2)',
+              mixBlendMode: 'screen',
+              willChange:
+                'left, top, width, height, opacity, transform, border-radius',
+              transition:
+                'left 460ms cubic-bezier(0.22, 1, 0.36, 1), top 460ms cubic-bezier(0.22, 1, 0.36, 1), width 340ms ease-out, height 340ms ease-out, transform 340ms ease-out, border-radius 360ms ease-out, opacity 220ms ease-out',
+            }}
+          />
+          <div
+            ref={tertiaryRef}
+            className="absolute h-[300px] w-[300px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"
+            style={{
+              background: `radial-gradient(circle, ${resolvedColors.tertiary} 0%, ${withAlpha(resolvedColors.tertiary, 0.08)} 50%, transparent 76%)`,
+              filter: 'blur(24px) saturate(1.15)',
+              mixBlendMode: 'screen',
+              willChange:
+                'left, top, width, height, opacity, transform, border-radius',
+              transition:
+                'left 500ms cubic-bezier(0.22, 1, 0.36, 1), top 500ms cubic-bezier(0.22, 1, 0.36, 1), width 360ms ease-out, height 360ms ease-out, transform 360ms ease-out, border-radius 380ms ease-out, opacity 220ms ease-out',
+            }}
+          />
+        </div>
       </div>
-    </div>
+    </CursorGlowDepthContext.Provider>
   );
 }
