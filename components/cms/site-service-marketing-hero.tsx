@@ -99,6 +99,9 @@ export function SiteServiceMarketingHero({
     tertiary: glowTertiary || defaultGlow.tertiary,
   };
 
+  /** Tall right column (cost + floating cards, or any floating-cards visual) — show full intro and top-align columns. */
+  const relaxIntroClamp = layout === 'cost' || rightVisual === 'floating_cards';
+
   const rightColumn = () => {
     if (rightVisual === 'image' && imageSrc) {
       return (
@@ -127,7 +130,7 @@ export function SiteServiceMarketingHero({
     }
     if (rightVisual === 'floating_cards' && floatingCards.length > 0) {
       return (
-        <CursorGlow className="relative min-h-[620px] w-full">
+        <CursorGlow className="relative min-h-[480px] w-full sm:min-h-[520px] lg:min-h-[560px]">
           {floatingCards.map((card, index) => (
             <motion.div
               key={`${card.title}-${index}`}
@@ -156,8 +159,8 @@ export function SiteServiceMarketingHero({
     <nav
       className={
         layout === 'cost'
-          ? 'mb-12 text-sm text-gray-500'
-          : 'mb-16 text-sm text-[#d9d9d9]/60 md:mb-24'
+          ? 'mb-8 text-sm text-gray-500'
+          : 'mb-10 text-sm text-[#d9d9d9]/60 md:mb-12'
       }
     >
       <Link
@@ -175,8 +178,8 @@ export function SiteServiceMarketingHero({
     <h1
       className={cn(
         layout === 'cost'
-          ? 'mb-8 text-balance text-4xl font-bold leading-[1.1] tracking-tight text-white'
-          : 'mb-8 text-4xl font-bold leading-tight',
+          ? 'mb-5 text-balance text-4xl font-bold leading-[1.1] tracking-tight text-white'
+          : 'mb-5 text-4xl font-bold leading-tight',
         headlineTypographyClass,
       )}
       style={headlineStyle}
@@ -190,7 +193,9 @@ export function SiteServiceMarketingHero({
         layout === 'cost'
           ? 'max-w-xl text-base leading-relaxed text-gray-400 md:text-lg'
           : 'max-w-xl text-justify text-sm leading-relaxed text-[#d9d9d9]/70 md:text-base',
-        cmsClampClassNames(CMS_HERO_SUBTITLE_LINES),
+        relaxIntroClamp
+          ? 'min-w-0 max-w-full break-words text-balance'
+          : cmsClampClassNames(CMS_HERO_SUBTITLE_LINES),
         introTypography?.className,
       )}
       style={introTypography?.style}
@@ -201,10 +206,15 @@ export function SiteServiceMarketingHero({
 
   if (layout === 'cost') {
     return (
-      <section className="overflow-hidden bg-black py-16 text-white md:py-32">
+      <section className="overflow-hidden bg-black py-8 pb-6 text-white md:py-12 md:pb-8">
         <div className="mx-auto max-w-7xl px-6">
           {breadcrumb}
-          <div className="mb-32 grid gap-16 lg:grid-cols-2 lg:items-center">
+          <div
+            className={cn(
+              'mb-8 grid gap-8 md:mb-10 lg:grid-cols-2',
+              relaxIntroClamp ? 'lg:items-start' : 'lg:items-center',
+            )}
+          >
             <div className="relative z-10">
               {headline}
               {introBlock}
@@ -218,18 +228,24 @@ export function SiteServiceMarketingHero({
 
   const mainClass =
     layout === 'marketing_split_centered'
-      ? 'flex flex-col items-center gap-12 lg:flex-row lg:gap-20'
+      ? cn(
+          'flex flex-col gap-6 lg:flex-row lg:gap-12',
+          relaxIntroClamp ? 'items-start' : 'items-center',
+        )
       : layout === 'marketing_split' && rightVisual !== 'none'
-        ? 'grid grid-cols-1 items-center gap-12 lg:grid-cols-2'
-        : 'flex flex-col items-start justify-between gap-12 lg:flex-row';
+        ? cn(
+            'grid grid-cols-1 gap-6 lg:grid-cols-2',
+            relaxIntroClamp ? 'items-start' : 'items-center',
+          )
+        : 'flex flex-col items-start justify-between gap-6 lg:flex-row';
 
   return (
     <section className="bg-black text-white">
       <section
         className={
           layout === 'marketing_split_centered'
-            ? 'px-6 pb-16 pt-8 md:px-12 lg:px-20'
-            : 'relative min-h-[600px] overflow-hidden px-6 pb-16 pt-6 md:px-12 lg:px-20'
+            ? 'px-6 pb-5 pt-6 md:px-12 md:pb-6 lg:px-20'
+            : 'relative min-h-[320px] overflow-hidden px-6 pb-5 pt-4 sm:min-h-[360px] md:px-12 md:pb-6 lg:min-h-[400px] lg:px-20'
         }
       >
         {breadcrumb}
