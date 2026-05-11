@@ -89,6 +89,10 @@ export const DEFAULT_CONTACT = {
   address: 'Brooklyn, NY 11222, USA',
 };
 
+/** Card icon when CMS has no image and the slug has no dedicated `/images/services-section/{slug}.svg`. */
+export const DEFAULT_SERVICE_CARD_ICON_SRC =
+  '/images/services-section/service-default.svg';
+
 export const DEFAULT_SERVICES = [
   {
     name: 'Cost Estimation',

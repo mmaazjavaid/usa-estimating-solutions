@@ -3,7 +3,7 @@
 import { CTASection } from '@/components/home/cta-section';
 import { AnimatedServiceCard } from '@/components/common/animated-service-card';
 import { CursorGlow } from '@/components/ui/cursor-glow';
-import { DEFAULT_SERVICES } from '@/lib/cms-defaults';
+import { DEFAULT_SERVICES, DEFAULT_SERVICE_CARD_ICON_SRC } from '@/lib/cms-defaults';
 
 type ServiceCardData = {
   title: string;
@@ -47,7 +47,7 @@ function getServiceIconSrc(service: ServiceCardData) {
     return `/images/services-section/${resolvedSlug}.svg`;
   }
 
-  return '/placeholder.svg';
+  return DEFAULT_SERVICE_CARD_ICON_SRC;
 }
 
 export function ServicesSection({

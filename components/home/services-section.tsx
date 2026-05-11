@@ -15,7 +15,7 @@ import {
   CMS_SECTION_HEADING_LINES,
   CmsClamp,
 } from '@/components/ui/cms-clamp';
-import { DEFAULT_SERVICES } from '@/lib/cms-defaults';
+import { DEFAULT_SERVICES, DEFAULT_SERVICE_CARD_ICON_SRC } from '@/lib/cms-defaults';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -61,7 +61,7 @@ function getServiceIconSrc(service: HomeServiceItem) {
     return `/images/services-section/${resolvedSlug}.svg`;
   }
 
-  return '/placeholder.svg';
+  return DEFAULT_SERVICE_CARD_ICON_SRC;
 }
 
 const DEFAULT_INTRO =
