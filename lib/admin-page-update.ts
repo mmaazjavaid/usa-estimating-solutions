@@ -55,6 +55,7 @@ export async function validateAndFinalizePagePatch(params: {
     path: string;
     renderMode?: string;
     name: string;
+    placement?: string;
   };
   patch: PagePatchPayload;
 }): Promise<{ ok: true; update: Record<string, unknown> } | { ok: false; message: string }> {
@@ -68,6 +69,10 @@ export async function validateAndFinalizePagePatch(params: {
     typeof patch.slug === 'string' ? patch.slug.trim().replace(/^\/+/, '') : existing.slug;
   let path = typeof patch.path === 'string' ? patch.path.trim() : existing.path;
 
+  const placementFromPatch = asPlacement(patch.placement);
+  const effectivePlacement =
+    placementFromPatch ?? asPlacement(existing.placement) ?? 'none';
+
   if (renderMode === 'dynamic') {
     const existingPathNorm = normalizePath(existing.path);
     if (existingPathNorm === '/') {
@@ -78,16 +83,37 @@ export async function validateAndFinalizePagePatch(params: {
       slug = String(raw ?? 'homepage')
         .trim()
         .replace(/^\/+/, '') || 'homepage';
-    } else if (existingPathNorm.startsWith('/trades/')) {
+    } else if (effectivePlacement === 'trades') {
       const segment = parseTradeSlugInput(slug);
       if (!segment) {
-        return { ok: false, message: 'Invalid trades slug (use trade-{segment} e.g. trade-exterior).' };
+        return {
+          ok: false,
+          message:
+            'Invalid trades slug: enter a segment (e.g. exterior) or trade-exterior so the URL can be /trades/exterior.',
+        };
       }
       slug = `trade-${segment}`;
       path = `/trades/${segment}`;
     } else {
-      slug = slug.replace(/^\/+/, '');
-      path = `/${slug}`;
+      // none or services — single-segment root paths
+      if (existingPathNorm.startsWith('/trades/')) {
+        let rootSegment = parseTradeSlugInput(slug);
+        if (!rootSegment) {
+          const tail = existingPathNorm.split('/').filter(Boolean)[1] ?? '';
+          rootSegment = parseTradeSlugInput(tail);
+        }
+        if (!rootSegment) {
+          return { ok: false, message: 'Invalid slug.' };
+        }
+        slug = rootSegment;
+        path = `/${rootSegment}`;
+      } else {
+        slug = slug.replace(/^\/+/, '');
+        if (!slug) {
+          return { ok: false, message: 'Invalid slug.' };
+        }
+        path = `/${slug}`;
+      }
     }
   }
 
@@ -173,9 +199,26 @@ export async function validateAndFinalizePagePatch(params: {
     update[key] = patch[key];
   }
 
-  if (renderMode === 'dynamic' && ('slug' in patch || 'path' in patch || 'renderMode' in patch)) {
+  const existingPathNormForWrite = normalizePath(existing.path);
+  const pathOrSlugChanged = slug !== existing.slug || path !== existing.path;
+  const shouldWriteSlugPath =
+    renderMode === 'dynamic' &&
+    existingPathNormForWrite !== '/' &&
+    (pathOrSlugChanged ||
+      'slug' in patch ||
+      'path' in patch ||
+      'renderMode' in patch ||
+      'placement' in patch);
+
+  if (shouldWriteSlugPath) {
     update.slug = slug;
     update.path = path;
+  }
+
+  if (renderMode === 'dynamic' && effectivePlacement !== 'trades') {
+    update.tradeLocation = 'independent';
+    update.parentTrade = null;
+    update.parentTradeDescription = '';
   }
 
   return { ok: true, update };

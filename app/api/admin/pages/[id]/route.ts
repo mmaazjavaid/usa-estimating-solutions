@@ -69,6 +69,7 @@ export async function PATCH(request: Request, { params }: Params) {
       slug: existing.slug,
       path: existing.path,
       renderMode: existing.renderMode,
+      placement: (existing as { placement?: string }).placement,
     },
     patch,
   });
@@ -92,8 +93,10 @@ export async function PATCH(request: Request, { params }: Params) {
   revalidateAfterCmsPageChange(String(data.path ?? ''));
 
   // Sync child trade into parent's site_trade_lower types when relevant fields change
-  const isTradePage = String(existing.path ?? '').startsWith('/trades/');
-  if (isTradePage) {
+  const oldPath = String(existing.path ?? '');
+  const newPath = String((data as { path?: string }).path ?? '');
+  const touchesTradePath = oldPath.startsWith('/trades/') || newPath.startsWith('/trades/');
+  if (touchesTradePath) {
     const ex = existing as Record<string, unknown>;
     const upd = data as Record<string, unknown>;
     void syncChildTradeInParents({

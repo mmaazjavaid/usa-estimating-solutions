@@ -217,7 +217,7 @@ export default function EditPagePage() {
               <>
                 <TextInput
                   label={
-                    formData.path.startsWith('/trades/')
+                    formData.placement === 'trades'
                       ? 'Slug (trade-{segment})'
                       : 'Slug (URL segment)'
                   }
@@ -228,7 +228,7 @@ export default function EditPagePage() {
                         return prev;
                       }
                       const raw = value.trim().replace(/^\/+/, '');
-                      if (prev.path.startsWith('/trades/')) {
+                      if (prev.placement === 'trades') {
                         const segment = parseTradeSlugInput(raw);
                         if (!segment) {
                           return { ...prev, slug: raw };
@@ -248,7 +248,7 @@ export default function EditPagePage() {
                   }
                 />
                 <ReadOnlyField label="Path" value={formData.path} />
-                {formData.path.startsWith('/trades/') ? (
+                {formData.placement === 'trades' ? (
                   <p className="text-xs text-zinc-500">
                     Trades URLs use <code className="text-zinc-300">/trades/…</code>. Slug is stored as{' '}
                     <code className="text-zinc-300">trade-{'{segment}'}</code>.
@@ -331,19 +331,50 @@ export default function EditPagePage() {
                 { v: 'trades', l: 'Under Trades' },
               ]}
               onChange={(value) =>
-                setFormData((prev) =>
-                  prev
-                    ? {
+                setFormData((prev) => {
+                  if (!prev) {
+                    return prev;
+                  }
+                  const placement = value as NonNullable<PageRecord['placement']>;
+                  if (placement === 'trades') {
+                    const segment = parseTradeSlugInput(prev.slug);
+                    if (segment) {
+                      return {
                         ...prev,
-                        placement: value as NonNullable<PageRecord['placement']>,
-                      }
-                    : prev,
-                )
+                        placement,
+                        slug: `trade-${segment}`,
+                        path: `/trades/${segment}`,
+                      };
+                    }
+                    return { ...prev, placement };
+                  }
+                  if (prev.path.startsWith('/trades/')) {
+                    const segment = parseTradeSlugInput(prev.slug);
+                    if (segment) {
+                      return {
+                        ...prev,
+                        placement,
+                        slug: segment,
+                        path: `/${segment}`,
+                        tradeLocation: 'independent',
+                        parentTrade: null,
+                        parentTradeDescription: '',
+                      };
+                    }
+                  }
+                  return {
+                    ...prev,
+                    placement,
+                    tradeLocation: 'independent',
+                    parentTrade: null,
+                    parentTradeDescription: '',
+                  };
+                })
               }
             />
           ) : null}
 
-          {isDynamic && formData.path.startsWith('/trades/') ? (
+          {isDynamic && formData.placement === 'trades' ? (
             <div className="space-y-3">
               <p className="text-sm text-zinc-300">Trade location</p>
               <div className="space-y-2">
