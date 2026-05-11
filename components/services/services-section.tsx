@@ -91,38 +91,25 @@ export function ServicesSection({
             </div>
           </CursorGlow>
 
-          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
-            {services.slice(0, 4).map((service, index) => (
-              <AnimatedServiceCard
-                key={service.slug}
-                href={service.href}
-                title={service.title}
-                description={service.description || ''}
-                iconSrc={getServiceIconSrc(service)}
-                glowColorClassName={glowColors[index % 4]}
-                imagePriority={index < 4}
-                size="sm"
-              />
-            ))}
-          </div>
+          {/* Cards have their own hover glow — disable global cursor bubble here */}
+          <div data-no-glow>
+            <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+              {services.slice(0, 4).map((service, index) => (
+                <AnimatedServiceCard
+                  key={service.slug}
+                  href={service.href}
+                  title={service.title}
+                  description={service.description || ''}
+                  iconSrc={getServiceIconSrc(service)}
+                  glowColorClassName={glowColors[index % 4]}
+                  imagePriority={index < 4}
+                  size="sm"
+                />
+              ))}
+            </div>
 
-          <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
-            {services.slice(4, 8).map((service, index) => (
-              <AnimatedServiceCard
-                key={service.slug}
-                href={service.href}
-                title={service.title}
-                description={service.description || ''}
-                iconSrc={getServiceIconSrc(service)}
-                glowColorClassName={glowColors[index % 4]}
-                size="sm"
-              />
-            ))}
-          </div>
-
-          <div className="flex justify-center">
-            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:w-1/2 md:gap-6">
-              {services.slice(8, 10).map((service, index) => (
+            <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4 md:gap-6">
+              {services.slice(4, 8).map((service, index) => (
                 <AnimatedServiceCard
                   key={service.slug}
                   href={service.href}
@@ -133,6 +120,22 @@ export function ServicesSection({
                   size="sm"
                 />
               ))}
+            </div>
+
+            <div className="flex justify-center">
+              <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:w-1/2 md:gap-6">
+                {services.slice(8, 10).map((service, index) => (
+                  <AnimatedServiceCard
+                    key={service.slug}
+                    href={service.href}
+                    title={service.title}
+                    description={service.description || ''}
+                    iconSrc={getServiceIconSrc(service)}
+                    glowColorClassName={glowColors[index % 4]}
+                    size="sm"
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>

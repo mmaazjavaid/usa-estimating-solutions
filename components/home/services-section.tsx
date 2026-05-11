@@ -144,7 +144,8 @@ export function ServicesSection({
           </p>
         </div>
 
-        <div className="relative w-full">
+        {/* Cards have their own hover glow — disable global cursor bubble here */}
+        <div className="relative w-full" data-no-glow>
           <Carousel
             setApi={setApi}
             opts={{ align: 'start', containScroll: 'trimSnaps' }}

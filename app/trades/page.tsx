@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
-import Link from "next/link"
+// import Link from "next/link"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { ScrollToTop } from "@/components/layout/scroll-to-top"
 import { CTASection } from "@/components/home/cta-section"
 import { EstimateCard } from "@/components/common/estimate-card"
 import { getSeoMetadataByPath } from "@/lib/cms"
-import { getPublishedCmsPagesForListing } from "@/lib/cms-pages"
+// import { getPublishedCmsPagesForListing } from "@/lib/cms-pages"
 
 const trades = [
   {
@@ -60,7 +60,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function TradesPage() {
-  const cmsExtras = await getPublishedCmsPagesForListing("trades")
+  // const cmsExtras = await getPublishedCmsPagesForListing("trades")
 
   return (
     <>
@@ -81,7 +81,7 @@ export default async function TradesPage() {
             and ensure every phase of construction progresses smoothly.
           </p>
 
-          {cmsExtras.length > 0 ? (
+          {/* {cmsExtras.length > 0 ? (
             <section className="mb-16">
               <h2 className="mb-4 text-center text-xl font-semibold text-gray-200">
                 Resources
@@ -99,7 +99,7 @@ export default async function TradesPage() {
                 ))}
               </ul>
             </section>
-          ) : null}
+          ) : null} */}
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {trades.map((trade) => (
