@@ -20,6 +20,7 @@ export function ContactQuoteForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const htmlForm = event.currentTarget
     setState("submitting")
     setMessage("")
 
@@ -46,10 +47,12 @@ export function ContactQuoteForm() {
       }
 
       setState("success")
-      setMessage("Your request was sent successfully.")
+      setMessage(
+        "Your form was submitted successfully. We will get back to you soon."
+      )
       setForm(initialForm)
       setFiles([])
-      event.currentTarget.reset()
+      htmlForm.reset()
     } catch (error) {
       setState("error")
       setMessage(
