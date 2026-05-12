@@ -23,8 +23,8 @@ function ctaSection(order: number, key: string): CmsPageSection {
 
 export const TRADES_DYNAMIC_PAGE_SEEDS: TradesSeedDef[] = [
   {
-    path: '/trades/exterior',
-    slug: 'trade-exterior',
+    path: '/exterior',
+    slug: 'exterior',
     name: 'Exterior Estimating',
     metaTitle: 'Exterior Estimating | US Estimating Solutions',
     metaDescription:
@@ -91,8 +91,8 @@ export const TRADES_DYNAMIC_PAGE_SEEDS: TradesSeedDef[] = [
     ],
   },
   {
-    path: '/trades/interior',
-    slug: 'trade-interior',
+    path: '/interior',
+    slug: 'interior',
     name: 'Interior Estimating',
     metaTitle: 'Interior Estimating | US Estimating Solutions',
     metaDescription:
@@ -159,8 +159,8 @@ export const TRADES_DYNAMIC_PAGE_SEEDS: TradesSeedDef[] = [
     ],
   },
   {
-    path: '/trades/mep',
-    slug: 'trade-mep',
+    path: '/mep',
+    slug: 'mep',
     name: 'MEP Estimating',
     metaTitle: 'MEP Estimating | US Estimating Solutions',
     metaDescription:
@@ -234,8 +234,8 @@ export const TRADES_DYNAMIC_PAGE_SEEDS: TradesSeedDef[] = [
     ],
   },
   {
-    path: '/trades/structural',
-    slug: 'trade-structural',
+    path: '/structural',
+    slug: 'structural',
     name: 'Structural Estimating',
     metaTitle: 'Structural Estimating | US Estimating Solutions',
     metaDescription:

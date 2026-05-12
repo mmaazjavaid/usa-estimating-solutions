@@ -49,18 +49,18 @@ import type { DropdownGroup } from '@/lib/service-nav-config';
 const tradesDropdownColumns: DropdownGroup[][] = [
   [
     {
-      title: { label: 'Interior Estimating', href: '/trades/interior' },
+      title: { label: 'Interior Estimating', href: '/interior' },
       items: [],
     },
     {
-      title: { label: 'Exterior Estimating', href: '/trades/exterior' },
+      title: { label: 'Exterior Estimating', href: '/exterior' },
       items: [],
     },
   ],
   [
-    { title: { label: 'MEP Estimating', href: '/trades/mep' }, items: [] },
+    { title: { label: 'MEP Estimating', href: '/mep' }, items: [] },
     {
-      title: { label: 'Structural Estimating', href: '/trades/structural' },
+      title: { label: 'Structural Estimating', href: '/structural' },
       items: [],
     },
   ],

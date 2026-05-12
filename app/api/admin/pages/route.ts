@@ -38,7 +38,7 @@ export async function POST(request: Request) {
 
   revalidateAfterCmsPageChange(String(data.path ?? ''));
 
-  const isTradePage = String(data.path ?? '').startsWith('/trades/');
+  const isTradePage = (data as { placement?: string }).placement === 'trades';
   if (isTradePage && data.tradeLocation === 'under_trade') {
     void syncChildTradeInParents({
       childPath: String(data.path ?? ''),

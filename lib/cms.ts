@@ -18,6 +18,7 @@ import {
   TRADES_DYNAMIC_PAGE_SEEDS,
   TRADES_SECTIONS_SCHEMA_VERSION,
 } from '@/lib/cms-trades-pages-seed';
+import { migrateLegacyTradesUrlsToRoot } from '@/lib/migrate-trades-urls-to-root';
 import { connectToDatabase } from '@/lib/db';
 import { ContactDataModel } from '@/models/ContactData';
 import { AdminModel } from '@/models/Admin';
@@ -65,6 +66,8 @@ function shouldApplyFullHomeSectionDefaults(sections: unknown): boolean {
 
 async function runCmsBootstrap() {
   await connectToDatabase();
+
+  await migrateLegacyTradesUrlsToRoot();
 
   if (process.env.ADMIN_EMAIL) {
     await AdminModel.updateOne(

@@ -89,11 +89,11 @@ export async function validateAndFinalizePagePatch(params: {
         return {
           ok: false,
           message:
-            'Invalid trades slug: enter a segment (e.g. exterior) or trade-exterior so the URL can be /trades/exterior.',
+            'Invalid trades slug: enter the URL segment (e.g. exterior) or trade-exterior so the URL can be /exterior.',
         };
       }
-      slug = `trade-${segment}`;
-      path = `/trades/${segment}`;
+      slug = segment;
+      path = `/${segment}`;
     } else {
       // none or services — single-segment root paths
       if (existingPathNorm.startsWith('/trades/')) {
@@ -244,11 +244,11 @@ export async function validateNewDynamicPage(body: Record<string, unknown>): Pro
     if (!segment) {
       return {
         ok: false,
-        message: 'Enter a trades URL segment (e.g. exterior or trade-exterior for /trades/exterior).',
+        message: 'Enter a trades URL segment (e.g. exterior or trade-exterior for /exterior).',
       };
     }
-    slug = `trade-${segment}`;
-    path = `/trades/${segment}`;
+    slug = segment;
+    path = `/${segment}`;
   } else {
     slug = slugRaw;
     path = `/${slugRaw}`;

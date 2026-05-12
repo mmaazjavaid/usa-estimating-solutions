@@ -130,7 +130,7 @@ export default function NewDynamicPage() {
 
           <label className="block space-y-1">
             <span className="text-sm text-zinc-300">
-              {placement === 'trades' ? 'URL segment (under /trades/)' : 'Slug'}
+              {placement === 'trades' ? 'URL segment (top-level path)' : 'Slug'}
             </span>
             <input
               required
@@ -141,9 +141,9 @@ export default function NewDynamicPage() {
             />
             {placement === 'trades' ? (
               <p className="text-xs text-zinc-500">
-                Example: <code className="text-zinc-300">exterior</code> → path{' '}
-                <code className="text-zinc-300">/trades/exterior</code>, slug{' '}
-                <code className="text-zinc-300">trade-exterior</code>.
+                Example: <code className="text-zinc-300">exterior</code> or{' '}
+                <code className="text-zinc-300">trade-exterior</code> → path{' '}
+                <code className="text-zinc-300">/exterior</code>, slug <code className="text-zinc-300">exterior</code>.
               </p>
             ) : null}
           </label>

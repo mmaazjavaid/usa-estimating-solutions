@@ -18,6 +18,7 @@ import {
   loadDynamicCmsPageBySlug,
   normalizeSectionsInput,
 } from '@/lib/cms-pages';
+import { coerceTradeHeroSections } from '@/lib/coerce-trade-cms-sections';
 import { getAdminCookieName, verifyAdminToken } from '@/lib/auth';
 import type { CmsPageSection } from '@/lib/cms-sections/types';
 
@@ -117,7 +118,9 @@ export default async function DynamicServicePage({ params, searchParams }: PageP
     const sectionList =
       placement === 'services'
         ? coerceServiceMarketingHeroSections(sectionListRaw, breadcrumbCurrent)
-        : sectionListRaw;
+        : placement === 'trades'
+          ? coerceTradeHeroSections(sectionListRaw, breadcrumbCurrent)
+          : sectionListRaw;
 
     return (
       <>

@@ -87,7 +87,7 @@ export const HOME_PAGE_SECTIONS: CmsPageSection[] = [
           title: 'Structural\nEstimating',
           description:
             'Reliable structural estimates that support competitive bids and efficient project execution.',
-          href: '/trades/structural',
+          href: '/structural',
           arrowColor: '#EA7E37',
           topColor: '#E27B36',
           layerColor: '#8D5530',
@@ -96,7 +96,7 @@ export const HOME_PAGE_SECTIONS: CmsPageSection[] = [
           title: 'MEP\nEstimating',
           description:
             'Accurate MEP estimates covering mechanical, electrical, and plumbing systems for every project.',
-          href: '/trades/mep',
+          href: '/mep',
           arrowColor: '#5BB8B0',
           topColor: '#5BB8B0',
           layerColor: '#307870',
@@ -105,7 +105,7 @@ export const HOME_PAGE_SECTIONS: CmsPageSection[] = [
           title: 'Interior\nEstimating',
           description:
             'Reliable interior estimates that support competitive bids and efficient project execution.',
-          href: '/trades/interior',
+          href: '/interior',
           arrowColor: '#D45070',
           topColor: '#D45070',
           layerColor: '#8D3048',
@@ -114,7 +114,7 @@ export const HOME_PAGE_SECTIONS: CmsPageSection[] = [
           title: 'Exterior\nEstimating',
           description:
             'Comprehensive exterior estimates for facades, roofing, and site work with precision detail.',
-          href: '/trades/exterior',
+          href: '/exterior',
           arrowColor: '#8A6AB8',
           topColor: '#8A6AB8',
           layerColor: '#5A4080',

@@ -216,11 +216,7 @@ export default function EditPagePage() {
             ) : (
               <>
                 <TextInput
-                  label={
-                    formData.placement === 'trades'
-                      ? 'Slug (trade-{segment})'
-                      : 'Slug (URL segment)'
-                  }
+                  label="Slug (URL segment)"
                   value={formData.slug}
                   onChange={(value) =>
                     setFormData((prev) => {
@@ -235,8 +231,8 @@ export default function EditPagePage() {
                         }
                         return {
                           ...prev,
-                          slug: `trade-${segment}`,
-                          path: `/trades/${segment}`,
+                          slug: segment,
+                          path: `/${segment}`,
                         };
                       }
                       return {
@@ -250,8 +246,10 @@ export default function EditPagePage() {
                 <ReadOnlyField label="Path" value={formData.path} />
                 {formData.placement === 'trades' ? (
                   <p className="text-xs text-zinc-500">
-                    Trades URLs use <code className="text-zinc-300">/trades/…</code>. Slug is stored as{' '}
-                    <code className="text-zinc-300">trade-{'{segment}'}</code>.
+                    Trades pages use a top-level URL like{' '}
+                    <code className="text-zinc-300">/exterior</code> (slug <code className="text-zinc-300">exterior</code>
+                    ). You can still type <code className="text-zinc-300">trade-exterior</code> — it normalizes to the
+                    segment.
                   </p>
                 ) : null}
               </>
@@ -342,8 +340,8 @@ export default function EditPagePage() {
                       return {
                         ...prev,
                         placement,
-                        slug: `trade-${segment}`,
-                        path: `/trades/${segment}`,
+                        slug: segment,
+                        path: `/${segment}`,
                       };
                     }
                     return { ...prev, placement };

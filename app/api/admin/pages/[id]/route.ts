@@ -90,17 +90,22 @@ export async function PATCH(request: Request, { params }: Params) {
     return NextResponse.json({ message: 'Page not found.' }, { status: 404 });
   }
 
-  revalidateAfterCmsPageChange(String(data.path ?? ''));
-
-  // Sync child trade into parent's site_trade_lower types when relevant fields change
+  const ex = existing as Record<string, unknown>;
+  const upd = data as Record<string, unknown>;
+  const wasTrade = String(ex.placement ?? '') === 'trades';
+  const isTrade = String(upd.placement ?? '') === 'trades';
   const oldPath = String(existing.path ?? '');
   const newPath = String((data as { path?: string }).path ?? '');
-  const touchesTradePath = oldPath.startsWith('/trades/') || newPath.startsWith('/trades/');
-  if (touchesTradePath) {
-    const ex = existing as Record<string, unknown>;
-    const upd = data as Record<string, unknown>;
+
+  revalidateAfterCmsPageChange(String(data.path ?? ''));
+  if (oldPath !== newPath) {
+    revalidateAfterCmsPageChange(oldPath);
+  }
+
+  if (wasTrade || isTrade) {
     void syncChildTradeInParents({
-      childPath: String(upd.path ?? ''),
+      childPath: newPath,
+      previousChildPath: oldPath !== newPath ? oldPath : undefined,
       childName: String(upd.name ?? ''),
       childDescription: String(upd.parentTradeDescription ?? ''),
       oldTradeLocation: String(ex.tradeLocation ?? 'independent'),

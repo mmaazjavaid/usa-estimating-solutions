@@ -8,28 +8,28 @@ const trades = [
     label: 'Structural Estimating',
     description:
       'Accurate structural estimates covering concrete, masonry, rebar, and steel.',
-    href: '/trades/structural',
+    href: '/structural',
     glow: '#48F9EA',
   },
   {
     label: 'MEP Estimation',
     description:
       'Precise MEP estimating for mechanical, electrical, and plumbing systems.',
-    href: '/trades/mep',
+    href: '/mep',
     glow: '#8B5CF6',
   },
   {
     label: 'Interior Estimating',
     description:
       'Accurate interior estimates covering drywall, flooring, and finishes.',
-    href: '/trades/interior',
+    href: '/interior',
     glow: '#9F1239',
   },
   {
     label: 'Exterior Estimating',
     description:
       'Detailed exterior estimating to ensure accuracy and cost control.',
-    href: '/trades/exterior',
+    href: '/exterior',
     glow: '#EA580C',
   },
 ];

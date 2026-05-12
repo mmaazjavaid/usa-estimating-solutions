@@ -58,23 +58,23 @@ export const DEFAULT_PAGE_DEFINITIONS = [
   },
   {
     name: 'Trade - Exterior',
-    slug: 'trade-exterior',
-    path: '/trades/exterior',
+    slug: 'exterior',
+    path: '/exterior',
   },
   {
     name: 'Trade - Interior',
-    slug: 'trade-interior',
-    path: '/trades/interior',
+    slug: 'interior',
+    path: '/interior',
   },
   {
     name: 'Trade - MEP',
-    slug: 'trade-mep',
-    path: '/trades/mep',
+    slug: 'mep',
+    path: '/mep',
   },
   {
     name: 'Trade - Structural',
-    slug: 'trade-structural',
-    path: '/trades/structural',
+    slug: 'structural',
+    path: '/structural',
   },
   {
     name: 'Blogs',

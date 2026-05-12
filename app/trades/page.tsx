@@ -18,7 +18,7 @@ const trades = [
       top: "#E27B36",
       layers: "#8D5530",
     },
-    href: "/trades/structural",
+    href: "/structural",
   },
   {
     title: "MEP\nEstimating",
@@ -29,7 +29,7 @@ const trades = [
       top: "#5BB8B0",
       layers: "#307870",
     },
-    href: "/trades/mep",
+    href: "/mep",
   },
   {
     title: "Interior\nEstimating",
@@ -40,7 +40,7 @@ const trades = [
       top: "#D45070",
       layers: "#8D3048",
     },
-    href: "/trades/interior",
+    href: "/interior",
   },
   {
     title: "Exterior\nEstimating",
@@ -51,7 +51,7 @@ const trades = [
       top: "#8A6AB8",
       layers: "#5A4080",
     },
-    href: "/trades/exterior",
+    href: "/exterior",
   },
 ]
 

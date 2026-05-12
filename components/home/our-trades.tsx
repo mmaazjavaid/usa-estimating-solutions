@@ -24,7 +24,7 @@ const DEFAULT_TRADES: OurTradeItem[] = [
     arrowColor: '#EA7E37',
     topColor: '#E27B36',
     layerColor: '#8D5530',
-    href: '/trades/structural',
+    href: '/structural',
   },
   {
     title: 'MEP\nEstimating',
@@ -33,7 +33,7 @@ const DEFAULT_TRADES: OurTradeItem[] = [
     arrowColor: '#5BB8B0',
     topColor: '#5BB8B0',
     layerColor: '#307870',
-    href: '/trades/mep',
+    href: '/mep',
   },
   {
     title: 'Interior\nEstimating',
@@ -42,7 +42,7 @@ const DEFAULT_TRADES: OurTradeItem[] = [
     arrowColor: '#D45070',
     topColor: '#D45070',
     layerColor: '#8D3048',
-    href: '/trades/interior',
+    href: '/interior',
   },
   {
     title: 'Exterior\nEstimating',
@@ -51,7 +51,7 @@ const DEFAULT_TRADES: OurTradeItem[] = [
     arrowColor: '#8A6AB8',
     topColor: '#8A6AB8',
     layerColor: '#5A4080',
-    href: '/trades/exterior',
+    href: '/exterior',
   },
 ];
 

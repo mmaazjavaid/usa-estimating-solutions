@@ -35,7 +35,7 @@ const pageSchema = new Schema(
       enum: ['none', 'services', 'trades'],
       default: 'none',
     },
-    /** seo_only: metadata overlay for static routes; dynamic: render sections at `path` (`/page` or `/trades/page`) */
+    /** seo_only: metadata overlay for static routes; dynamic: render sections at `path` (single segment, e.g. `/mep`) */
     renderMode: {
       type: String,
       enum: ['seo_only', 'dynamic'],
@@ -46,7 +46,7 @@ const pageSchema = new Schema(
     homeSectionsVersion: { type: Number, required: false },
     /** Service marketing pages (`/cost-estimation`, etc.) section schema version. */
     serviceMarketingSectionsVersion: { type: Number, required: false },
-    /** Trades sub-pages (`/trades/...`) section schema version. */
+    /** Trade CMS pages (`/{segment}`) section schema version. */
     tradesSectionsVersion: { type: Number, required: false },
     /** 'independent' = shown in nav; 'under_trade' = nested under a parent trade's types section. */
     tradeLocation: {

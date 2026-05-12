@@ -31,6 +31,7 @@ import { SiteMultilineItemGridSection } from '@/components/cms/site-multiline-it
 import { SiteDarkProseSection } from '@/components/cms/site-dark-prose-section';
 import { SiteServiceTradesFooterSection } from '@/components/cms/site-service-trades-footer-section';
 import { cmsLinkToPair, cmsStateLinkHref, coerceCmsLinkField } from '@/lib/cms-sections/cms-link';
+import { rewriteLegacyTradesSubpath } from '@/lib/legacy-trades-url';
 import {
   cmsResolveHeadlineSize,
   cmsResolveParagraphSize,
@@ -248,10 +249,11 @@ function CmsSectionBlock({
       const tradesRaw = Array.isArray(d.trades) ? d.trades : [];
       const trades = tradesRaw.map((raw) => {
         const t = raw as Record<string, string>;
+        const rawHref = t.href?.startsWith('/') ? t.href : `/${t.href || 'trades'}`;
         return {
           title: String(t.title || '').replace(/\\n/g, '\n'),
           description: String(t.description || ''),
-          href: t.href?.startsWith('/') ? t.href : `/${t.href || 'trades'}`,
+          href: rewriteLegacyTradesSubpath(rawHref),
           arrowColor: String(t.arrowColor || '').trim(),
           topColor: String(t.topColor || '').trim(),
           layerColor: String(t.layerColor || '').trim(),

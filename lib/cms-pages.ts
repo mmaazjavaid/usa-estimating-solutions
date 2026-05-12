@@ -26,30 +26,14 @@ function singleSegmentPath(path: string): string | null {
   return parts.length === 1 ? `/${parts[0]}` : null;
 }
 
-/** Dynamic CMS pages may be `/segment` or `/trades/segment` (trades sub-pages). */
+/** Dynamic CMS public pages use a single URL segment: `/{slug}` (plus the homepage at `/`). */
 export function isAllowedDynamicPublicPath(path: string): boolean {
   const p = normalizePath(path);
   if (p === '/') {
     return true;
   }
   const parts = p.split('/').filter(Boolean);
-  if (parts.length === 1) {
-    return true;
-  }
-  if (parts.length === 2 && parts[0] === 'trades' && parts[1].length > 0) {
-    return true;
-  }
-  return false;
-}
-
-/** `trade-exterior` ↔ `/trades/exterior` */
-export function expectedTradeSlugForPath(path: string): string | null {
-  const p = normalizePath(path);
-  const parts = p.split('/').filter(Boolean);
-  if (parts.length === 2 && parts[0] === 'trades') {
-    return `trade-${parts[1]}`;
-  }
-  return null;
+  return parts.length === 1;
 }
 
 export { parseTradeSlugInput } from '@/lib/trade-slug-input';
@@ -134,7 +118,7 @@ export async function hasUnpublishedDynamicCmsPageAtSlug(slug: string): Promise<
   return hasUnpublishedDynamicCmsPageAtPath(single);
 }
 
-/** Same as {@link hasUnpublishedDynamicCmsPageAtSlug} but for any allowed path (e.g. `/trades/exterior`). */
+/** Same as {@link hasUnpublishedDynamicCmsPageAtSlug} but for any allowed path (e.g. `/exterior`). */
 export async function hasUnpublishedDynamicCmsPageAtPath(path: string): Promise<boolean> {
   cmsReadNoStore();
   await ensureBaseCmsRecords();
@@ -290,21 +274,13 @@ export async function assertDynamicSlugAvailable(params: {
   if (!isAllowedDynamicPublicPath(pathNorm)) {
     return {
       ok: false,
-      message: 'Dynamic CMS pages must use /page-name or /trades/page-name.',
+      message: 'Dynamic CMS pages must use a single path segment like /page-name.',
     };
   }
 
   const parts = pathNorm.split('/').filter(Boolean);
 
-  if (parts.length === 2 && parts[0] === 'trades') {
-    const expected = `trade-${parts[1]}`;
-    if (slugNorm !== expected) {
-      return {
-        ok: false,
-        message: `For this path, slug must be "${expected}".`,
-      };
-    }
-  } else if (parts.length === 1) {
+  if (parts.length === 1) {
     const single = `/${parts[0]}`;
     if (single !== `/${slugNorm}`) {
       return {
