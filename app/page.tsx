@@ -31,7 +31,7 @@ export default async function HomePage() {
   return (
     <>
       <Header />
-      <main>
+      <main className="max-lg:pt-[calc(5rem+env(safe-area-inset-top,0px))] lg:pt-0">
         <CmsPageSections sections={sections} />
       </main>
       <Footer />
