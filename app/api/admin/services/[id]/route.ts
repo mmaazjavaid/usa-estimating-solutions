@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAdminApi } from '@/lib/admin-guard';
+import { revalidatePublicShellCaches } from '@/lib/cms-revalidate';
 import { connectToDatabase } from '@/lib/db';
 import { ServiceModel } from '@/models/Service';
 
@@ -96,6 +97,8 @@ export async function PATCH(request: Request, { params }: Params) {
     return NextResponse.json({ message: 'Service not found.' }, { status: 404 });
   }
 
+  revalidatePublicShellCaches();
+
   return NextResponse.json({ data });
 }
 
@@ -112,6 +115,8 @@ export async function DELETE(_: Request, { params }: Params) {
   if (!data) {
     return NextResponse.json({ message: 'Service not found.' }, { status: 404 });
   }
+
+  revalidatePublicShellCaches();
 
   return NextResponse.json({ ok: true });
 }

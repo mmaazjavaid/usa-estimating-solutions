@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAdminApi } from '@/lib/admin-guard';
+import { revalidatePublicShellCaches } from '@/lib/cms-revalidate';
 import { ensureBaseCmsRecords } from '@/lib/cms';
 import { connectToDatabase } from '@/lib/db';
 import { ContactDataModel } from '@/models/ContactData';
@@ -48,6 +49,8 @@ export async function PUT(request: Request) {
         { new: true },
       )
     : await ContactDataModel.create({ emails, phones, address });
+
+  revalidatePublicShellCaches();
 
   return NextResponse.json({ data: doc });
 }

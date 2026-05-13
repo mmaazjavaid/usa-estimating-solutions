@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { USALogo } from "@/components/common/usa-logo"
-import { getContactData, getFooterMenuServices } from "@/lib/cms"
+import { getCachedFooterShell } from "@/lib/cms-shell-cache"
 
 const mainLinks = [
   { number: "01", label: "Home", href: "/" },
@@ -18,8 +18,7 @@ const sideLinks = [
 ]
 
 export async function Footer() {
-  const contactData = await getContactData()
-  const footerServices = await getFooterMenuServices()
+  const { contactData, footerServices } = await getCachedFooterShell()
   const primaryPhone = contactData.phones[0] ?? "(716) 226-1302"
   const primaryEmail =
     contactData.emails[0] ?? "info@usaestimatingsolutions.com"

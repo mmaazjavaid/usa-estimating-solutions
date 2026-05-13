@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAdminApi } from '@/lib/admin-guard';
+import { revalidatePublicShellCaches } from '@/lib/cms-revalidate';
 import { connectToDatabase } from '@/lib/db';
 import { ServiceModel } from '@/models/Service';
 
@@ -83,6 +84,8 @@ export async function POST(request: Request) {
     status: body.status ?? 'published',
     displayInFooterMenu: body.displayInFooterMenu ?? false,
   });
+
+  revalidatePublicShellCaches();
 
   return NextResponse.json({ data }, { status: 201 });
 }
