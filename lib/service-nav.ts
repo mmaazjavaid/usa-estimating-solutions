@@ -11,6 +11,10 @@ import {
   normalizeNavHref,
 } from '@/lib/service-nav-helpers';
 import { SERVICES_DROPDOWN_COLUMNS, type DropdownLink } from '@/lib/service-nav-config';
+import {
+  resolveServicesDropdownColumns,
+  type ServiceHrefSource,
+} from '@/lib/service-nav-resolve';
 import { connectToDatabase } from '@/lib/db';
 import { PageModel } from '@/models/Page';
 import { ServiceModel } from '@/models/Service';
@@ -34,12 +38,19 @@ export {
  */
 export async function getServicesNavFlatLinks(): Promise<DropdownLink[]> {
   await ensureBaseCmsRecords();
+  await connectToDatabase();
+  const services = (await ServiceModel.find({ status: 'published' })
+    .select('slug path legacySlugs')
+    .lean()) as ServiceHrefSource[];
+
+  const resolvedColumns = resolveServicesDropdownColumns(SERVICES_DROPDOWN_COLUMNS, services);
+
   const [cms, unpublishedPaths] = await Promise.all([
     getPublishedCmsNavLinks(),
     getUnpublishedDynamicPathsForPlacement('services'),
   ]);
   const unpublished = new Set(unpublishedPaths.map(normalizeNavHref));
-  const base = filterServicesColumnsByUnpublished(SERVICES_DROPDOWN_COLUMNS, unpublished);
+  const base = filterServicesColumnsByUnpublished(resolvedColumns, unpublished);
   const staticHrefs = hrefSetFromServicesColumns(base);
   const seen = new Set<string>();
   const out: DropdownLink[] = [];

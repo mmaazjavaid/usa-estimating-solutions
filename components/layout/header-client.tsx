@@ -5,7 +5,10 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowUpRight, ChevronDown, Menu, X } from 'lucide-react';
 import { USALogo } from '@/components/common/usa-logo';
-import { SERVICES_DROPDOWN_COLUMNS as servicesDropdownColumns } from '@/lib/service-nav-config';
+import {
+  SERVICES_DROPDOWN_COLUMNS as defaultServicesDropdownColumns,
+  type DropdownGroup,
+} from '@/lib/service-nav-config';
 import {
   filterServicesColumnsByUnpublished,
   filterTradesColumnsByUnpublished,
@@ -44,8 +47,6 @@ const navLinks = [
   },
 ];
 
-import type { DropdownGroup } from '@/lib/service-nav-config';
-
 const tradesDropdownColumns: DropdownGroup[][] = [
   [
     {
@@ -74,6 +75,8 @@ type HeaderClientProps = {
   /** Dynamic CMS page paths (e.g. `/cost-estimation`) that are unpublished — hidden from mega menus. */
   unpublishedServicePaths?: string[];
   unpublishedTradesPaths?: string[];
+  /** Mega menu columns with hrefs resolved from live services (slug/path/legacySlugs). */
+  servicesDropdownColumns?: DropdownGroup[][];
 };
 
 type OpenDropdown = 'services' | 'trades' | null;
@@ -83,6 +86,7 @@ export function HeaderClient({
   cmsTradesLinks = [],
   unpublishedServicePaths = [],
   unpublishedTradesPaths = [],
+  servicesDropdownColumns = defaultServicesDropdownColumns,
 }: HeaderClientProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<OpenDropdown>(null);
@@ -124,7 +128,7 @@ export function HeaderClient({
     }
 
     return [...base, ...extraColumns];
-  }, [cmsServicesLinks, unpublishedServicePaths]);
+  }, [cmsServicesLinks, unpublishedServicePaths, servicesDropdownColumns]);
 
   const tradesDropdownColumnsWithCms = useMemo(() => {
     const unpublished = new Set(unpublishedTradesPaths.map(normalizeNavHref));

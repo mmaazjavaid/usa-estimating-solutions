@@ -55,8 +55,18 @@ export async function PATCH(request: Request, { params }: Params) {
     return auth.response;
   }
 
+  const { id } = await params;
+  await connectToDatabase();
+
+  const existing = await ServiceModel.findById(id).lean();
+  if (!existing) {
+    return NextResponse.json({ message: 'Service not found.' }, { status: 404 });
+  }
+
   const body = (await request.json()) as Record<string, unknown>;
   const updatePayload: Record<string, unknown> = { ...body };
+  delete updatePayload._id;
+  delete updatePayload.legacySlugs;
 
   for (const key of [
     'name',
@@ -75,6 +85,7 @@ export async function PATCH(request: Request, { params }: Params) {
     }
   }
 
+  let slugChanged = false;
   if ('slug' in updatePayload) {
     const normalizedSlug = normalizeSlug(updatePayload.slug);
     if (!normalizedSlug) {
@@ -83,13 +94,21 @@ export async function PATCH(request: Request, { params }: Params) {
 
     updatePayload.slug = normalizedSlug;
     updatePayload.path = buildPathFromSlug(normalizedSlug);
+    if (normalizedSlug !== String(existing.slug ?? '')) {
+      slugChanged = true;
+    }
   } else if ('path' in updatePayload) {
     delete updatePayload.path;
   }
-  const { id } = await params;
 
-  await connectToDatabase();
-  const data = await ServiceModel.findByIdAndUpdate(id, updatePayload, {
+  const mongoUpdate: Record<string, unknown> = slugChanged
+    ? {
+        $set: updatePayload,
+        $addToSet: { legacySlugs: String(existing.slug ?? '') },
+      }
+    : { $set: updatePayload };
+
+  const data = await ServiceModel.findByIdAndUpdate(id, mongoUpdate, {
     new: true,
   }).lean();
 

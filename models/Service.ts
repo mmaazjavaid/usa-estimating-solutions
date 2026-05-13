@@ -24,6 +24,8 @@ const serviceSchema = new Schema(
       default: 'published',
     },
     displayInFooterMenu: { type: Boolean, default: false },
+    /** Past slugs kept so mega menu / static nav config hrefs still resolve after slug changes. */
+    legacySlugs: { type: [String], default: [] },
   },
   { timestamps: true },
 );
