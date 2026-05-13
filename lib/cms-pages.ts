@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { cache } from 'react';
 import { cmsReadNoStore } from '@/lib/cms-read-no-store';
 import { connectToDatabase } from '@/lib/db';
 import { ensureBaseCmsRecords } from '@/lib/cms';
@@ -119,7 +120,7 @@ export async function hasUnpublishedDynamicCmsPageAtSlug(slug: string): Promise<
 }
 
 /** Same as {@link hasUnpublishedDynamicCmsPageAtSlug} but for any allowed path (e.g. `/exterior`). */
-export async function hasUnpublishedDynamicCmsPageAtPath(path: string): Promise<boolean> {
+export const hasUnpublishedDynamicCmsPageAtPath = cache(async (path: string): Promise<boolean> => {
   cmsReadNoStore();
   await ensureBaseCmsRecords();
   await connectToDatabase();
@@ -135,37 +136,47 @@ export async function hasUnpublishedDynamicCmsPageAtPath(path: string): Promise<
     .select('_id')
     .lean();
   return !!doc;
-}
+});
 
 export type LoadPageOptions = {
   allowDraft?: boolean;
 };
 
-export async function loadDynamicCmsPageByPath(path: string, options: LoadPageOptions = {}) {
-  cmsReadNoStore();
-  await ensureBaseCmsRecords();
-  await connectToDatabase();
+/**
+ * Per-request memoized DB read. We key on primitive (path, allowDraft) so that React `cache()`
+ * actually dedupes calls between `generateMetadata` and the page body (which would otherwise issue
+ * the same `findOne` twice for every dynamic page request).
+ */
+const loadDynamicCmsPageByPathCached = cache(
+  async (normalizedPath: string, allowDraft: boolean) => {
+    cmsReadNoStore();
+    await ensureBaseCmsRecords();
+    await connectToDatabase();
 
-  const normalized = normalizePath(path);
-  const query: Record<string, unknown> = {
-    renderMode: 'dynamic',
-    path: normalized,
-  };
+    const query: Record<string, unknown> = {
+      renderMode: 'dynamic',
+      path: normalizedPath,
+    };
 
-  if (!options.allowDraft) {
-    query.status = 'published';
-  }
+    if (!allowDraft) {
+      query.status = 'published';
+    }
 
-  return await PageModel.findOne(query).lean();
+    return await PageModel.findOne(query).lean();
+  },
+);
+
+export function loadDynamicCmsPageByPath(path: string, options: LoadPageOptions = {}) {
+  return loadDynamicCmsPageByPathCached(normalizePath(path), !!options.allowDraft);
 }
 
-export async function loadDynamicCmsPageBySlug(slug: string, options: LoadPageOptions = {}) {
+export function loadDynamicCmsPageBySlug(slug: string, options: LoadPageOptions = {}) {
   const path = normalizePath(slug);
   const single = singleSegmentPath(path);
   if (!single) {
-    return null;
+    return Promise.resolve(null);
   }
-  return loadDynamicCmsPageByPath(single, options);
+  return loadDynamicCmsPageByPathCached(single, !!options.allowDraft);
 }
 
 export async function buildDynamicPageMetadata(
@@ -182,6 +193,11 @@ export async function buildDynamicPageMetadataForPath(
 ): Promise<Metadata | null> {
   const page = await loadDynamicCmsPageByPath(normalizePath(path), options);
   return page ? buildMetadataFromPageDoc(page) : null;
+}
+
+/** Exported so route handlers can render metadata from an already-loaded page doc (saves a DB round-trip). */
+export function buildDynamicPageMetadataFromDoc(page: Parameters<typeof buildMetadataFromPageDoc>[0]): Metadata {
+  return buildMetadataFromPageDoc(page);
 }
 
 function buildMetadataFromPageDoc(page: {

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { cache } from 'react';
 import { cmsReadNoStore } from '@/lib/cms-read-no-store';
 import {
   DEFAULT_CONTACT,
@@ -257,22 +258,27 @@ export async function ensureBaseCmsRecords() {
   await cmsBootstrapState.promise;
 }
 
-export async function getContactData() {
+/**
+ * Per-request memoization (React `cache`) keeps repeated reads inside a single render — most
+ * importantly `generateMetadata` + the page body — from each issuing their own Mongo Atlas
+ * round-trip. `cmsReadNoStore` still disables cross-request caching, so admin edits remain live.
+ */
+export const getContactData = cache(async () => {
   cmsReadNoStore();
   await ensureBaseCmsRecords();
   const doc = await ContactDataModel.findOne().lean();
   return doc ?? DEFAULT_CONTACT;
-}
+});
 
-export async function getPublishedServices() {
+export const getPublishedServices = cache(async () => {
   cmsReadNoStore();
   await ensureBaseCmsRecords();
   return await ServiceModel.find({ status: 'published' })
     .sort({ createdAt: -1 })
     .lean();
-}
+});
 
-export async function getFooterMenuServices() {
+export const getFooterMenuServices = cache(async () => {
   cmsReadNoStore();
   await ensureBaseCmsRecords();
   return await ServiceModel.find({
@@ -281,15 +287,15 @@ export async function getFooterMenuServices() {
   })
     .sort({ createdAt: -1 })
     .lean();
-}
+});
 
-export async function getPublishedServiceBySlug(slug: string) {
+export const getPublishedServiceBySlug = cache(async (slug: string) => {
   cmsReadNoStore();
   await ensureBaseCmsRecords();
   return await ServiceModel.findOne({ slug, status: 'published' }).lean();
-}
+});
 
-export async function getPublishedSubServices(serviceId: string) {
+export const getPublishedSubServices = cache(async (serviceId: string) => {
   await connectToDatabase();
   return await SubServiceModel.find({
     serviceId,
@@ -297,9 +303,9 @@ export async function getPublishedSubServices(serviceId: string) {
   })
     .sort({ createdAt: -1 })
     .lean();
-}
+});
 
-export async function getPublishedSubServiceBySlug(slug: string) {
+export const getPublishedSubServiceBySlug = cache(async (slug: string) => {
   await connectToDatabase();
   return await SubServiceModel.findOne({
     slug,
@@ -307,9 +313,9 @@ export async function getPublishedSubServiceBySlug(slug: string) {
   })
     .populate('serviceId', 'name slug path')
     .lean();
-}
+});
 
-export async function getSeoMetadataByPath(path: string): Promise<Metadata | null> {
+export const getSeoMetadataByPath = cache(async (path: string): Promise<Metadata | null> => {
   cmsReadNoStore();
   await ensureBaseCmsRecords();
   const page = await PageModel.findOne({ path }).lean();
@@ -332,4 +338,4 @@ export async function getSeoMetadataByPath(path: string): Promise<Metadata | nul
       footerMetaTags: page.footerMetaTags || '',
     },
   };
-}
+});

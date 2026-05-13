@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { cookies } from 'next/headers';
+import { cache } from 'react';
 import { notFound } from 'next/navigation';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
@@ -13,8 +14,7 @@ import {
   getPublishedSubServices,
 } from '@/lib/cms';
 import {
-  buildDynamicPageMetadata,
-  hasUnpublishedDynamicCmsPageAtSlug,
+  buildDynamicPageMetadataFromDoc,
   loadDynamicCmsPageBySlug,
   normalizeSectionsInput,
 } from '@/lib/cms-pages';
@@ -27,10 +27,11 @@ type PageProps = {
   searchParams?: Promise<{ preview?: string }>;
 };
 
-async function adminDraftPreview(searchParams?: { preview?: string }) {
-  if (searchParams?.preview !== '1') {
-    return false;
-  }
+/**
+ * `cache()` keeps `cookies()` + JWT verify to a single execution per request — `generateMetadata`
+ * and the page body would otherwise both run it.
+ */
+const getAdminPreviewSession = cache(async (): Promise<boolean> => {
   try {
     const jar = await cookies();
     const token = jar.get(getAdminCookieName())?.value;
@@ -42,7 +43,23 @@ async function adminDraftPreview(searchParams?: { preview?: string }) {
   } catch {
     return false;
   }
+});
+
+async function adminDraftPreview(searchParams?: { preview?: string }) {
+  if (searchParams?.preview !== '1') {
+    return false;
+  }
+  return getAdminPreviewSession();
 }
+
+/**
+ * Single Mongo read per request covering both `generateMetadata` and the page body.
+ * We always read with `allowDraft: true` so we can derive the unpublished-404 decision locally
+ * (avoiding a second `findOne`), but still hide unpublished pages from non-preview viewers.
+ */
+const loadSlugPage = cache(async (slug: string) => {
+  return loadDynamicCmsPageBySlug(slug, { allowDraft: true });
+});
 
 export async function generateMetadata({
   params,
@@ -51,14 +68,15 @@ export async function generateMetadata({
   const { slug } = await params;
   const sp = searchParams ? await searchParams : undefined;
   const preview = await adminDraftPreview(sp);
-  const cmsPage = await loadDynamicCmsPageBySlug(slug, { allowDraft: preview });
+  const cmsPage = await loadSlugPage(slug);
+  const isPublished = !cmsPage || cmsPage.status !== 'unpublished';
+  const visibleCmsPage = preview || isPublished ? cmsPage : null;
 
-  if (cmsPage && (cmsPage.renderMode ?? 'seo_only') === 'dynamic') {
-    const cmsMeta = await buildDynamicPageMetadata(slug, { allowDraft: preview });
-    return cmsMeta ?? {};
+  if (visibleCmsPage && (visibleCmsPage.renderMode ?? 'seo_only') === 'dynamic') {
+    return buildDynamicPageMetadataFromDoc(visibleCmsPage);
   }
 
-  if (!preview && (await hasUnpublishedDynamicCmsPageAtSlug(slug))) {
+  if (!preview && cmsPage && !isPublished) {
     notFound();
   }
 
@@ -107,14 +125,16 @@ export default async function DynamicServicePage({ params, searchParams }: PageP
   const { slug } = await params;
   const sp = searchParams ? await searchParams : undefined;
   const preview = await adminDraftPreview(sp);
-  const cmsPage = await loadDynamicCmsPageBySlug(slug, { allowDraft: preview });
+  const cmsPage = await loadSlugPage(slug);
+  const isPublished = !cmsPage || cmsPage.status !== 'unpublished';
+  const visibleCmsPage = preview || isPublished ? cmsPage : null;
 
-  if (cmsPage && (cmsPage.renderMode ?? 'seo_only') === 'dynamic') {
+  if (visibleCmsPage && (visibleCmsPage.renderMode ?? 'seo_only') === 'dynamic') {
     const sectionListRaw = normalizeSectionsInput(
-      (cmsPage.sections ?? []) as CmsPageSection[],
+      (visibleCmsPage.sections ?? []) as CmsPageSection[],
     );
-    const placement = String((cmsPage as { placement?: string }).placement ?? '').trim();
-    const breadcrumbCurrent = String((cmsPage as { name?: string }).name ?? '').trim() || slug;
+    const placement = String((visibleCmsPage as { placement?: string }).placement ?? '').trim();
+    const breadcrumbCurrent = String((visibleCmsPage as { name?: string }).name ?? '').trim() || slug;
     const sectionList =
       placement === 'services'
         ? coerceServiceMarketingHeroSections(sectionListRaw, breadcrumbCurrent)
@@ -126,7 +146,7 @@ export default async function DynamicServicePage({ params, searchParams }: PageP
       <>
         <Header />
         <main className="pt-20">
-          {preview && cmsPage.status === 'unpublished' ? (
+          {preview && visibleCmsPage.status === 'unpublished' ? (
             <div className="bg-amber-900/40 px-4 py-2 text-center text-xs text-amber-100">
               Draft preview — this page is not published.
             </div>
@@ -139,7 +159,7 @@ export default async function DynamicServicePage({ params, searchParams }: PageP
     );
   }
 
-  if (!preview && (await hasUnpublishedDynamicCmsPageAtSlug(slug))) {
+  if (!preview && cmsPage && !isPublished) {
     notFound();
   }
 
