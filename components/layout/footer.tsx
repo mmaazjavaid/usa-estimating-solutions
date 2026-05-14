@@ -5,11 +5,11 @@ import { getCachedFooterShell } from "@/lib/cms-shell-cache"
 const mainLinks = [
   { number: "01", label: "Home", href: "/" },
   { number: "02", label: "Services", href: "/services" },
-  { number: "03", label: "Trades", href: "/trades" },
-  { number: "04", label: "Our Works", href: "/our-works" },
-  { number: "05", label: "Prices", href: "/prices" },
+  { number: "03", label: "Trades", href: "/our-trades" },
+  { number: "04", label: "Our Works", href: "/samples" },
+  { number: "05", label: "Prices", href: "/pricing" },
   { number: "06", label: "About", href: "/about" },
-  { number: "07", label: "Blogs", href: "/blogs" },
+  { number: "07", label: "Blogs", href: "/blog" },
 ]
 
 const sideLinks = [

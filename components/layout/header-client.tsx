@@ -26,16 +26,16 @@ const navLinks = [
   },
   {
     label: 'Trades',
-    href: '/trades',
+    href: '/our-trades',
     hasDropdown: true,
   },
   {
     label: 'Our Works',
-    href: '/our-works',
+    href: '/samples',
   },
   {
     label: 'Prices',
-    href: '/prices',
+    href: '/pricing',
   },
   {
     label: 'About',
@@ -43,7 +43,7 @@ const navLinks = [
   },
   {
     label: 'Blogs',
-    href: '/blogs',
+    href: '/blog',
   },
 ];
 
@@ -170,7 +170,7 @@ export function HeaderClient({
     servicesDropdownHrefs.some((href) => isActiveHref(href));
 
   const isTradesActive =
-    isActiveHref('/trades') ||
+    isActiveHref('/our-trades') ||
     tradesDropdownHrefs.some((href) => isActiveHref(href));
 
   useEffect(() => {

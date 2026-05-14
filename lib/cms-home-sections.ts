@@ -141,7 +141,7 @@ export const HOME_PAGE_SECTIONS: CmsPageSection[] = [
         'Our estimators provide accurate quantity takeoffs and cost estimates across all CSI Division trades, supporting commercial, residential, and industrial projects. All estimates are prepared in strict compliance with U.S. construction codes, industry standards, and current pricing databases, ensuring your bids remain competitive, accurate, and aligned with market conditions.',
       exploreCta: {
         kind: 'internal',
-        href: '/our-works',
+        href: '/samples',
         label: 'Explore More',
       },
       works: [

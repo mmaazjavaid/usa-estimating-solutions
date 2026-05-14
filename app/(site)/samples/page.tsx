@@ -80,7 +80,7 @@ const workItems = [
 ]
 
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSeoMetadataByPath("/our-works")) ?? {}
+  return (await getSeoMetadataByPath("/samples")) ?? {}
 }
 
 export default function OurWorksPage() {

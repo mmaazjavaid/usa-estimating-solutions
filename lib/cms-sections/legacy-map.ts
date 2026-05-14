@@ -117,7 +117,7 @@ export function migrateLegacyCmsSection(section: CmsPageSection): CmsPageSection
           trades: Array.isArray(d.items)
             ? (d.items as Record<string, unknown>[]).map((item, i) => {
                 const pair = cmsLinkToPair(item.link, {
-                  href: '/trades',
+                  href: '/our-trades',
                   label: 'Learn more',
                 });
                 const colors = TRADE_COLORS[i % TRADE_COLORS.length] ?? TRADE_COLORS[0]!;

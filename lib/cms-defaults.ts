@@ -3,9 +3,9 @@ export const DEFAULT_PAGE_DEFINITIONS = [
   { name: 'About', slug: 'about', path: '/about' },
   { name: 'Contact', slug: 'contact', path: '/contact' },
   { name: 'Services', slug: 'services', path: '/services' },
-  { name: 'Trades', slug: 'trades', path: '/trades' },
-  { name: 'Our Works', slug: 'our-works', path: '/our-works' },
-  { name: 'Prices', slug: 'prices', path: '/prices' },
+  { name: 'Trades', slug: 'our-trades', path: '/our-trades' },
+  { name: 'Our Works', slug: 'samples', path: '/samples' },
+  { name: 'Prices', slug: 'pricing', path: '/pricing' },
   {
     name: 'Cost Estimation',
     slug: 'cost-estimation',
@@ -78,8 +78,8 @@ export const DEFAULT_PAGE_DEFINITIONS = [
   },
   {
     name: 'Blogs',
-    slug: 'blogs',
-    path: '/blogs',
+    slug: 'blog',
+    path: '/blog',
   },
 ] as const;
 

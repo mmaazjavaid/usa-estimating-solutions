@@ -72,7 +72,7 @@ export default function AdminBlogsPage() {
                 <tr key={row._id} className="border-t border-zinc-800 bg-zinc-950">
                   <td className="px-4 py-3">
                     <p>{row.title}</p>
-                    <p className="text-xs text-zinc-400">/blogs/{row.slug}</p>
+                    <p className="text-xs text-zinc-400">/blog/{row.slug}</p>
                   </td>
                   <td className="px-4 py-3">{row.category}</td>
                   <td className="px-4 py-3">
@@ -83,7 +83,7 @@ export default function AdminBlogsPage() {
                   <td className="px-4 py-3">
                     <div className="flex gap-3">
                       <Link
-                        href={`/blogs/${row.slug}`}
+                        href={`/blog/${row.slug}`}
                         target="_blank"
                         className="text-zinc-200 underline"
                       >

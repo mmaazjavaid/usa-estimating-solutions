@@ -59,7 +59,7 @@ const plans = [
 ]
 
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSeoMetadataByPath("/prices")) ?? {}
+  return (await getSeoMetadataByPath("/pricing")) ?? {}
 }
 
 export default function PricesPage() {

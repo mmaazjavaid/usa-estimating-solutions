@@ -28,19 +28,19 @@ export function revalidateAfterCmsPageChange(path: string | undefined): void {
     revalidatePath(p);
     revalidatePath('/', 'layout');
     revalidatePath('/services');
-    revalidatePath('/trades');
+    revalidatePath('/our-trades');
     revalidateShellDataCache();
   } catch (e) {
     console.warn('[cms-revalidate]', e);
   }
 }
 
-/** After blog create/update/delete so /blogs and /blogs/[slug] pick up changes immediately. */
+/** After blog create/update/delete so /blog and /blog/[slug] pick up changes immediately. */
 export function revalidateAfterBlogChange(slug: string | undefined): void {
   try {
-    revalidatePath('/blogs');
+    revalidatePath('/blog');
     if (slug) {
-      revalidatePath(`/blogs/${slug}`);
+      revalidatePath(`/blog/${slug}`);
     }
     revalidatePath('/', 'layout');
   } catch (e) {

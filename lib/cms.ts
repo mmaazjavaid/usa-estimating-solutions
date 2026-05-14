@@ -20,6 +20,7 @@ import {
   TRADES_SECTIONS_SCHEMA_VERSION,
 } from '@/lib/cms-trades-pages-seed';
 import { migrateLegacyTradesUrlsToRoot } from '@/lib/migrate-trades-urls-to-root';
+import { migrateRenamedPageSlugs } from '@/lib/migrate-renamed-page-slugs';
 import { connectToDatabase } from '@/lib/db';
 import { ContactDataModel } from '@/models/ContactData';
 import { AdminModel } from '@/models/Admin';
@@ -69,6 +70,7 @@ async function runCmsBootstrap() {
   await connectToDatabase();
 
   await migrateLegacyTradesUrlsToRoot();
+  await migrateRenamedPageSlugs();
 
   if (process.env.ADMIN_EMAIL) {
     await AdminModel.updateOne(

@@ -36,7 +36,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
       <main className="bg-black pt-24 text-white">
         <article className="mx-auto max-w-5xl px-6 py-14 md:py-20">
           <div className="mb-8 text-sm text-white/60">
-            <Link href="/blogs" className="hover:underline">
+            <Link href="/blog" className="hover:underline">
               Blogs
             </Link>{' '}
             {'>'} <span>{blog.title}</span>

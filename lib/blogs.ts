@@ -53,7 +53,7 @@ export function getBlogMetadata(blog: {
   return {
     title,
     description,
-    alternates: { canonical: `/blogs/${blog.slug}` },
+    alternates: { canonical: `/blog/${blog.slug}` },
     robots:
       blog.indexStatus === 'noindex'
         ? { index: false, follow: false }

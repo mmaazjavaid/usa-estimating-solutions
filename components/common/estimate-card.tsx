@@ -23,7 +23,7 @@ function isTradesIndexOnlyHref(raw: string): boolean {
   }
   if (!path.startsWith('/')) path = `/${path}`;
   const normalized = path.replace(/\/+$/, '') || '/';
-  return normalized === '/trades';
+  return normalized === '/our-trades' || normalized === '/trades';
 }
 
 type EstimateCardProps = {

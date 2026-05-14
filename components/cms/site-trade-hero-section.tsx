@@ -43,7 +43,7 @@ export function SiteTradeHeroSection({
     <section className="bg-black text-white">
       <section className="mx-auto max-w-7xl px-6 pb-16 pt-8">
       <nav className="mb-16 text-sm text-[#d9d9d9]/60">
-        <Link href="/trades">Trades</Link>
+        <Link href="/our-trades">Trades</Link>
         <span className="mx-2">{'>'}</span>
         <span>{breadcrumbCurrent}</span>
       </nav>

@@ -297,7 +297,7 @@ function CmsSectionBlock({
         };
       }).filter((w) => w.src);
       const explore = cmsLinkToPair(d.exploreCta, {
-        href: '/our-works',
+        href: '/samples',
         label: 'Explore More',
       });
       return (

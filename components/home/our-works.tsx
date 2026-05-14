@@ -58,7 +58,7 @@ export function OurWorks({
   heading = 'Our Works',
   intro = DEFAULT_INTRO,
   works = DEFAULT_WORKS,
-  exploreHref = '/our-works',
+  exploreHref = '/samples',
   exploreLabel = 'Explore More',
   headingTypography,
   introTypography,

@@ -4,12 +4,12 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-/** Legacy `/trades/{segment}` URLs redirect to `/{segment}` (301) for SEO. */
+/** Legacy `/our-trades/{segment}` URLs redirect to `/{segment}` (301) for SEO. */
 export default async function LegacyTradesSubpageRedirect({ params }: PageProps) {
   const { slug } = await params;
   const segment = slug.trim().replace(/^\/+/, '');
   if (!segment) {
-    permanentRedirect('/trades');
+    permanentRedirect('/our-trades');
   }
   permanentRedirect(`/${segment}`);
 }

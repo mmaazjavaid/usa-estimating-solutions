@@ -7,7 +7,7 @@ import { getPublishedBlogs } from '@/lib/blogs';
 import { getSeoMetadataByPath } from '@/lib/cms';
 
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSeoMetadataByPath('/blogs')) ?? {};
+  return (await getSeoMetadataByPath('/blog')) ?? {};
 }
 
 export default async function BlogsPage() {
@@ -31,7 +31,7 @@ export default async function BlogsPage() {
                 className="grid items-center gap-8 rounded-2xl border border-white/20 bg-white/[0.03] p-5 md:grid-cols-2 md:p-8"
               >
                 <div className={index % 2 === 0 ? 'order-1' : 'order-1 md:order-2'}>
-                  <Link href={`/blogs/${blog.slug}`} className="block overflow-hidden rounded-xl">
+                  <Link href={`/blog/${blog.slug}`} className="block overflow-hidden rounded-xl">
                     {blog.featuredImage ? (
                       <img
                         src={blog.featuredImage}
@@ -52,7 +52,7 @@ export default async function BlogsPage() {
                     {blog.category} - {new Date(blog.publishedDate).toLocaleDateString()}
                   </p>
                   <h2 className="mt-3 text-2xl font-bold leading-tight md:text-3xl">
-                    <Link href={`/blogs/${blog.slug}`} className="hover:underline">
+                    <Link href={`/blog/${blog.slug}`} className="hover:underline">
                       {blog.title}
                     </Link>
                   </h2>
@@ -60,7 +60,7 @@ export default async function BlogsPage() {
                     {blog.shortDescription}
                   </p>
                   <Link
-                    href={`/blogs/${blog.slug}`}
+                    href={`/blog/${blog.slug}`}
                     className="mt-6 inline-flex text-sm font-medium text-white underline"
                   >
                     Read More

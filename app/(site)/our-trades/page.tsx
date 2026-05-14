@@ -56,7 +56,7 @@ const trades = [
 ]
 
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSeoMetadataByPath("/trades")) ?? {}
+  return (await getSeoMetadataByPath("/our-trades")) ?? {}
 }
 
 export default async function TradesPage() {
