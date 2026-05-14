@@ -1,5 +1,9 @@
 import Link from 'next/link';
 import { TradeHeroHexVisual } from '@/components/cms/trade-hero-hex-visual';
+import {
+  renderGradientHeading,
+  stripHtmlToText,
+} from '@/components/common/gradient-heading';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -56,8 +60,9 @@ export function SiteTradeHeroSection({
               headlineTypographyClass,
             )}
             style={headlineStyle}
-            dangerouslySetInnerHTML={{ __html: headlineHtml }}
-          />
+          >
+            {renderGradientHeading(stripHtmlToText(headlineHtml))}
+          </h1>
           <p
             className={cn(
               'text-justify text-sm leading-relaxed text-[#d9d9d9]/75 md:text-base',

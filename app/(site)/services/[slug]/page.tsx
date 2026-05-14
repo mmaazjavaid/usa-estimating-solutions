@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/footer';
 import { ScrollToTop } from '@/components/layout/scroll-to-top';
 import { CTASection } from '@/components/home/cta-section';
 import { ServiceTradesSection } from '@/components/services/service-trades-section';
+import { renderGradientHeading } from '@/components/common/gradient-heading';
 import {
   getPublishedServiceBySlug,
   getPublishedSubServices,
@@ -86,7 +87,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
               <div className="max-w-2xl">
                 <h1 className="mb-6 text-4xl font-bold leading-tight md:text-5xl">
-                  {service.name}
+                  {renderGradientHeading(service.name)}
                 </h1>
                 <p className="text-sm leading-relaxed text-[#d9d9d9]/75 md:text-base">
                   {service.shortDescription ||

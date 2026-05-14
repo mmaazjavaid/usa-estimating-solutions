@@ -8,6 +8,10 @@ import {
   CMS_HERO_SUBTITLE_LINES,
   cmsClampClassNames,
 } from '@/components/ui/cms-clamp';
+import {
+  renderGradientHeading,
+  stripHtmlToText,
+} from '@/components/common/gradient-heading';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
 
@@ -115,10 +119,12 @@ export function HeroSection({
               <span className="block">more work.</span>
             </h1>
           ) : headlineAsHtml ? (
-            <h1 className={headlineClass} style={headlineStyle} dangerouslySetInnerHTML={{ __html: trimmedHeadline }} />
+            <h1 className={headlineClass} style={headlineStyle}>
+              {renderGradientHeading(stripHtmlToText(trimmedHeadline))}
+            </h1>
           ) : (
             <h1 className={cn(headlineClass, 'whitespace-pre-line')} style={headlineStyle}>
-              {trimmedHeadline}
+              {renderGradientHeading(trimmedHeadline)}
             </h1>
           )}
           <p
