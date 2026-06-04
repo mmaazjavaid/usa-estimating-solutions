@@ -4,6 +4,7 @@ import {
   normalizeSectionsInput,
 } from '@/lib/cms-pages';
 import { parseTradeSlugInput } from '@/lib/trade-slug-input';
+import { cleanSlugInput } from '@/lib/sanitize-slug';
 
 const PATCH_KEYS = [
   'name',
@@ -66,8 +67,8 @@ export async function validateAndFinalizePagePatch(params: {
     (existing.renderMode === 'dynamic' ? 'dynamic' : 'seo_only');
 
   let slug =
-    typeof patch.slug === 'string' ? patch.slug.trim().replace(/^\/+/, '') : existing.slug;
-  let path = typeof patch.path === 'string' ? patch.path.trim() : existing.path;
+    typeof patch.slug === 'string' ? cleanSlugInput(patch.slug).replace(/^\/+/, '') : existing.slug;
+  let path = typeof patch.path === 'string' ? cleanSlugInput(patch.path) : existing.path;
 
   const placementFromPatch = asPlacement(patch.placement);
   const effectivePlacement =
@@ -80,9 +81,7 @@ export async function validateAndFinalizePagePatch(params: {
       const raw =
         typeof patch.slug === 'string' ? patch.slug : existing.slug;
       // Not "home" — that slug is often used by a /home CMS page and must stay unique.
-      slug = String(raw ?? 'homepage')
-        .trim()
-        .replace(/^\/+/, '') || 'homepage';
+      slug = cleanSlugInput(String(raw ?? 'homepage')).replace(/^\/+/, '') || 'homepage';
     } else if (effectivePlacement === 'trades') {
       const segment = parseTradeSlugInput(slug);
       if (!segment) {
@@ -229,7 +228,7 @@ export async function validateNewDynamicPage(body: Record<string, unknown>): Pro
   | { ok: false; message: string }
 > {
   const name = typeof body.name === 'string' ? body.name.trim() : '';
-  const slugRaw = typeof body.slug === 'string' ? body.slug.trim().replace(/^\/+/, '') : '';
+  const slugRaw = cleanSlugInput(body.slug).replace(/^\/+/, '');
   const placement = asPlacement(body.placement) ?? 'none';
 
   if (!name || !slugRaw) {

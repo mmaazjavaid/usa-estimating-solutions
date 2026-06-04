@@ -7,11 +7,13 @@ import { PageModel } from '@/models/Page';
 import type { CmsPageSection } from '@/lib/cms-sections/types';
 import { migrateLegacyCmsSection } from '@/lib/cms-sections/legacy-map';
 import { isKnownSectionType } from '@/lib/cms-sections/registry';
+import { stripInvisibleChars } from '@/lib/sanitize-slug';
 
 export type CmsNavLink = { label: string; href: string };
 
 export function normalizePath(path: string): string {
-  const p = path.trim();
+  // Strip zero-width/control chars first — they survive .trim() and silently break path matching.
+  const p = stripInvisibleChars(path).trim();
   if (!p || p === '/') {
     return '/';
   }
