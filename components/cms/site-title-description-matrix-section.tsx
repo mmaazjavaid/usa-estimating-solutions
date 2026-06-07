@@ -1,5 +1,6 @@
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
+import { renderInlineLinks } from '@/components/cms/rich-text';
 
 export type TitleDescriptionCell = {
   title: string;
@@ -40,7 +41,7 @@ export function SiteTitleDescriptionMatrixSection({
           )}
           style={introTypography?.style}
         >
-          {intro}
+          {renderInlineLinks(intro)}
         </p>
       ) : null}
 
@@ -61,8 +62,12 @@ export function SiteTitleDescriptionMatrixSection({
                 }`}
               >
                 <p className="text-sm text-[#d9d9d9]/90 md:text-base">
-                  <span className="font-semibold text-white">{estimate.title}</span>{' '}
-                  <span className="text-[#d9d9d9]/70">{estimate.description}</span>
+                  <span className="font-semibold text-white">
+                    {renderInlineLinks(estimate.title)}
+                  </span>{' '}
+                  <span className="text-[#d9d9d9]/70">
+                    {renderInlineLinks(estimate.description)}
+                  </span>
                 </p>
               </div>
             ))}

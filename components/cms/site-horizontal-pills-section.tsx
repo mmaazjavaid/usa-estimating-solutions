@@ -1,5 +1,6 @@
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
+import { renderInlineLinks } from '@/components/cms/rich-text';
 
 export function SiteHorizontalPillsSection({
   heading,
@@ -33,7 +34,7 @@ export function SiteHorizontalPillsSection({
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-4 md:flex-row md:gap-0">
         {items.map((feature, index) => (
           <div key={feature} className="flex items-center">
-            <span className="whitespace-nowrap text-sm text-[#d9d9d9]/80 md:text-base">{feature}</span>
+            <span className="whitespace-nowrap text-sm text-[#d9d9d9]/80 md:text-base">{renderInlineLinks(feature)}</span>
             {index < items.length - 1 ? <div className={dividerClass} /> : null}
           </div>
         ))}

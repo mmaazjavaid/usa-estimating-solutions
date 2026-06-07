@@ -47,9 +47,22 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
         <ToolbarButton
           label="Link"
           onClick={() => {
-            const url = window.prompt('Enter URL');
-            if (url) {
-              applyCommand('createLink', url);
+            const url = window.prompt('Enter URL or internal path (e.g. /services)');
+            const href = url?.trim();
+            if (!href) {
+              return;
+            }
+            applyCommand('createLink', href);
+            // External links should open safely in a new tab; createLink can't set attributes itself.
+            const editor = editorRef.current;
+            if (editor) {
+              editor.querySelectorAll('a[href]').forEach((a) => {
+                if (/^https?:\/\//i.test(a.getAttribute('href') || '')) {
+                  a.setAttribute('target', '_blank');
+                  a.setAttribute('rel', 'noopener noreferrer');
+                }
+              });
+              onChange(editor.innerHTML);
             }
           }}
         />

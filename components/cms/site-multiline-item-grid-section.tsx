@@ -1,5 +1,6 @@
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
+import { renderInlineLinks } from '@/components/cms/rich-text';
 
 export function SiteMultilineItemGridSection({
   heading,
@@ -37,7 +38,7 @@ export function SiteMultilineItemGridSection({
           {items.map((item) => (
             <div key={item} className="text-center">
               <span className="whitespace-pre-line text-sm leading-relaxed text-[#d9d9d9]/80 md:text-base">
-                {item}
+                {renderInlineLinks(item)}
               </span>
             </div>
           ))}

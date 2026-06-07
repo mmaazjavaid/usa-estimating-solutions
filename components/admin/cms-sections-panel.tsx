@@ -427,6 +427,7 @@ function FieldEditor({
           rows={4}
           className="w-full rounded border border-zinc-600 bg-zinc-950 px-2 py-1 text-sm text-white"
         />
+        <LinkSyntaxHint linkTargets={linkTargets} />
       </label>
     );
   }
@@ -465,7 +466,49 @@ function FieldEditor({
         onChange={(e) => onChange(e.target.value)}
         className="w-full rounded border border-zinc-600 bg-zinc-950 px-2 py-1 text-sm text-white"
       />
+      {field.input === 'url' ? null : <LinkSyntaxHint linkTargets={linkTargets} />}
     </label>
+  );
+}
+
+/**
+ * Inline help shown under free-text fields: explains the `[text](/path)` markdown link syntax and
+ * lists the site's real internal paths so admins can copy one in. Collapsed by default to stay out
+ * of the way.
+ */
+function LinkSyntaxHint({ linkTargets }: { linkTargets: LinkTarget[] }) {
+  return (
+    <details className="mt-1 text-[11px] leading-snug text-zinc-500">
+      <summary className="cursor-pointer select-none text-zinc-400">
+        Add a link: type <code className="text-zinc-300">[text](/path)</code>
+      </summary>
+      <div className="mt-1 space-y-1 border-l border-zinc-800 pl-2">
+        <p>
+          Wrap the words in <code className="text-zinc-300">[ ]</code> and the destination in{' '}
+          <code className="text-zinc-300">( )</code>. The link inherits the text style (no color
+          change) and underlines on hover.
+        </p>
+        <p>
+          External sites: paste the full address, e.g.{' '}
+          <code className="text-zinc-300">https://example.com/page</code> or just{' '}
+          <code className="text-zinc-300">example.com/page</code>. Don&apos;t add a leading{' '}
+          <code className="text-zinc-300">/</code> — that keeps the link on this site.
+        </p>
+        {linkTargets.length > 0 ? (
+          <div>
+            <p className="text-zinc-400">Internal paths:</p>
+            <ul className="mt-0.5 max-h-32 space-y-0.5 overflow-y-auto">
+              {linkTargets.map((t) => (
+                <li key={t.path}>
+                  <code className="text-zinc-300">{t.path}</code>
+                  <span className="text-zinc-600"> — {t.label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </div>
+    </details>
   );
 }
 

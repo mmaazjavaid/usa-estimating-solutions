@@ -1,6 +1,7 @@
 import { CursorGlow } from '@/components/ui/cursor-glow';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
+import { renderInlineLinks } from '@/components/cms/rich-text';
 
 export function SiteOfferingsGridSection({
   heading,
@@ -35,7 +36,7 @@ export function SiteOfferingsGridSection({
       <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 md:grid-cols-4">
         {items.map((item) => (
           <div key={item} className="text-center">
-            <p className="text-sm font-medium text-white md:text-base">{item}</p>
+            <p className="text-sm font-medium text-white md:text-base">{renderInlineLinks(item)}</p>
           </div>
         ))}
       </div>

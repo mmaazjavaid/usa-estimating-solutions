@@ -1,5 +1,6 @@
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
+import { renderInlineLinks } from '@/components/cms/rich-text';
 
 export type LinePairItem = { line1: string; line2: string };
 
@@ -39,18 +40,18 @@ export function SiteLinePairGridSection({
           )}
           style={introTypography?.style}
         >
-          {intro}
+          {renderInlineLinks(intro)}
         </p>
       ) : null}
       <div className={`mx-auto flex max-w-5xl flex-wrap justify-center ${gapClassName}`}>
         {items.map((item) => (
           <div key={`${item.line1}-${item.line2}`} className="text-center">
             <span className="text-sm text-[#d9d9d9]/80 md:text-base">
-              {item.line1}
+              {renderInlineLinks(item.line1)}
               {item.line2 ? (
                 <>
                   <br />
-                  {item.line2}
+                  {renderInlineLinks(item.line2)}
                 </>
               ) : null}
             </span>

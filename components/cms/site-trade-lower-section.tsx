@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { CursorGlow } from '@/components/ui/cursor-glow';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
+import { renderInlineLinks } from '@/components/cms/rich-text';
 
 export type SiteTradeTypeRow = {
   label: string;
@@ -145,7 +146,7 @@ export function SiteTradeLowerSection({
               key={wi}
               className="whitespace-pre-line text-center text-sm text-[#d9d9d9]/80 md:text-base"
             >
-              {item}
+              {renderInlineLinks(item)}
             </p>
           ))}
         </div>
@@ -168,7 +169,7 @@ export function SiteTradeLowerSection({
           )}
           style={typesIntroTypography?.style}
         >
-          {typesIntro}
+          {renderInlineLinks(typesIntro)}
         </p>
 
         <div className="mx-auto max-w-5xl space-y-8">
@@ -185,7 +186,7 @@ export function SiteTradeLowerSection({
                   <div className="flex-1 md:text-left">
                     <TypeTitle title={item.title} href={item.titleLinkHref} />
                     <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
-                      {item.description}
+                      {renderInlineLinks(item.description)}
                     </p>
                   </div>
                 </>
@@ -194,7 +195,7 @@ export function SiteTradeLowerSection({
                   <div className="flex-1 md:text-right">
                     <TypeTitle title={item.title} href={item.titleLinkHref} />
                     <p className="text-justify text-sm leading-relaxed text-[#d9d9d9]/70">
-                      {item.description}
+                      {renderInlineLinks(item.description)}
                     </p>
                   </div>
                   <LabelBox label={item.label} href={effectiveLabelBoxHref(item)} />

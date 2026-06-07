@@ -6,6 +6,7 @@ import {
 } from '@/components/common/gradient-heading';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
+import { renderInlineLinks } from '@/components/cms/rich-text';
 
 export function SiteTradeHeroSection({
   breadcrumbCurrent,
@@ -70,7 +71,7 @@ export function SiteTradeHeroSection({
             )}
             style={introTypography?.style}
           >
-            {intro}
+            {renderInlineLinks(intro)}
           </p>
         </div>
 

@@ -15,6 +15,7 @@ import {
 } from '@/components/common/gradient-heading';
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
+import { renderInlineLinks } from '@/components/cms/rich-text';
 
 export type FloatingCardItem = {
   title: string;
@@ -205,7 +206,7 @@ export function SiteServiceMarketingHero({
       )}
       style={introTypography?.style}
     >
-      {intro}
+      {renderInlineLinks(intro)}
     </p>
   ) : null;
 

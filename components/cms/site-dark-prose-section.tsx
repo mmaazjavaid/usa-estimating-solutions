@@ -1,5 +1,6 @@
 import type { CmsTextTypography } from '@/lib/cms-text-typography';
 import { cn } from '@/lib/utils';
+import { renderInlineLinks } from '@/components/cms/rich-text';
 
 export function SiteDarkProseSection({
   heading,
@@ -42,7 +43,7 @@ export function SiteDarkProseSection({
       >
         {paragraphs.map((p, i) => (
           <p key={i} className="whitespace-pre-line">
-            {p}
+            {renderInlineLinks(p)}
           </p>
         ))}
       </div>

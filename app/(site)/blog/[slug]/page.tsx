@@ -63,7 +63,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
           ) : null}
 
           <div
-            className="prose prose-invert mt-10 max-w-none prose-headings:text-white prose-a:text-[#f8b87f] prose-p:text-white/85"
+            className="prose prose-invert mt-10 max-w-none prose-headings:text-white prose-p:text-white/85 prose-a:text-inherit prose-a:[font-weight:inherit] prose-a:no-underline hover:prose-a:underline prose-a:decoration-1 prose-a:underline-offset-2"
             dangerouslySetInnerHTML={{ __html: blog.body || '' }}
           />
         </article>
