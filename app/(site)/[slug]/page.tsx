@@ -9,6 +9,7 @@ import { ScrollToTop } from '@/components/layout/scroll-to-top';
 import { CTASection } from '@/components/home/cta-section';
 import { ServiceTradesSection } from '@/components/services/service-trades-section';
 import { CmsPageSections } from '@/components/cms/cms-section-renderer';
+import { RawHeadTags } from '@/components/seo/raw-head-tags';
 import {
   getPublishedServiceBySlug,
   getPublishedSubServices,
@@ -111,10 +112,6 @@ export async function generateMetadata({
         service.indexStatus === 'noindex'
           ? { index: false, follow: false }
           : { index: true, follow: true },
-      other: {
-        headerMetaTags: service.headerMetaTags || '',
-        footerMetaTags: service.footerMetaTags || '',
-      },
     };
   }
 
@@ -144,6 +141,7 @@ export default async function DynamicServicePage({ params, searchParams }: PageP
 
     return (
       <>
+        <RawHeadTags html={visibleCmsPage.headerMetaTags} />
         <Header />
         <main className="pt-20">
           {preview && visibleCmsPage.status === 'unpublished' ? (
@@ -155,6 +153,7 @@ export default async function DynamicServicePage({ params, searchParams }: PageP
         </main>
         <Footer />
         <ScrollToTop />
+        <RawHeadTags html={visibleCmsPage.footerMetaTags} />
       </>
     );
   }
@@ -171,6 +170,7 @@ export default async function DynamicServicePage({ params, searchParams }: PageP
 
     return (
       <>
+        <RawHeadTags html={service.headerMetaTags} />
         <Header />
         <main className="pt-20">
           <section className="bg-black text-white">
@@ -239,6 +239,7 @@ export default async function DynamicServicePage({ params, searchParams }: PageP
         </main>
         <Footer />
         <ScrollToTop />
+        <RawHeadTags html={service.footerMetaTags} />
       </>
     );
   }

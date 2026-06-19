@@ -7,6 +7,7 @@ import { ScrollToTop } from '@/components/layout/scroll-to-top';
 import { CTASection } from '@/components/home/cta-section';
 import { ServiceTradesSection } from '@/components/services/service-trades-section';
 import { renderGradientHeading } from '@/components/common/gradient-heading';
+import { RawHeadTags } from '@/components/seo/raw-head-tags';
 import {
   getPublishedServiceBySlug,
   getPublishedSubServices,
@@ -54,10 +55,6 @@ export async function generateMetadata({
       service.indexStatus === 'noindex'
         ? { index: false, follow: false }
         : { index: true, follow: true },
-    other: {
-      headerMetaTags: service.headerMetaTags || '',
-      footerMetaTags: service.footerMetaTags || '',
-    },
   };
 }
 
@@ -74,6 +71,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   return (
     <>
+      <RawHeadTags html={service.headerMetaTags} />
       <Header />
       <main className="pt-20">
         <section className="bg-black text-white">
@@ -142,6 +140,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       </main>
       <Footer />
       <ScrollToTop />
+      <RawHeadTags html={service.footerMetaTags} />
     </>
   );
 }

@@ -3,6 +3,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ScrollToTop } from '@/components/layout/scroll-to-top';
 import { CmsPageSections } from '@/components/cms/cms-section-renderer';
+import { RawHeadTags } from '@/components/seo/raw-head-tags';
 import { ensureBaseCmsRecords, getSeoMetadataByPath } from '@/lib/cms';
 import {
   HOME_PAGE_SECTIONS,
@@ -30,12 +31,14 @@ export default async function HomePage() {
 
   return (
     <>
+      <RawHeadTags html={page?.headerMetaTags} />
       <Header />
       <main className="max-lg:pt-[calc(5rem+env(safe-area-inset-top,0px))] lg:pt-0">
         <CmsPageSections sections={sections} />
       </main>
       <Footer />
       <ScrollToTop />
+      <RawHeadTags html={page?.footerMetaTags} />
     </>
   );
 }

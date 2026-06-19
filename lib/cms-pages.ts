@@ -235,10 +235,6 @@ function buildMetadataFromPageDoc(page: {
       description: page.metaDescription || undefined,
       images: imageUrl ? [imageUrl] : [],
     },
-    other: {
-      headerMetaTags: page.headerMetaTags || '',
-      footerMetaTags: page.footerMetaTags || '',
-    },
   };
 }
 

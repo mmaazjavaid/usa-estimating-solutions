@@ -335,9 +335,5 @@ export const getSeoMetadataByPath = cache(async (path: string): Promise<Metadata
     title: page.metaTitle || undefined,
     description: page.metaDescription || undefined,
     robots: robotsValue,
-    other: {
-      headerMetaTags: page.headerMetaTags || '',
-      footerMetaTags: page.footerMetaTags || '',
-    },
   };
 });
