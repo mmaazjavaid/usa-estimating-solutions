@@ -747,6 +747,25 @@ export const CMS_SECTION_REGISTRY: CmsSectionDefinition[] = [
     defaultData: {},
   },
   {
+    type: 'site_rich_content',
+    label: 'Rich content (paste formatted text)',
+    description:
+      'Free-form article-style content. Paste from Google Docs, Word or a web page and headings, paragraphs, spacing, lists and links are kept.',
+    category: 'Content',
+    previewClass: 'from-zinc-900 to-black',
+    fields: [
+      t('content', 'Content', 'richText'),
+      t('width', 'Content width', 'select', {
+        options: [
+          { value: 'default', label: 'Default (max-w-4xl)' },
+          { value: 'narrow', label: 'Narrow (max-w-3xl)' },
+          { value: 'wide', label: 'Wide (max-w-6xl)' },
+        ],
+      }),
+    ],
+    defaultData: { content: '', width: 'default' },
+  },
+  {
     type: 'site_prose',
     label: 'Text block (light background)',
     description: 'Simple centered copy block for extra paragraphs on marketing pages.',

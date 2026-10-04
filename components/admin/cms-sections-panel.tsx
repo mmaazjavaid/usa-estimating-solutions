@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { ImageUrlInput } from '@/components/admin/image-url-input';
+import { CmsRichContentEditor } from '@/components/admin/cms-rich-content-editor';
 import { CmsSectionTemplatePreview } from '@/components/admin/cms-section-template-preview';
 import { CMS_SECTION_REGISTRY, getSectionDefinition } from '@/lib/cms-sections/registry';
 import type {
@@ -54,6 +55,10 @@ export function CmsSectionsPanel({
   }, [sectionPickerQuery]);
 
   const editing = sorted.find((s) => s.key === editingKey) ?? null;
+  /** Rich text needs room to read comfortably; other section forms stay compact. */
+  const editingIsWide =
+    editing !== null &&
+    (getSectionDefinition(editing.type)?.fields.some((f) => f.input === 'richText') ?? false);
 
   function addSection(type: string) {
     const def = getSectionDefinition(type);
@@ -248,7 +253,11 @@ export function CmsSectionsPanel({
 
       {editing ? (
         <div className="fixed inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/60 p-4">
-          <div className="mt-6 w-full max-w-lg rounded-lg border border-zinc-700 bg-zinc-900 p-5">
+          <div
+            className={`mt-6 w-full rounded-lg border border-zinc-700 bg-zinc-900 p-5 ${
+              editingIsWide ? 'max-w-4xl' : 'max-w-lg'
+            }`}
+          >
             <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
               <h2 className="text-lg font-semibold">
                 {getSectionDefinition(editing.type)?.label ?? editing.type}
@@ -415,6 +424,10 @@ function FieldEditor({
         hideHelperText
       />
     );
+  }
+
+  if (field.input === 'richText') {
+    return <CmsRichContentEditor label={field.label} value={strVal} onChange={onChange} />;
   }
 
   if (field.input === 'textarea') {

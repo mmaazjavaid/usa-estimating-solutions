@@ -30,6 +30,7 @@ import { SiteTitleDescriptionMatrixSection } from '@/components/cms/site-title-d
 import { SiteMultilineItemGridSection } from '@/components/cms/site-multiline-item-grid-section';
 import { SiteDarkProseSection } from '@/components/cms/site-dark-prose-section';
 import { SiteServiceTradesFooterSection } from '@/components/cms/site-service-trades-footer-section';
+import { SiteRichContentSection } from '@/components/cms/site-rich-content-section';
 import { cmsLinkToPair, cmsStateLinkHref, coerceCmsLinkField } from '@/lib/cms-sections/cms-link';
 import { rewriteLegacyTradesSubpath } from '@/lib/legacy-trades-url';
 import {
@@ -746,6 +747,14 @@ function CmsSectionBlock({
 
     case 'site_service_trades_footer':
       return <SiteServiceTradesFooterSection />;
+
+    case 'site_rich_content':
+      return (
+        <SiteRichContentSection
+          html={String(d.content || '')}
+          width={d.width === 'narrow' || d.width === 'wide' ? d.width : 'default'}
+        />
+      );
 
     default:
       return null;

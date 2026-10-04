@@ -5,6 +5,7 @@ import { revalidateAfterBlogChange } from '@/lib/cms-revalidate';
 import { connectToDatabase } from '@/lib/db';
 import { BlogModel } from '@/models/Blog';
 import { normalizeSlug } from '@/lib/blogs';
+import { createAutoRedirectForMove } from '@/lib/redirects-server';
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -92,6 +93,11 @@ export async function PUT(request: Request, { params }: Params) {
     return NextResponse.json({ message: 'Blog slug already exists.' }, { status: 409 });
   }
 
+  const previous = (await BlogModel.findById(id).select('slug status').lean()) as {
+    slug?: string;
+    status?: string;
+  } | null;
+
   const data = await BlogModel.findByIdAndUpdate(
     id,
     {
@@ -115,6 +121,13 @@ export async function PUT(request: Request, { params }: Params) {
   }
 
   revalidateAfterBlogChange(String(data.slug));
+
+  // A published post moved to a new slug: keep the old URL (and its search ranking) working.
+  const previousSlug = String(previous?.slug ?? '');
+  if (previous && previous.status !== 'unpublished' && previousSlug && previousSlug !== String(data.slug)) {
+    revalidateAfterBlogChange(previousSlug);
+    await createAutoRedirectForMove(`/blog/${previousSlug}`, `/blog/${data.slug}`);
+  }
 
   return NextResponse.json({ data });
 }

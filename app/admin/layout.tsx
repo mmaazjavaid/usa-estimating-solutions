@@ -7,6 +7,7 @@ const adminNav = [
   { href: '/admin/services', label: 'Services' },
   { href: '/admin/sub-services', label: 'Sub-Services' },
   { href: '/admin/blogs', label: 'Blogs' },
+  { href: '/admin/redirects', label: 'Redirects' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

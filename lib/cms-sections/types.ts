@@ -10,7 +10,9 @@ export type CmsSectionFieldInput =
   | 'url'
   | 'imageUrl'
   | 'link'
-  | 'select';
+  | 'select'
+  /** WYSIWYG HTML editor; keeps formatting pasted from Docs/Word/web pages. */
+  | 'richText';
 
 export type CmsSectionFieldDef = {
   key: string;

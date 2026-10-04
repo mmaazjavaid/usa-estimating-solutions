@@ -26,6 +26,11 @@ const cards = [
     href: '/admin/blogs',
     description: 'Create, optimize, and publish blog posts dynamically.',
   },
+  {
+    title: 'Redirects',
+    href: '/admin/redirects',
+    description: 'Send old URLs to new pages (301/302) to keep SEO rankings and avoid 404s.',
+  },
 ];
 
 export default function AdminHomePage() {

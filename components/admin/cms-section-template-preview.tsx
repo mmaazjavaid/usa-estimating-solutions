@@ -405,6 +405,25 @@ export function CmsSectionTemplatePreview({
         'bg-black',
       );
 
+    case 'site_rich_content':
+      return frame(
+        <div className="flex flex-1 flex-col justify-center gap-0.5 bg-black px-2">
+          {bar('w-2/5', 'h-1', 'bg-zinc-200')}
+          {bar('w-full', 'h-0.5', 'bg-zinc-600')}
+          {bar('w-11/12', 'h-0.5', 'bg-zinc-600')}
+          {bar('w-1/3', 'h-0.5', 'bg-zinc-300')}
+          <div className="flex items-center gap-0.5 pl-1">
+            <div className="h-0.5 w-0.5 rounded-full bg-zinc-500" />
+            {bar('w-1/2', 'h-0.5', 'bg-zinc-600')}
+          </div>
+          <div className="flex items-center gap-0.5 pl-1">
+            <div className="h-0.5 w-0.5 rounded-full bg-zinc-500" />
+            {bar('w-2/5', 'h-0.5', 'bg-[#c9a84c]')}
+          </div>
+        </div>,
+        'bg-black',
+      );
+
     case 'site_service_trades_footer':
       return frame(
         <div className="flex flex-1 flex-col justify-center gap-0.5 bg-zinc-950 px-1">

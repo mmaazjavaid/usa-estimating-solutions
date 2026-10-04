@@ -138,3 +138,119 @@
 .text-animated-gradient--phase-3 {
   animation-delay: -4.5s;
 }
+
+/*
+ * "Rich content" CMS section (site_rich_content) — also applied to the admin editor surface so the
+ * editor matches the live page. Tailwind's preflight resets headings/lists, so restore them here.
+ */
+.cms-rich-content {
+  line-height: 1.75;
+  overflow-wrap: break-word;
+}
+.cms-rich-content > :first-child {
+  margin-top: 0;
+}
+.cms-rich-content > :last-child {
+  margin-bottom: 0;
+}
+.cms-rich-content h1,
+.cms-rich-content h2,
+.cms-rich-content h3,
+.cms-rich-content h4,
+.cms-rich-content h5,
+.cms-rich-content h6 {
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 1.75em 0 0.6em;
+}
+.cms-rich-content h1 { font-size: 2.25em; }
+.cms-rich-content h2 { font-size: 1.75em; }
+.cms-rich-content h3 { font-size: 1.4em; }
+.cms-rich-content h4 { font-size: 1.2em; }
+.cms-rich-content h5 { font-size: 1.05em; }
+.cms-rich-content h6 { font-size: 1em; text-transform: uppercase; letter-spacing: 0.04em; }
+.cms-rich-content p {
+  margin: 0 0 1em;
+}
+/* Blank lines pasted from Docs/Word (<p><br></p>) keep a single line of space. */
+.cms-rich-content p:has(> br:only-child) {
+  margin: 0;
+}
+.cms-rich-content strong { color: #ffffff; font-weight: 700; }
+.cms-rich-content em { font-style: italic; }
+.cms-rich-content u { text-decoration: underline; }
+.cms-rich-content s { text-decoration: line-through; }
+.cms-rich-content a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s;
+}
+.cms-rich-content a:hover { opacity: 0.8; }
+.cms-rich-content ul,
+.cms-rich-content ol {
+  margin: 0 0 1em;
+  padding-left: 1.5em;
+}
+.cms-rich-content ul { list-style: disc; }
+.cms-rich-content ol { list-style: decimal; }
+.cms-rich-content ul ul { list-style: circle; }
+.cms-rich-content li { margin: 0.35em 0; }
+.cms-rich-content li > p { margin: 0; }
+.cms-rich-content li::marker { color: rgba(255, 255, 255, 0.5); }
+.cms-rich-content ul ul,
+.cms-rich-content ol ol,
+.cms-rich-content ul ol,
+.cms-rich-content ol ul {
+  margin: 0.35em 0 0;
+}
+.cms-rich-content blockquote {
+  margin: 1.5em 0;
+  padding-left: 1em;
+  border-left: 3px solid var(--gold);
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+.cms-rich-content hr {
+  margin: 2em 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+.cms-rich-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 1.5em auto;
+  border-radius: 0.5rem;
+}
+.cms-rich-content code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.1em 0.35em;
+  border-radius: 0.25rem;
+}
+.cms-rich-content pre {
+  margin: 0 0 1em;
+  padding: 1em;
+  overflow-x: auto;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+}
+.cms-rich-content pre code { background: none; padding: 0; }
+.cms-rich-content table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 0 0 1em;
+}
+.cms-rich-content th,
+.cms-rich-content td {
+  border: 1px solid var(--border);
+  padding: 0.5em 0.75em;
+  text-align: left;
+  vertical-align: top;
+}
+.cms-rich-content th { color: #ffffff; font-weight: 600; background: rgba(255, 255, 255, 0.04); }

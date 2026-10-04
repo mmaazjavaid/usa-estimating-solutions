@@ -9,6 +9,7 @@ import {
 } from '@/lib/admin-page-update';
 import { migrateLegacyCmsSection } from '@/lib/cms-sections/legacy-map';
 import { syncChildTradeInParents } from '@/lib/parent-trade-sync';
+import { createAutoRedirectForMove } from '@/lib/redirects-server';
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -100,6 +101,12 @@ export async function PATCH(request: Request, { params }: Params) {
   revalidateAfterCmsPageChange(String(data.path ?? ''));
   if (oldPath !== newPath) {
     revalidateAfterCmsPageChange(oldPath);
+  }
+
+  // A live page moved to a new URL: keep the old URL (and its search ranking) working.
+  const wasLiveDynamicPage = existing.renderMode === 'dynamic' && existing.status !== 'unpublished';
+  if (wasLiveDynamicPage && upd.renderMode === 'dynamic' && oldPath && newPath && oldPath !== newPath) {
+    await createAutoRedirectForMove(oldPath, newPath);
   }
 
   if (wasTrade || isTrade) {
