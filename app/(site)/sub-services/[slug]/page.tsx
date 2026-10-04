@@ -26,6 +26,7 @@ export async function generateMetadata({
       subService.metaDescription ||
       subService.shortDescription ||
       'Sub-service information.',
+    alternates: { canonical: `/sub-services/${subService.slug}` },
     robots:
       subService.indexStatus === 'noindex'
         ? { index: false, follow: false }

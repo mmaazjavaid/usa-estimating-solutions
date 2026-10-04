@@ -74,9 +74,9 @@ export function ServicesSection({
             }}
           >
             <div className="text-center">
-              <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+              <h1 className="mb-4 text-3xl font-bold md:text-4xl">
                 Our Services
-              </h2>
+              </h1>
               <h3 className="mb-6 text-lg text-gray-300 md:text-xl">
                 Construction Estimating Services Built for Accurate Bids
               </h3>

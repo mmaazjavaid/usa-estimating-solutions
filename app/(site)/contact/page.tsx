@@ -7,7 +7,11 @@ import { getContactData, getSeoMetadataByPath } from "@/lib/cms"
 
 
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSeoMetadataByPath("/contact")) ?? {}
+  return (await getSeoMetadataByPath("/contact", {
+    title: "Contact Us | Get a Construction Estimate Quote | USA Estimating Solutions",
+    description:
+      "Contact USA Estimating Solutions to get a fast, accurate construction estimate. Send your plans and receive a quote from our estimating team.",
+  })) ?? {}
 }
 
 export default async function ContactPage() {

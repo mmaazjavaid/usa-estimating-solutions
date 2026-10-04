@@ -80,7 +80,11 @@ const workItems = [
 ]
 
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSeoMetadataByPath("/samples")) ?? {}
+  return (await getSeoMetadataByPath("/samples", {
+    title: "Estimate Samples | USA Estimating Solutions",
+    description:
+      "Download sample construction estimates and quantity takeoff reports to see the detail and format USA Estimating Solutions delivers.",
+  })) ?? {}
 }
 
 export default function OurWorksPage() {

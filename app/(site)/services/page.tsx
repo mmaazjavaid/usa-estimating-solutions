@@ -7,7 +7,11 @@ import { getSeoMetadataByPath } from "@/lib/cms"
 import { getLiveServicesForCarousel } from "@/lib/service-nav"
 
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSeoMetadataByPath("/services")) ?? {}
+  return (await getSeoMetadataByPath("/services", {
+    title: "Construction Estimating Services | USA Estimating Solutions",
+    description:
+      "Explore our construction estimating services: cost estimation, quantity takeoffs, commercial, residential and industrial estimates, CPM scheduling and more.",
+  })) ?? {}
 }
 
 export default async function ServicesPage() {

@@ -59,7 +59,11 @@ const plans = [
 ]
 
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSeoMetadataByPath("/pricing")) ?? {}
+  return (await getSeoMetadataByPath("/pricing", {
+    title: "Pricing | Construction Estimating Services | USA Estimating Solutions",
+    description:
+      "Transparent pricing for construction cost estimates and material takeoffs. Compare plans and get an accurate estimate for your next bid.",
+  })) ?? {}
 }
 
 export default function PricesPage() {

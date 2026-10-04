@@ -7,7 +7,11 @@ import { getPublishedBlogs } from '@/lib/blogs';
 import { getSeoMetadataByPath } from '@/lib/cms';
 
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSeoMetadataByPath('/blog')) ?? {};
+  return (await getSeoMetadataByPath('/blog', {
+    title: 'Construction Estimating Blog | USA Estimating Solutions',
+    description:
+      'Guides, tips and insights on construction estimating, quantity takeoffs, bidding and cost control from the USA Estimating Solutions team.',
+  })) ?? {};
 }
 
 export default async function BlogsPage() {

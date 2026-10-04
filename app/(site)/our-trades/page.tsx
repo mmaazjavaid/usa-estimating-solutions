@@ -56,7 +56,11 @@ const trades = [
 ]
 
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSeoMetadataByPath("/our-trades")) ?? {}
+  return (await getSeoMetadataByPath("/our-trades", {
+    title: "Trades We Estimate | USA Estimating Solutions",
+    description:
+      "Construction estimating and takeoff services for every trade — concrete, masonry, MEP, electrical, drywall, roofing, exterior and more.",
+  })) ?? {}
 }
 
 export default async function TradesPage() {

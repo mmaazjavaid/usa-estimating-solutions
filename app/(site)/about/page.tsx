@@ -7,7 +7,11 @@ import { AboutUsContent } from "@/components/about/about-us-content"
 import { getSeoMetadataByPath } from "@/lib/cms"
 
 export async function generateMetadata(): Promise<Metadata> {
-  return (await getSeoMetadataByPath("/about")) ?? {}
+  return (await getSeoMetadataByPath("/about", {
+    title: "About Us | USA Estimating Solutions",
+    description:
+      "Meet USA Estimating Solutions — experienced construction estimators delivering accurate cost estimates and material takeoffs for contractors, builders and developers across the USA.",
+  })) ?? {}
 }
 
 export default function AboutPage() {

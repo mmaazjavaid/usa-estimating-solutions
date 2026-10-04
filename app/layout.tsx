@@ -3,6 +3,7 @@ import { Inter, Manrope } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { PageGlowShell } from '@/components/ui/page-glow';
+import { getSiteUrl } from '@/lib/site-url';
 
 /**
  * CMS-driven header, footer, and pages read from MongoDB — must not be statically cached
@@ -16,6 +17,9 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-serif' });
 
 export const metadata: Metadata = {
+  // Makes every canonical / Open Graph URL absolute on the primary domain (relative canonicals
+  // resolve against whichever host served the page — e.g. the www duplicate).
+  metadataBase: new URL(getSiteUrl()),
   title:
     'USA Estimating Solutions - Professional Construction Estimating Services',
   description:

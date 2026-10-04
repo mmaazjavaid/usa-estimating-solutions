@@ -317,23 +317,40 @@ export const getPublishedSubServiceBySlug = cache(async (slug: string) => {
     .lean();
 });
 
-export const getSeoMetadataByPath = cache(async (path: string): Promise<Metadata | null> => {
-  cmsReadNoStore();
-  await ensureBaseCmsRecords();
-  const page = await PageModel.findOne({ path }).lean();
+/**
+ * Metadata for static routes (`/about`, `/pricing`, …) from their SEO-only CMS record.
+ *
+ * Empty CMS fields fall back to `fallback`, and keys with no value are left out entirely: in Next,
+ * returning `title: undefined` clears the inherited title, which shipped these pages to Google
+ * with no <title> or meta description at all.
+ */
+export const getSeoMetadataByPath = cache(
+  async (path: string, fallback?: { title?: string; description?: string }): Promise<Metadata | null> => {
+    cmsReadNoStore();
+    await ensureBaseCmsRecords();
+    const page = await PageModel.findOne({ path }).lean();
 
-  if (!page || page.status === 'unpublished') {
-    return null;
-  }
+    if (page?.status === 'unpublished') {
+      return null;
+    }
 
-  const robotsValue =
-    page.indexStatus === 'noindex'
-      ? { index: false, follow: false }
-      : { index: true, follow: true };
+    const title = String(page?.metaTitle ?? '').trim() || fallback?.title;
+    const description = String(page?.metaDescription ?? '').trim() || fallback?.description;
 
-  return {
-    title: page.metaTitle || undefined,
-    description: page.metaDescription || undefined,
-    robots: robotsValue,
-  };
-});
+    const metadata: Metadata = {
+      alternates: { canonical: path },
+      robots:
+        page?.indexStatus === 'noindex'
+          ? { index: false, follow: false }
+          : { index: true, follow: true },
+    };
+    if (title) {
+      metadata.title = title;
+      metadata.openGraph = { title, ...(description ? { description } : {}), url: path };
+    }
+    if (description) {
+      metadata.description = description;
+    }
+    return metadata;
+  },
+);
