@@ -254,3 +254,30 @@
   vertical-align: top;
 }
 .cms-rich-content th { color: #ffffff; font-weight: 600; background: rgba(255, 255, 255, 0.04); }
+
+/* Blog post bodies: links read as body text and underline on hover. */
+.cms-rich-content--blog a {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+}
+.cms-rich-content--blog a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+.cms-rich-content--blog table {
+  display: table;
+  margin: 1.5em 0;
+  font-size: 0.9em;
+}
+.cms-rich-content--blog thead th {
+  background: rgba(255, 255, 255, 0.06);
+}
+.cms-rich-content--blog tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+@media (max-width: 640px) {
+  .cms-rich-content--blog table {
+    display: block;
+  }
+}

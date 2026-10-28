@@ -244,6 +244,27 @@ export function plainTextToRichHtml(text: string): string {
     .join('');
 }
 
+const HTML_SOURCE_TAG_PATTERN =
+  /<\/?(html|body|p|h[1-6]|div|section|article|span|ul|ol|li|a|strong|b|em|i|u|br|hr|table|tr|td|th|img|blockquote|pre|code)\b[^>]*>/i;
+
+/**
+ * True when copied *plain text* is HTML markup (e.g. copied from a code editor or an AI tool), so
+ * a paste should render it rather than show the tags as text.
+ */
+export function looksLikeHtmlSource(text: string): boolean {
+  const t = text.trim();
+  return t.startsWith('<') && t.endsWith('>') && HTML_SOURCE_TAG_PATTERN.test(t);
+}
+
+/** Put each block element on its own line so the HTML source view is readable. */
+export function formatRichHtmlSource(html: string): string {
+  return html
+    .replace(/(<\/(p|h[1-6]|ul|ol|li|blockquote|pre|table|thead|tbody|tfoot|tr)>|<hr>)/gi, '$1\n')
+    .replace(/(<(ul|ol|table|thead|tbody|tfoot|tr)\b[^>]*>)/gi, '$1\n')
+    .replace(/\n{2,}/g, '\n')
+    .trim();
+}
+
 /**
  * Server-side safety pass for stored rich HTML. Content is already cleaned in the admin editor;
  * this only guards against scripts, event handlers and `javascript:` URLs reaching the page.
@@ -256,4 +277,12 @@ export function stripUnsafeHtml(html: string): string {
     .replace(/\s+on[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
     .replace(/\s+(href|src)\s*=\s*("|')\s*(javascript|vbscript|data):[^"']*\2/gi, '')
     .replace(/\s+(href|src)\s*=\s*(javascript|vbscript|data):[^\s>]*/gi, '');
+}
+
+/**
+ * Drop `class` attributes so markup pasted from other sites/tools (which may reuse Tailwind class
+ * names) can't override the `.cms-rich-content` styling.
+ */
+export function stripClassAttributes(html: string): string {
+  return html.replace(/\s+class\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '');
 }

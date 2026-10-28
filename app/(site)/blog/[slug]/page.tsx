@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ScrollToTop } from '@/components/layout/scroll-to-top';
 import { getBlogMetadata, getPublishedBlogBySlug } from '@/lib/blogs';
+import { stripClassAttributes, stripUnsafeHtml } from '@/lib/cms-rich-html';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -63,8 +64,8 @@ export default async function BlogDetailPage({ params }: PageProps) {
           ) : null}
 
           <div
-            className="prose prose-invert mt-10 max-w-none prose-headings:text-white prose-p:text-white/85 prose-a:text-inherit prose-a:[font-weight:inherit] prose-a:no-underline hover:prose-a:underline prose-a:decoration-1 prose-a:underline-offset-2"
-            dangerouslySetInnerHTML={{ __html: blog.body || '' }}
+            className="cms-rich-content cms-rich-content--blog mt-10 text-base text-white/85 md:text-lg"
+            dangerouslySetInnerHTML={{ __html: stripClassAttributes(stripUnsafeHtml(blog.body)) }}
           />
         </article>
       </main>

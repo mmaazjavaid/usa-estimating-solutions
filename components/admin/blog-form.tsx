@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState } from 'react';
 import { ImageUrlInput } from '@/components/admin/image-url-input';
-import { RichTextEditor } from '@/components/admin/rich-text-editor';
+import { CmsRichContentEditor } from '@/components/admin/cms-rich-content-editor';
 
 export type BlogFormData = {
   title: string;
@@ -96,11 +96,12 @@ export function BlogForm({ initialValues, submitLabel, onSubmit }: BlogFormProps
         }
       />
 
-      <div className="md:col-span-2 space-y-1">
-        <label className="text-sm text-zinc-300">Blog Body</label>
-        <RichTextEditor
+      <div className="md:col-span-2">
+        <CmsRichContentEditor
+          label="Blog Body"
           value={formData.body}
           onChange={(value) => setFormData((prev) => ({ ...prev, body: value }))}
+          allowImages
         />
       </div>
 
