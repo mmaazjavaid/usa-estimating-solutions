@@ -145,7 +145,7 @@ export function HeaderClient({
       ]);
   }, [servicesDropdownColumnsWithCms]);
 
-  const servicesMobileLinks = useMemo(
+  const servicesFlatLinks = useMemo(
     () =>
       servicesDropdownColumnsWithCms
         .flat()
@@ -205,9 +205,8 @@ export function HeaderClient({
     };
   }, [servicesOpen, tradesOpen]);
 
-  /** Wrap like the static columns; extra CMS-only pages append as their own column. */
-  const servicesGridClass =
-    'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5';
+  /** Links flow top-to-bottom through balanced columns, so a wrapped label never stretches its neighbours. */
+  const servicesColumnsClass = 'columns-3 xl:columns-4';
 
   /** Trades mega menu: always two columns (same as static layout); CMS pages fill in round-robin. */
   const tradesGridClass = 'grid-cols-2';
@@ -328,31 +327,23 @@ export function HeaderClient({
         <div className="hidden lg:block">
           <div
             className={cn(
-              'mx-auto grid w-full min-w-0 max-w-7xl gap-x-8 px-3 py-10 sm:gap-x-12 sm:px-4 md:gap-x-16 md:px-6',
-              servicesGridClass,
+              'mx-auto w-full min-w-0 max-w-7xl gap-x-8 px-3 py-8 sm:px-4 md:px-6',
+              servicesColumnsClass,
             )}
           >
-            {servicesDropdownColumnsWithCms.map((column, columnIndex) => (
-              <div
-                key={`services-column-${columnIndex}`}
-                className="flex flex-col gap-3"
+            {servicesFlatLinks.map((item) => (
+              <Link
+                key={`${item.href}-${item.label}`}
+                href={item.href}
+                aria-current={isActiveHref(item.href) ? 'page' : undefined}
+                className={cn(
+                  dropdownLinkClassName,
+                  'break-inside-avoid py-1.5 leading-snug',
+                )}
               >
-                {column
-                  .flatMap((group) => [group.title, ...group.items])
-                  .map((item) => (
-                    <Link
-                      key={`${columnIndex}-${item.href}-${item.label}`}
-                      href={item.href}
-                      aria-current={
-                        isActiveHref(item.href) ? 'page' : undefined
-                      }
-                      className={dropdownLinkClassName}
-                    >
-                      <span>{item.label}</span>
-                      <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100 group-aria-[current=page]:opacity-100" />
-                    </Link>
-                  ))}
-              </div>
+                <span>{item.label}</span>
+                <ArrowUpRight className="h-3.5 w-3.5 shrink-0 opacity-0 transition-opacity group-hover:opacity-100 group-aria-[current=page]:opacity-100" />
+              </Link>
             ))}
           </div>
         </div>
@@ -406,7 +397,7 @@ export function HeaderClient({
                   link.label === 'Services' ? 'services' : 'trades';
                 const submenuLinks =
                   submenuKey === 'services'
-                    ? servicesMobileLinks
+                    ? servicesFlatLinks
                     : tradesMobileLinks;
                 const isSubmenuOpen = openMobileSubmenu === submenuKey;
 
