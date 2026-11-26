@@ -59,7 +59,8 @@ export function CursorGlow({ children, colors: _colorsIgnored, className }: Curs
         onMouseLeave={onMouseLeave}
       >
         {children}
-        <div className="pointer-events-none absolute inset-0 overflow-visible">
+        {/* Clip so glow layers parked near an edge (e.g. after a tap on mobile) never widen the page. */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div
             ref={primaryRef}
             className="absolute h-[460px] w-[460px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0 transition-opacity duration-400"

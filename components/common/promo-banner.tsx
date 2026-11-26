@@ -94,7 +94,7 @@ export function PromoBanner() {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-[calc(100%-2rem)] rounded-3xl border-white/10 bg-[#161616] p-8 text-center shadow-2xl sm:max-w-lg sm:p-10">
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex min-w-0 flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-3">
             <DialogTitle className="text-5xl font-extrabold tracking-tight text-white sm:text-6xl">
               50% Off
@@ -104,7 +104,7 @@ export function PromoBanner() {
             </DialogDescription>
           </div>
 
-          <div className="flex items-center justify-center gap-2.5 sm:gap-3">
+          <div className="flex w-full items-center justify-center gap-2.5 sm:gap-3">
             {tiles.map((tile) => (
               <div
                 key={tile.label}
